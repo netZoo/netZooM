@@ -1,8 +1,13 @@
 /*
 
-### modifications listed below are modifications to the PANDA algorithm.
-### http://sourceforge.net/projects/panda-net/
-### adaptations to the PANDA v2 code are listed with the characters *OBS!
+### miR-PANDA is an adaptation of PANDA v2: Passing Attributes between Networks for Data Assimilation
+### miR-PANDA can reconstruct gene regulatory networks based on two different types of regulators: regulators that can form complexes and together regulate gene expression (for example transcription factors) and regulators that cannot form complexes and do not physically interact with each other to regulate gene expression (for example miRNAs).
+
+### PANDA was published in 2013 in PLos One: "Passing messages between biological networks to refine predicted interactions." Glass K, Huttenhower C, Quackenbush J, Yuan GC. PLoS One. 2013 May 31;8(5):e64832. doi: 10.1371/journal.pone.0064832. Print 2013. PMID: 23741402
+### the original PANDA code can be found at: http://sourceforge.net/projects/panda-net/
+### the version modifications listed below are modifications Kimberly Glass added in subsequent versions of PANDA
+### the adaptations I made to the PANDA v2 code to add the second type of regulator described above are listed with the characters *OBS!
+
 
 Version 1 Modifications (May 2013):
 1) added "randomseed" variable which allows the user to specific the random number generator seed
