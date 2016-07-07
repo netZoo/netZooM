@@ -67,7 +67,7 @@ GeneCoReg=corr(Exp', 'type', 'pearson', 'rows', 'pairwise');
 %NumUsed=double(~isnan(Exp))*double(~isnan(Exp)'); % optional: determine nr of samples with expression values (not NaN)
 %GeneCoReg=GeneCoReg.*(NumUsed/NumConditions); % optional: normalize the correlation based on NumUsed
 GeneCoReg(1:NumGenes+1:NumGenes^2)=1; % set diagonal to 1
-GeneCoReg(isnan(GeneCoReg))=0; % change NAs to 0
+GeneCoReg(isnan(GeneCoReg))=0; % change NaNs to 0
 
 if(isempty(mir_file)) % run PANDA
 	AgNet=PANDA(RegNet, GeneCoReg, TFCoop, alpha);
