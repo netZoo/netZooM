@@ -21,6 +21,7 @@ To tell PUMA to discriminate between regulators that can, and regulators that ca
 ```
 
 ###MATLAB code
+####Condition-specific PUMA networks
 The MATLAB code of PUMA and example files to run PUMA in MATLAB can be found in folder `PUMAm`. The main script to run PUMA is `RunPUMA.m`. This script is set-up to run PUMA on example data from folder `ToyData`. The script must be run with a regulatory prior (variable `motif_file` in the RunPUMA script) and expression data (variable `exp_file`). Please note that, in principle, PUMA can be run on an identity matrix of expression data as well, but this is not implemented. Protein-protein interaction data (variable `ppi_file`) and a list of microRNAs (variable `mir_file`) are optional parameters. If no `mir_file` is listed, the script will run PANDA to estimate regulatory edges. If a `mir_file` is listed, the script will run PUMA to estimate regulatory edges. In particular, regulators listed in that file will be treated as regulators that cannot form complexes with other regulators, such as microRNAs, while regulators not listed will be treated as regulators that can form complexes, such as transcription factors.
 
 To run PUMA on your own data, change the paths and filenames under "Set Program Parameters". MATLAB functions `NormalizeNetwork.m`, `PANDA.m`, `PUMA.m`, `Tfunction.m`, and `UpdateDiagonal.m` will be called from the main script.
@@ -30,3 +31,8 @@ Some important notes of this script compared to the PUMA C++ code:
 - The regulators in `mir_list` should match symbols in the regulatory prior (`motif_file`).
 - Self-interactions in the protein-protein interaction data will be set to 1. The algorithm converges around these edges. Protein-protein interaction "prior" edges therefore should have weights between 0-1.
 - In the protein-protein interaction prior, edges between microRNAs from the `mir_file` (see `RunPUMA.m` script) and other regulators can have values, but these will automatically be set to 0, as the algorithm assumes that any regulator listed in `mir_file` will not be able to form edges with other regulators.
+
+####Single-sample PUMA networks
+LIONESS, or **L**inear **I**nterpolation to **O**btain **N**etwork **E**stimates for **S**ingle **S**amples, can be used to estimate single-sample networks using aggregate networks made with any network reconstruction algorithm (http://arxiv.org/pdf/1505.06440.pdf).
+
+The main script to run PUMA+LIONESS is `RunPUMALIONESS.m`. For instructions to run this script, see instructions under "Condition-specific PUMA networks".
