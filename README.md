@@ -36,3 +36,7 @@ Some important notes of this script compared to the PUMA C++ code:
 LIONESS, or **L**inear **I**nterpolation to **O**btain **N**etwork **E**stimates for **S**ingle **S**amples, can be used to estimate single-sample networks using aggregate networks made with any network reconstruction algorithm (http://arxiv.org/pdf/1505.06440.pdf).
 
 The main script to run PUMA+LIONESS is `RunPUMALIONESS.m`. For instructions to run this script, see instructions under "Condition-specific PUMA networks".
+
+####Other scripts
+Some useful scripts can be found in the folder `OtherScripts`:
+- bash scripts to run `RunPUMA.m` and `RunPUMALIONESS.m` remotely.
