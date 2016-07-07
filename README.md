@@ -1,5 +1,6 @@
 #PUMA
 ##PANDA Using MicroRNA Associations
+###C++ code
 PUMA, or **P**ANDA **U**sing **M**icroRNA **A**ssociations, is an extension of the gene regulatory network reconstruction algorithm PANDA, which was published in "Passing messages between biological networks to refine predicted interactions" by Glass K, Huttenhower C, Quackenbush J, Yuan GC. *PLoS One*. 2013 May 31l8(5):e64983, doi: 10.1371/journal.pone.0064832, PMID: 23741402
 
 PUMA can reconstruct gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels. This is the PUMA C++ code, which is based on PANDA version 2. The original PANDA C++ code is available at: http://sourceforge.net/projects/panda-net/
