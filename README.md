@@ -43,4 +43,4 @@ The main script to run PUMA+LIONESS is `RunPUMALIONESS.m`. For instructions to r
 ####Other scripts
 Some useful scripts can be found in the folder `OtherScripts`:
 - bash scripts `RunPUMA.sh` and `RunPUMALIONESS.sh` can be used to remotely run `RunPUMA.m` and `RunPUMALIONESS.m`, respectively.
-- `getCompleteEdgelist.R` is an R script that can convert an unweighted regulatory prior in a complete edgelist.
+- `getCompleteEdgelist.R` is an R script that can convert an unweighted regulatory prior in a complete edgelist. This can be useful when preparing the regulatory prior and expression data.
