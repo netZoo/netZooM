@@ -5,7 +5,7 @@ PUMA, or **P**ANDA **U**sing **M**icroRNA **A**ssociations, is an extension of t
 PUMA can reconstruct gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels. This Github repository contains both a C++ version and a MATLAB version of PUMA. The C++ version is based on PANDA version 2. The original PANDA C++ code is available at: http://sourceforge.net/projects/panda-net/. The MATLAB script to run PUMA has fewer options than the C++ code, but runs faster.
 
 ##C++ code
-PUMA can be compiled using:
+The C++ code of PUMA and example files to run PUMA can be found in folder `PUMAc`. The code can be compiled using:
 ```
 g++ PUMA.c -O3 -o PUMA
 ```
@@ -21,7 +21,7 @@ To tell PUMA to discriminate between regulators that can, and regulators that ca
 ```
 
 ###MATLAB code
-This code runs PUMA in MATLAB. The main script is `RunPUMA.m`. This script runs with the ToyData examples. The script must be run with a regulatory prior (variable `motif_file` in the RunPUMA script) and expression data (variable `exp_file`). Please note that, in principle, PUMA can be run on an identity matrix of expression data as well, but this is not implemented. Protein-protein interaction data (variable `ppi_file`) and a list of microRNAs (variable `mir_file`) are optional parameters. If no `mir_file` is listed, the script will run PANDA to estimate regulatory edges. If a `mir_file` is listed, the script will run PUMA to estimate regulatory edges. In particular, regulators listed in that file will be treated as regulators that cannot form complexes with other regulators, such as microRNAs, while regulators not listed will be treated as regulators that can form complexes, such as transcription factors.
+The MATLAB code of PUMA and example files to run PUMA in MATLAB can be found in folder `PUMAm`. The main script to run PUMA is `RunPUMA.m`. This script is set-up to run PUMA on example data from folder `ToyData`. The script must be run with a regulatory prior (variable `motif_file` in the RunPUMA script) and expression data (variable `exp_file`). Please note that, in principle, PUMA can be run on an identity matrix of expression data as well, but this is not implemented. Protein-protein interaction data (variable `ppi_file`) and a list of microRNAs (variable `mir_file`) are optional parameters. If no `mir_file` is listed, the script will run PANDA to estimate regulatory edges. If a `mir_file` is listed, the script will run PUMA to estimate regulatory edges. In particular, regulators listed in that file will be treated as regulators that cannot form complexes with other regulators, such as microRNAs, while regulators not listed will be treated as regulators that can form complexes, such as transcription factors.
 
 To run PUMA on your own data, change the paths and filenames under "Set Program Parameters". MATLAB functions `NormalizeNetwork.m`, `PANDA.m`, `PUMA.m`, `Tfunction.m`, and `UpdateDiagonal.m` will be called from the main script.
 
