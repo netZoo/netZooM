@@ -32,6 +32,9 @@ Some important notes of this script compared to the PUMA C++ code:
 - Self-interactions in the protein-protein interaction data will be set to 1. The algorithm converges around these edges. Protein-protein interaction "prior" edges therefore should have weights between 0-1.
 - In the protein-protein interaction prior, edges between microRNAs from the `mir_file` (see `RunPUMA.m` script) and other regulators can have values, but these will automatically be set to 0, as the algorithm assumes that any regulator listed in `mir_file` will not be able to form edges with other regulators.
 
+####Resampling PUMA networks
+`RunPUMAresample.m` runs PUMA as described above, but resamples the data multiple times (variable `nrboots` under "Set Program Parameters") by removing a certain percentage (variable `perc` under "Set Program Parameters") of samples to obtain a collection of networks.
+
 ####Single-sample PUMA networks
 LIONESS, or **L**inear **I**nterpolation to **O**btain **N**etwork **E**stimates for **S**ingle **S**amples, can be used to estimate single-sample networks using aggregate networks made with any network reconstruction algorithm (http://arxiv.org/pdf/1505.06440.pdf).
 
