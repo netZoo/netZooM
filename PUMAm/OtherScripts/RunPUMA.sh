@@ -1,12 +1,13 @@
 #!/bin/bash
 #
-# Run this file using 'nohup bash RunPUMA.sh &'
+# Move this file to the directory of RunPUMA.m
+# Then run this file using 'nohup bash RunPUMA.sh &'
 #
 #$ -S /bin/bash
 #$ -cwd
-#$ -N RunPUMALIONESS
+#$ -N RunPUMA
 #$ -j y
-#$ -o RunPUMALIONESS.qlog
+#$ -o RunPUMA.qlog
 
 echo "=========================================================="
 echo "Starting on : $(date)"

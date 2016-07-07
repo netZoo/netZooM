@@ -1,6 +1,7 @@
 #!/bin/bash
 #
-# Run this file using 'nohup bash RunPUMALIONESS.sh &'
+# Move this file to the directory of RunPUMALIONESS.m
+# Then run this file using 'nohup bash RunPUMALIONESS.sh &'
 #
 #$ -S /bin/bash
 #$ -cwd
