@@ -10,7 +10,7 @@
 #matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); run('lioness_run.m'); quit;"
 
 # Background running
-#matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); run('lioness_run.m'); quit;" > lioness.`hostname`.log &
+#matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); run('lioness_run.m'); quit;" >& lioness.`hostname`.log &
 
 # Email notification when done
 #echo "LIONESS run on `hostname` has just finished: `date`." | mail -s "Task finished on `hostname`" `whoami`
@@ -25,5 +25,5 @@ fi
 start=`date`
 host=`hostname`
 echo "LIONESS starts! Logging: lioness.$host.$1-$2.log. Date: $start"
-matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config_$host.m'); run('lioness_run.m'); quit;" > "lioness.$host.$1-$2.log" &
+matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config_$host.m'); run('lioness_run.m'); quit;" >& "lioness.$host.$1-$2.log" &
 echo "LIONESS run on $host for sample $1 - $2 starting $start ends `date`." | mail -s "Task finished on $host" `whoami`

@@ -9,7 +9,7 @@
 #matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('panda_config.m'); run('panda_run.m'); quit;"
 
 # Background running
-matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('panda_config.m'); run('panda_run.m'); quit;" > panda.`hostname`.log &
+matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('panda_config.m'); run('panda_run.m'); quit;" >& panda.`hostname`.log &
 
 # Email notification when done
 echo "PANDA run on `hostname` has just finished: `date`." | mail -s "Task finished on `hostname`" `whoami`
@@ -19,4 +19,4 @@ echo "PANDA run on `hostname` has just finished: `date`." | mail -s "Task finish
 #diff /tmp/panda.test.txt test_data/panda.txt
 
 # Benchmark (5 repeats)
-#matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('panda_config_test.m'); run('panda_run.m'); run('panda_run.m'); run('panda_run.m'); run('panda_run.m'); run('panda_run.m'); quit;" > panda.test.`hostname`.log
+#matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('panda_config_test.m'); run('panda_run.m'); run('panda_run.m'); run('panda_run.m'); run('panda_run.m'); run('panda_run.m'); quit;" >& panda.test.`hostname`.log
