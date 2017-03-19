@@ -9,11 +9,11 @@
 # Foreground running
 #matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); run('lioness_run.m'); quit;"
 
-# Background running
-#matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); run('lioness_run.m'); quit;" >& lioness.`hostname`.log &
+# Background running (./lioness_run.sh &)
+#matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); run('lioness_run.m'); quit;" >& lioness.`hostname`.log
 
 # Email notification when done
-#echo "LIONESS run on `hostname` has just finished: `date`." | mail -s "Task finished on `hostname`" `whoami`
+#echo "LIONESS run on `hostname` has just finished: `date`." | mail -s "Task finished on `hostname`" -a lioness.`hostname`.log `whoami`
 
 # Example: Batch running on different machines
 # Usage: 1) Set up a range of samples in the corresponding config file.
@@ -25,5 +25,5 @@ fi
 start=`date`
 host=`hostname`
 echo "LIONESS starts! Logging: lioness.$host.$1-$2.log. Date: $start"
-matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config_$host.m'); run('lioness_run.m'); quit;" >& "lioness.$host.$1-$2.log" &
-echo "LIONESS run on $host for sample $1 - $2 starting $start ends `date`." | mail -s "Task finished on $host" `whoami`
+matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config_$host.m'); run('lioness_run.m'); quit;" >& "lioness.$host.$1-$2.log"
+echo "LIONESS run on $host for sample $1 - $2 starting $start ends `date`." | mail -s "Task finished on $host" -a lioness.$host.$1-$2.log `whoami`
