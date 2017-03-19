@@ -37,7 +37,7 @@ The example files include following data:
 
 # What's new in this version
 
-To speed up PANDA performance, the following optimazation has been implemented in this version:
+We reach a 20-25% reduction in computation time and memory usage in comparison to its early version. The following optimazation has been implemented in this version:
 
 ## Network Normalization
 
