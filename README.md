@@ -26,7 +26,14 @@ Orignial source code adapted from marieke & kimbie's version.
 
 # File format
 
-See example input data in `test_data/`.
+See example input files in `test_data/`.
+
+The example files include following data:
+
+1. A toy expression profile (1000 genes x 50 samples).
+2. A list of genome-wide TF-target interactions (motif prior). 
+3. A list of protein-protein interactions (PPIs) between TFs.
+4. The output PANDA network building on the example data.
 
 # What's new in this version
 
