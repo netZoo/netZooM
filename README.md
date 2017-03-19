@@ -4,7 +4,7 @@ MATLAB implementation of PANDA & LIONESS algorithms.
 
 Full PANDA & LIONESS algorithms were described in the following literature:
 
-* Glass, Kimberly, et al. "Passing messages between biological networks to refine predicted interactions." PloS one 8.5 (2013): e64832.
+* Glass, Kimberly, et al. "Passing messages between biological networks to refine predicted interactions." PLoS ONE 8.5 (2013): e64832.
 * Kuijjer, Marieke Lydia, et al. "Estimating sample-specific regulatory networks." arXiv preprint arXiv:1505.06440 (2015).
 
 Author: cychen (ntu.joey@gmail.com), marieke, kimbie.
@@ -45,11 +45,11 @@ Use MATLAB built-in zscore function instead of calculation from scratch. -> 30% 
 
 ## T-function
 
-Use bsxfun instead of repmat, using symmetric matrix multiplication, and reusing summed-square vector. -> 25% speed-up.
+Use bsxfun instead of repmat, use symmetric matrix multiplication, and reuse summed-square vector. -> 25% speed-up.
 
 ## PANDA Function
 
-Move out network normalization from PANDA function to main program to remove unnecessary repeated normalization in the following LIONESS-loop: both PPI network and motif network need to be normalized only once. -> 1-10 sec reduced for each LIONESS iteration depending on the network sizes.
+Move out network normalization from PANDA function to main program to remove unnecessary repeated normalization in each following LIONESS iteration: both PPI network and motif network need to be normalized only once. -> 1-10 sec reduced for each LIONESS iteration depending on the network sizes.
 
 Save W matrix (R+A) so that we don't have to compute it twice. -> ~0.5% overall speed-up.
 
@@ -57,11 +57,11 @@ Check hamming inside the while-loop to reduce the last unnecessary updates on TF
 
 ## I/O
 
-Use MATLAB binary files (mat-file) instead of text files for I/O can boost the performance (>10x faster).
+Use MATLAB binary files (mat-file) instead of text files for I/O which boost the performance (>10x faster).
 
 ## Reusing the processed middle files
 
-Save the input expression matrix (transposed), normalized motif/PPI networks, and the aggregated PANDA network to binary files (mat-file) for later use in each LIONESS run: expression matrix can only be saved to v7.3 mat file (compressed Matlab HDF5 format) when its size is over 2GB; normalized motif/PPI networks and output PANDA network can be saved as v6 uncompressed mat files for faster I/O efficiency.
+Save the input expression matrix (transposed), normalized motif/PPI networks, and the aggregated PANDA network to binary files (mat-file) for later use in each LIONESS run: expression matrix can only be saved to v7.3 mat file (compressed Matlab HDF5 format) when its size is over 2GB; normalized motif/PPI networks and output PANDA network can be saved as v6 uncompressed mat files for best I/O efficiency.
 
 ## Computing gene-gene coexpression matrix
 
