@@ -92,7 +92,7 @@ if ~isempty(save_temp)
     toc
 end
 
-clear Exp;  % Clean up variables to release memory (for low-memory machine)
+clear Exp;  % Clean up Exp to release memory (for low-memory machine)
 
 disp('Running PANDA algorithm:');
 AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);

@@ -21,6 +21,7 @@ fprintf('Input PANDA network: %s\n', panda_file);
 fprintf('Output LIONESS folder: %s\n', save_dir);
 fprintf('Sample index: %d - %d\n', START, END);
 fprintf('Alpha: %.2f\n', alpha);
+fprintf('ASCII output: %d\n', ascii_out);
 addpath(lib_path);
 
 %% ============================================================================
@@ -55,12 +56,19 @@ toc
 %% ============================================================================
 %% Run LIONESS
 %% ============================================================================
-% Create output folder if not exists
+% Create the output folder if not exists
 if ~exist(save_dir, 'dir')
     mkdir(save_dir);
 end
 
-for i = START:END
+% Sample indexes to iterate
+if END == -1
+    indexes = START:NumConditions;
+else
+    indexes = START:END;
+end
+
+for i = indexes
     fprintf('Running LIONESS for sample %d:\n', i);
     idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
 
@@ -75,18 +83,15 @@ for i = START:END
     PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
     disp('Saving LIONESS network:');
-    f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
-    tic; save(f, 'PredNet', '-v6'); toc;
+    if ascii_out == 1
+        f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
+        tic; save(f, 'PredNet', '-ascii'); toc;
+    else
+        f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
+        tic; save(f, 'PredNet', '-v6'); toc;
     fprintf('Network saved to %s\n', f);
 
-    % Ascii output for testing
-    %f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
-    %x = PredNet(:);
-    %tic; save(f, 'x', '-ascii'); toc;
-    %fprintf('Network saved to %s\n', f);
-
-    % For low memory machine
-    %clear idx GeneCoReg LocNet PredNet f; % clean up for next run
+    clear idx GeneCoReg LocNet PredNet f; % clean up for next run
 end
 
 disp('All done!');

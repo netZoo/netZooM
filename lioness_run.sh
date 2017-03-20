@@ -16,14 +16,13 @@
 #echo "LIONESS run on `hostname` has just finished: `date`." | mail -s "Task finished on `hostname`" -a lioness.`hostname`.log `whoami`
 
 # Example: Batch running on different machines
-# Usage: 1) Set up a range of samples in the corresponding config file.
-#        2) Run this script by specifying the range, e.g., ./lioness_run.sh 1 100
+# Usage: Run this script by specifying the sample range, e.g., ./lioness_run.sh 1 100
 if [[ $# -eq 0 ]] ; then
-    echo 'Must assign a range! See the configuration m-file.'
+    echo 'Must assign a range of samples to run! For example, ./lioness_run.sh 1 100'
     exit 1
 fi
 start=`date`
 host=`hostname`
 echo "LIONESS starts! Logging: lioness.$host.$1-$2.log. Date: $start"
-matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config_$host.m'); run('lioness_run.m'); quit;" >& "lioness.$host.$1-$2.log"
+matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); START=str2num('$1'); END=str2num('$2'); run('lioness_run.m'); quit;" >& "lioness.$host.$1-$2.log"
 echo "LIONESS run on $host for sample $1 - $2 starting $start ends `date`." | mail -s "Task finished on $host" -a lioness.$host.$1-$2.log `whoami`
