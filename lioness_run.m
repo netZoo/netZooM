@@ -89,6 +89,7 @@ for i = indexes
     else
         f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
         tic; save(f, 'PredNet', '-v6'); toc;
+    end
     fprintf('Network saved to %s\n', f);
 
     clear idx GeneCoReg LocNet PredNet f; % clean up for next run
