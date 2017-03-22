@@ -1,4 +1,5 @@
-#PUMA#
+PUMA
+=============
 ##PANDA Using MicroRNA Associations
 PUMA, or **P**ANDA **U**sing **M**icroRNA **A**ssociations, is an extension of the gene regulatory network reconstruction algorithm PANDA, which was published in "Passing messages between biological networks to refine predicted interactions" by Glass K, Huttenhower C, Quackenbush J, Yuan GC. *PLoS One*. 2013 May 31l8(5):e64983, doi: 10.1371/journal.pone.0064832, PMID: 23741402
 
