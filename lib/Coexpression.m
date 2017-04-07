@@ -5,6 +5,7 @@ function GeneCoReg = Coexpression(X)
     % Detecting nan in the coexpression network
     % e.g., genes with no expression variation across samples
     if any(any(isnan(GeneCoReg), 2))
+        NumGenes = size(GeneCoReg, 1);
         GeneCoReg(1:NumGenes+1:NumGenes^2) = 1;  % set the diagonal to 1
         GeneCoReg(isnan(GeneCoReg)) = 0; % set nan to 0
     end

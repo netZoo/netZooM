@@ -13,7 +13,7 @@
 #nohup matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); run('lioness_run.m'); quit;" >& lioness.`hostname`.log
 
 # Email notification when done
-#echo "LIONESS run on `hostname` has just finished: `date`." | mail -s "Task finished on `hostname`" -a lioness.`hostname`.log `whoami`
+#echo "LIONESS run on `hostname` has just finished: `date`." | mail -s "Task finished on `hostname`" `whoami`
 
 # Example: Batch running on different machines
 # Usage: Run this script by specifying the sample range, e.g., ./lioness_run.sh 1 100
@@ -24,4 +24,4 @@ fi
 start=`date`
 host=`hostname`
 nohup matlab -nodisplay -nosplash -nodesktop -nojvm -r "run('lioness_config.m'); START=str2num('$1'); END=str2num('$2'); run('lioness_run.m'); quit;" >& lioness.$host.$1-$2.log
-echo "LIONESS run on $host for sample $1 - $2 starting $start ends `date`." | mail -s "Task finished on $host" -a lioness.$host.$1-$2.log `whoami`
+echo "LIONESS run on $host for sample $1 - $2 starting $start ends `date`." | mail -s "Task finished on $host" `whoami`
