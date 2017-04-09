@@ -85,6 +85,9 @@ toc
 
 if ~isempty(save_temp)
     disp('Saving the transposed expression matrix and normalized networks:');
+    if ~exist(save_temp, 'dir')
+        mkdir(save_temp);
+    end
     tic
         save(fullfile(save_temp, 'expression.transposed.mat'), 'Exp', '-v7.3');  % 2G+
         save(fullfile(save_temp, 'motif.normalized.mat'), 'RegNet', '-v6');  % fast
