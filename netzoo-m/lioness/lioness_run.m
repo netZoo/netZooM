@@ -1,12 +1,31 @@
-%% Using LIONESS to infer single-sample gene regulatory networks.
-%%
-%% 1. Reading in PANDA network and preprocessed middle data
-%% 2. Computing coexpression network
-%% 3. Normalizing coexpression network
-%% 4. Running PANDA algorithm
-%% 5. Writing out LIONESS networks
-%%
-%% Authors: cychen, marieke, kglass
+function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha)
+% Description:
+%             Using LIONESS to infer single-sample gene regulatory networks.
+%             1. Reading in PANDA network and preprocessed middle data
+%             2. Computing coexpression network
+%             3. Normalizing coexpression network
+%             4. Running PANDA algorithm
+%             5. Writing out LIONESS networks
+%
+% Inputs:
+%               exp_file  : path to file containing gene expression
+%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs
+%               ppi_file  : path to file containing TF-TF interaction graph
+%               panda_file: path to the PANDA generated gene regulatory network
+%               save_dir  : path to save directory. if It does not exist, it will be created.
+%               START     : index of first sample 
+%               END       : index of last sample
+%                           -1: use the index of the final gene expression sample
+%               alpha     : learning parameter for the PANDA algorithm
+%               ascii_out : 1 : save LIONESS networks in .txt format
+%                           0 : save LIONESS networks in .mat -v6 format
+% 
+% Authors: 
+%               cychen, marieke, kglass
+%
+% Publications:
+%               https://doi.org/10.1016/j.isci.2019.03.021
+
 
 disp(datestr(now));
 
@@ -97,3 +116,4 @@ end
 
 disp('All done!');
 disp(datestr(now));
+end

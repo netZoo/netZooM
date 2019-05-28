@@ -1,4 +1,4 @@
-function []=panda_run(exp_file,motif_file,ppi_file,panda_out,save_temp,alpha)
+function panda_run(exp_file,motif_file,ppi_file,panda_out,save_temp,alpha)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -29,7 +29,6 @@ function []=panda_run(exp_file,motif_file,ppi_file,panda_out,save_temp,alpha)
 % 
 % Publications:
 %               https://doi.org/10.1371/journal.pone.0064832
-%
 
 disp(datestr(now));
 
