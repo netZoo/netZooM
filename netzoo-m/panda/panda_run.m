@@ -1,13 +1,35 @@
-%% Using PANDA to infer gene regulatory network.
-%%
-%% 1. Reading in input data (expression data, motif prior, TF PPI data)
-%% 2. Computing coexpression network
-%% 3. Normalizing networks
-%% 4. Running PANDA algorithm
-%% 5. Writing out PANDA network (optional)
-%%
-%% Authors: cychen, marieke, kglass
-%% Script adapted from Marieke's pLIONESSpcss.m, modified to run PANDA only.
+function []=panda_run(exp_file,motif_file,ppi_file,panda_out,save_temp,alpha)
+% Description:
+%               Using PANDA to infer gene regulatory network. 
+%               1. Reading in input data (expression data, motif prior, TF PPI data)
+%               2. Computing coexpression network
+%               3. Normalizing networks
+%               4. Running PANDA algorithm
+%               5. Writing out PANDA network (optional)
+%
+% Inputs:
+%               exp_file  : path to file containing gene expression
+%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs
+%               ppi_file  : path to file containing TF-TF interaction graph
+%               panda_out : path to save output PANDA network
+%                           '*.txt': the final network will be saved in .txt format
+%                           '*.tsv': the final network will be saved in .tsv format
+%                           '*.*'  : the final network will be saved in .mat v6 format
+%                           ''     : the final network will not be saved
+%               save_temp : path to save updated ppi, co-expression, and gene regulation network
+%                           '': the networks will not be saved
+%               alpha     : learning parameter for the PANDA algorithm
+%
+% 
+% Authors: 
+%               cychen, marieke, kglass
+% 
+% Notes:
+%               Script adapted from Marieke's pLIONESSpcss.m, modified to run PANDA only.
+% 
+% Publications:
+%               https://doi.org/10.1371/journal.pone.0064832
+%
 
 disp(datestr(now));
 
@@ -120,3 +142,5 @@ end
 
 disp('All done!');
 disp(datestr(now));
+
+end
