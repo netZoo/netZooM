@@ -1,4 +1,4 @@
-function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha)
+function PredNet=lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha)
 % Description:
 %             Using LIONESS to infer single-sample gene regulatory networks.
 %             1. Reading in PANDA network and preprocessed middle data
@@ -8,18 +8,21 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START
 %             5. Writing out LIONESS networks
 %
 % Inputs:
-%               exp_file  : path to file containing gene expression
-%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs
-%               ppi_file  : path to file containing TF-TF interaction graph
+%               exp_file  : path to file containing gene expression as a matrix of size (g,g)
+%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
+%               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
 %               panda_file: path to the PANDA generated gene regulatory network
 %               save_dir  : path to save directory. if It does not exist, it will be created.
-%               START     : index of first sample 
-%               END       : index of last sample
+%               START     : index of first sample to generate predicted gene regulatory network.
+%               END       : index of last sample to generate predicted gene regulatory network. There will be END-START+1 single network samples generated.
 %                           -1: use the index of the final gene expression sample
 %               alpha     : learning parameter for the PANDA algorithm
 %               ascii_out : 1 : save LIONESS networks in .txt format
 %                           0 : save LIONESS networks in .mat -v6 format
 % 
+% Outputs:
+%               PredNet  : Predicted single sample network as a matrix of size (t,g)
+%
 % Authors: 
 %               cychen, marieke, kglass
 %
