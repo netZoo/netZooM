@@ -5,7 +5,7 @@ Netzoo-m is a MATLAB package of network methods.
 Please refer to the [user guide](UserGuide.md) for installation instructions.
 
 ## License
-The software is free and is licensed under the GNU General License v3.0, see the file [LICENSE](LICENSE.txt) for details.
+The software is free and is licensed under the GNU General License v3.0, see the file [LICENSE](LICENSE) for details.
 
 ## Feedback/Issues
 Please report any issues to the [issues page](https://github.com/netzoo/netzoo-m/issues).
