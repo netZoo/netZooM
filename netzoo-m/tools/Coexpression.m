@@ -1,6 +1,17 @@
-% Compute gene-gene coexpression network for a sample-by-gene matrix X
-% Note that each gene is a column in X
 function GeneCoReg = Coexpression(X)
+% Description:
+%               Compute gene-gene coexpression network for a sample-by-gene matrix X
+%               Note that each gene is a column in X
+%
+% Inputs:
+%               X:         sample-by-gene matrix
+%
+% Outputs:
+%               GeneCoReg: gene-gene coexpression network
+%
+% Authors:
+%               Kimberley Glass
+
     GeneCoReg = corr(X, 'type', 'pearson', 'rows', 'pairwise');
     % Detecting nan in the coexpression network
     % e.g., genes with no expression variation across samples

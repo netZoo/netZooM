@@ -1,9 +1,22 @@
-% Implementation notes:
-% bsxfun is more memory-efficient and faster than repmat implementation for large arrays.
-% MATLAB uses BLAS routines to do matrix multiplication. MATLAB parser recognizes X*X' as
-% a symmetric matrix multiply and will call the symmetric matrix multiply routine (only 
-% calculates about 1/2 the answer and then fills in the rest with copies, which is faster).
 function Amat = Tfunction(X,Y)
+% Description:
+%              Updates Amat matrix using matrices X and Y         
+%
+% Inputs:
+%               X   : adjacency matrix
+%               Y   : adjacency matrix
+%
+% Outputs:
+%               Amat: updated matrix from X and Y
+%
+% Authors:
+%               Kimberly Glass, cychen
+%
+% Notes:
+%               bsxfun is more memory-efficient and faster than repmat implementation for large arrays.
+%               MATLAB uses BLAS routines to do matrix multiplication. MATLAB parser recognizes X*X' as
+%               a symmetric matrix multiply and will call the symmetric matrix multiply routine (only 
+%               calculates about 1/2 the answer and then fills in the rest with copies, which is faster).
     switch nargin
         case 1
             Amat = X * X';
