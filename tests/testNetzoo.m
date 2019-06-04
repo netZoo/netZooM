@@ -20,6 +20,7 @@ save_pairs = 0;%saving in .pairs format
 addpath(genpath(fullfile(pwd,'../netzoo-m')));
 
 % Create save folder
+pwd
 mkdir tmp;
 
 % Call Panda
