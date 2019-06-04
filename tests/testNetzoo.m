@@ -3,6 +3,8 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 
 % Load statistics package from Octave
 if isOctave
+	pkg install -forge io
+	pkg install -forge statistics
 	pkg load statistics
 end
 
