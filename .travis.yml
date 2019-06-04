@@ -15,6 +15,7 @@ matrix:
     - sudo apt-get install octave -y
   - os: osx
     before_install:
+    - brew update
     - brew install octave > /dev/null
 
 script:
