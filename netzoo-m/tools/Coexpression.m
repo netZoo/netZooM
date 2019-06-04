@@ -13,7 +13,7 @@ function GeneCoReg = Coexpression(X)
 %               Kimberley Glass
 
     %GeneCoReg = corr(X, 'type', 'pearson', 'rows', 'pairwise');
-    GeneCoReg = CORRCOEF(X, 'type', 'pearson', 'rows', 'pairwise');
+    GeneCoReg = corrcoef(X, 'type', 'pearson', 'rows', 'pairwise');
     % Detecting nan in the coexpression network
     % e.g., genes with no expression variation across samples
     if any(any(isnan(GeneCoReg), 2))
