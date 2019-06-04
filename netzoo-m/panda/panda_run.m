@@ -1,4 +1,4 @@
-function AgNet=panda_run(exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs)
+function AgNet=panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -38,7 +38,7 @@ function AgNet=panda_run(exp_file, motif_file, ppi_file, panda_out, save_temp, a
 disp(datestr(now));
 
 % Set default parameters
-if length(nargin) < 8
+if length(nargin) < 9
 	save_pairs=0;
 end
 
