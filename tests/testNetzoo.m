@@ -10,6 +10,7 @@ save_pairs = 0;%saving in .pairs format
 
 % Add path
 addpath(genpath(fullfile(pwd,'../../netzoo-m')));
+pwd 
 
 % Call Panda
 AgNet=panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs);
