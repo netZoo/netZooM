@@ -17,4 +17,4 @@ matrix:
     - brew install octave > /dev/null
 
 script:
-- octave-cli testNetzoo.m
+- octave-cli tests/testNetzoo.m
