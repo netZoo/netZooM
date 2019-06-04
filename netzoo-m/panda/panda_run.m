@@ -148,7 +148,7 @@ if ~isempty(panda_out)
         end
     toc
     if save_pairs
-	SavePairs(TFNames, GeneNames, AgNet, RegNet, panda_out);
+        SavePairs(TFNames, GeneNames, AgNet, RegNet, panda_out);
     end
 end
 

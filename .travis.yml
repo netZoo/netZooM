@@ -13,10 +13,12 @@ matrix:
     - echo -ne '\n' | sudo apt-add-repository ppa:octave/stable
     - sudo apt-get update
     - sudo apt-get install octave -y
+    - sudo apt-get install octave-statistics
   - os: osx
     before_install:
     - brew update
     - brew install octave > /dev/null
+    - brew install octave-statistics
 
 script:
 - octave-cli tests/testNetzoo.m
