@@ -11,9 +11,9 @@ matrix:
   - os: windows
     language: sh
     before_install:
-    - sudo apt-add-repository ppa:octave/stable
+    - echo -ne '\n' | sudo apt-add-repository ppa:octave/stable
     - sudo apt-get update
-    - sudo apt-get install octave
+    - sudo apt-get install octave -y
   - os: osx
     before_install:
     - brew install octave > /dev/null
