@@ -7,8 +7,8 @@ addons:
 
 matrix:
   include:
-  - os: linux
   - os: windows
+  - os: linux
     language: sh
     before_install:
     - echo -ne '\n' | sudo apt-add-repository ppa:octave/stable
