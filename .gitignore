@@ -1,3 +1,4 @@
 *.log
 log/
 check_progress.sh
+*.m~

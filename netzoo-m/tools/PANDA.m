@@ -1,4 +1,21 @@
 function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha)
+% Description:
+%              PANDA infers a gene regulatory network from gene expression
+%              data, motif prior, and PPI between transcription factors
+%
+% Inputs:
+%               RegNet   : motif prior of gene-TF regulatory network
+%               GeneCoReg: gene-gene co-regulatory network
+%               TFCoop   : PPI binding between transcription factors
+%
+% Outputs:
+%               RegNet   : inferred gene-TF regulatory network
+%
+% Authors:
+%               Kimberley Glass
+%
+% Publications:
+%               https://doi.org/10.1371/journal.pone.0064832 
     [NumTFs, NumGenes] = size(RegNet);
     disp('Learning Network!');
     tic;
