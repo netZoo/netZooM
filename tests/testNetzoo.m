@@ -31,4 +31,11 @@ AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out, save_temp,
 ExpAgNet = textread('panda.test.txt');
 
 % Compare the outputs
-assert(isequal(AgNet,ExpAgNet));
+for i=1:size(AgNet,1)
+	for j=1:size(AgNet,2)
+		AgNet[i,j]
+		ExpAgNet[i,j]
+		AgNet[i,j]-ExpAgNet[i,j]
+		assert(abs(AgNet[i,j]-ExpAgNet[i,j]) < 1e4*eps(min(abs(AgNet[i,j]),abs(ExpAgNet[i,j]))))
+	end
+end
