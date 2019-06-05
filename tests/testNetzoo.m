@@ -29,16 +29,12 @@ AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out, save_temp,
 
 % Load the expected result
 ExpAgNet = textread('test_data/panda.test.txt');
-ExpAgNet = reshape(ExpAgNet,[size(AgNet,1), size(AgNet,2)]);
+% /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
+ExpAgNet = reshape(ExpAgNet,[size(AgNet,2), size(AgNet,1)])';
 
 % Compare the outputs
-for i=1:size(AgNet,1)
-	for j=1:size(AgNet,2)
-		AgNet(i,j)
-		ExpAgNet(i,j)
-		AgNet(i,j)-ExpAgNet(i,j)
-		assert( abs(AgNet(i,j)-ExpAgNet(i,j)) < 1e-7 )
-	end
-end
+tolMat=1e-6;
+deltaMat=abs(AgNet-ExpAgNet);
+assert(max(max(deltaMat)) < tolMat); 
 
 printf("All test are successful! \n");
