@@ -104,7 +104,7 @@ clear headings n GeneNames TF gene TF1 TF2 weight;
 %% ============================================================================
 %% Run PANDA
 %% ============================================================================
-disp('Computing coexpresison network:');
+disp('Computing coexpression network:');
 tic; GeneCoReg = Coexpression(Exp); toc;
 
 disp('Normalizing Networks:');

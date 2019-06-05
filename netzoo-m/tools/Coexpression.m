@@ -14,16 +14,17 @@ function GeneCoReg = Coexpression(X)
     
 	isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 	if isOctave
-		GeneCoReg = corrcoef(X, 'rows', 'pairwise'); %Pearson is default in Octave corrcoef
+            GeneCoReg = corrcoef(X, 'Mode', 'Pearson', 'rows', 'pairwise'); 
+            % This is corrcoef from the nan package
 	else
     		GeneCoReg = corr(X, 'type', 'pearson', 'rows', 'pairwise');
 	end
     	
-    	% Detecting nan in the coexpression network
-    	% e.g., genes with no expression variation across samples
-    	if any(any(isnan(GeneCoReg), 2))
-        	NumGenes = size(GeneCoReg, 1);
-        	GeneCoReg(1:NumGenes+1:NumGenes^2) = 1;  % set the diagonal to 1
-        	GeneCoReg(isnan(GeneCoReg)) = 0; % set nan to 0
-    	end
+    % Detecting nan in the coexpression network
+    % e.g., genes with no expression variation across samples
+    if any(any(isnan(GeneCoReg), 2))
+       	NumGenes = size(GeneCoReg, 1);
+       	GeneCoReg(1:NumGenes+1:NumGenes^2) = 1;  % set the diagonal to 1
+       	GeneCoReg(isnan(GeneCoReg)) = 0; % set nan to 0
+    end
 end

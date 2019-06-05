@@ -5,7 +5,10 @@ isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 if isOctave
 	pkg install -forge io
 	pkg install -forge statistics
+    pkg install -forge nan 
+    %we need the nan package because it has a fast implementation of corrcoeff
 	pkg load statistics
+    pkg load nan
 end
 
 % Set Program Parameters
