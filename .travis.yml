@@ -18,13 +18,13 @@ before_install:
     - make -C MOcov install; #Install Octave coverage report
 
 script:
-- travis_wait 60 octave-cli testsetzoo.m
-- octave-cli "mocov('-cover','tests',...
+- pwd
+- ls
+- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','tests',...
             '-expression','testNetzoo',...
             '-cover_json_file','coverage.json',...
             '-cover_xml_file','coverage.xml',...
-            '-cover_html_dir','coverage_html',
-            '-method','file');"
+            '-cover_html_dir','coverage_html');"
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
