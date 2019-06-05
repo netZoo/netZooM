@@ -15,5 +15,10 @@ matrix:
 script:
 - travis_wait 60 octave-cli tests/testNetzoo.m
 
+branches:
+  only:
+  - master
+  - devel
+
 after_success:
 - bash <(curl -s https://codecov.io/bash)
