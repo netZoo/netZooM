@@ -29,6 +29,7 @@ AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out, save_temp,
 
 % Load the expected result
 ExpAgNet = textread('test_data/panda.test.txt');
+ExpAgNet = reshape(ExpAgNet,[size(AgNet,1), size(AgNet,2)]);
 
 % Compare the outputs
 for i=1:size(AgNet,1)
