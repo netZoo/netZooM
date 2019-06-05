@@ -40,3 +40,5 @@ for i=1:size(AgNet,1)
 		assert( abs(AgNet(i,j)-ExpAgNet(i,j)) < 1e-7 )
 	end
 end
+
+printf("All test are successful! \n");
