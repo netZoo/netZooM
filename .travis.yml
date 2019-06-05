@@ -7,15 +7,13 @@ addons:
 
 matrix:
   include:
-  - os: linux
-    language: sh
-    before_install:
-    - echo -ne '\n' | sudo apt-add-repository ppa:octave/stable
-    - sudo apt-get update
-    - sudo apt-get install octave -y
   - os: osx
     before_install:
+    - brew update
     - brew install octave > /dev/null
 
 script:
-- octave-cli tests/testNetzoo.m
+- travis_wait 60 octave-cli tests/testNetzoo.m
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
