@@ -12,8 +12,20 @@ matrix:
     - brew update
     - brew install octave > /dev/null
 
+before_install:
+    - rm -rf MOcov;
+    - git clone https://github.com/MOcov/MOcov.git;
+    - make -C MOcov install; #Install Octave coverage report
+
 script:
-- travis_wait 60 octave-cli tests/testNetzoo.m
+- travis_wait 60 octave-cli testsetzoo.m
+- octave-cli "mocov('-cover','tests',...
+            '-expression','testNetzoo',...
+            '-cover_json_file','coverage.json',...
+            '-cover_xml_file','coverage.xml',...
+            '-cover_html_dir','coverage_html',
+            '-method','file');"
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
+
