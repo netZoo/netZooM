@@ -37,6 +37,6 @@ for i=1:size(AgNet,1)
 		AgNet(i,j)
 		ExpAgNet(i,j)
 		AgNet(i,j)-ExpAgNet(i,j)
-		assert( abs(AgNet(i,j)-ExpAgNet(i,j)) < 1e-9 )
+		assert( abs(AgNet(i,j)-ExpAgNet(i,j)) < 1e-7 )
 	end
 end
