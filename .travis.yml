@@ -20,10 +20,10 @@ before_install:
 script:
 - pwd
 - ls
-- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','tests',...
-            '-expression','testNetzoo',...
-            '-cover_json_file','coverage.json',...
-            '-cover_xml_file','coverage.xml',...
+- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','netzoo-m',
+            '-expression','testNetzoo',
+            '-cover_json_file','coverage.json',
+            '-cover_xml_file','coverage.xml',
             '-cover_html_dir','coverage_html');"
 
 after_success:
