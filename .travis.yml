@@ -13,4 +13,7 @@ matrix:
     - brew install octave > /dev/null
 
 script:
-- travis_wait 40 octave-cli tests/testNetzoo.m
+- travis_wait 60 octave-cli tests/testNetzoo.m
+
+after_success:
+- bash <(curl -s https://codecov.io/bash)
