@@ -2,3 +2,5 @@
 log/
 check_progress.sh
 *.m~
+tests/tmp
+*.tar.gz
