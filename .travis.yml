@@ -11,12 +11,13 @@ matrix:
     - make -C MOcov install; #Install Octave coverage report
 
 script:
-- octave-cli -q --eval 
-"addpath(genpath('tests'));exit(~mocov('-cover','netzoo-m',
+- pwd
+- ls
+- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','netzoo-m',
             '-expression','@testNetzoo',
             '-cover_json_file','coverage.json',
             '-cover_xml_file','coverage.xml',
-            '-cover_html_dir','coverage_html','-verbose'));"
+            '-cover_html_dir','coverage_html');"
 
 branches:
   only:
