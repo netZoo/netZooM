@@ -11,8 +11,6 @@ matrix:
     before_install:
     - brew update
     - brew install octave > /dev/null
-
-before_install:
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
