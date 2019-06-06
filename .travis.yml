@@ -9,7 +9,7 @@ matrix:
     - brew install md5sha1sum
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
-    - git clone https://github.com/MOxUnit/MOxUnit.git# Install MOxUnit, which adds itself to the startup path
+    - git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
     - make -C MOxUnit install
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
