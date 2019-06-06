@@ -20,7 +20,7 @@ before_script:
 script:
 - pwd
 - ls
-- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','netzoo-m',
+- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover',@netzoo-m,
             '-expression','@testNetzoo',
             '-cover_json_file','coverage.json',
             '-cover_xml_file','coverage.xml',
