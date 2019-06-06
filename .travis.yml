@@ -1,4 +1,4 @@
-language: sh
+language: java
 
 matrix:
   include:
@@ -6,6 +6,7 @@ matrix:
     before_install:
     - brew update
     - brew install octave > /dev/null
+    - brew install md5sha1sum
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
