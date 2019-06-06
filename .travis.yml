@@ -1,4 +1,4 @@
-language: c
+language: java
 
 matrix:
   include:
@@ -6,17 +6,25 @@ matrix:
     before_install:
     - brew update
     - brew install octave > /dev/null
+    - brew install md5sha1sum
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
 
+before_script:
+- rm -f testresults.xml;
+  rm -f coverage.xml;
+  rm -f .coverage;
+  rm -f coveralls.json;
+
 script:
-- octave-cli -q --eval 
-"addpath(genpath('tests'));exit(~mocov('-cover','netzoo-m',
-            '-expression','@testNetzoo',
+- pwd
+- ls
+- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','netzoo-m',
+            '-expression',@testNetzoo,
             '-cover_json_file','coverage.json',
             '-cover_xml_file','coverage.xml',
-            '-cover_html_dir','coverage_html','-verbose'));"
+            '-cover_html_dir','coverage_html');"
 
 branches:
   only:
