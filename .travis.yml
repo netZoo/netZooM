@@ -1,4 +1,4 @@
-language: c
+language: java
 
 matrix:
   include:
