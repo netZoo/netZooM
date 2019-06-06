@@ -1,19 +1,23 @@
 language: c
 
-addons:
-  apt:
-    pacakges:
-    - octave
-
 matrix:
   include:
   - os: osx
     before_install:
     - brew update
     - brew install octave > /dev/null
+    - rm -rf MOcov;
+    - git clone https://github.com/MOcov/MOcov.git;
+    - make -C MOcov install; #Install Octave coverage report
 
 script:
-- travis_wait 60 octave-cli tests/testNetzoo.m
+- pwd
+- ls
+- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','netzoo-m',
+            '-expression','testNetzoo',
+            '-cover_json_file','coverage.json',
+            '-cover_xml_file','coverage.xml',
+            '-cover_html_dir','coverage_html');"
 
 branches:
   only:
@@ -22,3 +26,4 @@ branches:
 
 after_success:
 - bash <(curl -s https://codecov.io/bash)
+
