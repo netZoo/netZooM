@@ -10,6 +10,12 @@ matrix:
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
 
+before_script:
+  - rm -f testresults.xml;
+    rm -f coverage.xml;
+    rm -f .coverage;
+    rm -f coveralls.json;
+
 script:
 - pwd
 - ls
