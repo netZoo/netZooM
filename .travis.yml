@@ -8,7 +8,7 @@ matrix:
     - brew install octave > /dev/null
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
-    - make -C MOcov install; #Install Octave coverage report
+    - make -C MOcov install; #Install Octave coverage report yes
 
 before_script:
   - rm -f testresults.xml;
