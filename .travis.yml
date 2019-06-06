@@ -17,6 +17,12 @@ matrix:
     - cd netzoo-m
     - octave -q --eval "pkg install -forge io; pkg install -forge statistics; pkg install -forge nan"
 
+before_script:
+- rm -f testresults.xml;
+- rm -f coverage.xml;
+- rm -f .coverage;
+- rm -f coveralls.json;
+
 script:
 - pwd
 - ls
