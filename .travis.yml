@@ -17,7 +17,7 @@ script:
             '-expression','@testNetzoo',
             '-cover_json_file','coverage.json',
             '-cover_xml_file','coverage.xml',
-            '-cover_html_dir','coverage_html');"
+            '-cover_html_dir','coverage_html','-verbose');"
 
 branches:
   only:
