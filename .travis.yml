@@ -7,9 +7,16 @@ matrix:
     - brew update
     - brew install octave > /dev/null
     - brew install md5sha1sum
+    - cd ..
+    - rm -rf MOxUnit; #Install Octave unit test package
+    - git clone https://github.com/MOxUnit/MOxUnit.git
+    # Install MOxUnit, which adds itself to the startup path
+    - make -C MOxUnit install
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
+    - cd netzoo-m
+    - octave -q --eval "pkg install -forge io; pkg install -forge statistics; pkg install -forge nan"
 
 before_script:
 - rm -f testresults.xml;
@@ -20,11 +27,9 @@ before_script:
 script:
 - pwd
 - ls
-- octave-cli -q --eval "addpath(genpath('tests'));mocov('-cover','netzoo-m',
-            '-expression',@testNetzoo,
-            '-cover_json_file','coverage.json',
-            '-cover_xml_file','coverage.xml',
-            '-cover_html_dir','coverage_html');"
+- octave -q --eval "addpath(genpath(fullfile(pwd, 'netzoo-m')));exit(~moxunit_runtests('tests','-recursive','-verbose',
+'-junit_xml_file','testresults.xml','-with_coverage','-cover','netzoo-m','-cover_exclude','tests','-cover_xml_file',
+'coverage.xml','-cover_json_file','coveralls.json'));"
 
 branches:
   only:
