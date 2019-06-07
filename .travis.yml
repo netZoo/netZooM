@@ -24,7 +24,7 @@ matrix:
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
     - git clone https://github.com/mopify/mopi.git
-    - echo "forge://io\nforge://statistics\nforge://nan" >> requirements.txt
+    - printf "forge://io\nforge://statistics\nforge://nan" >> requirements.txt
     - rm -rf external;
     - mkdir -p external;
     # Install required packages for Octave
