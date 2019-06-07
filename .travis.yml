@@ -2,6 +2,35 @@ language: java
 
 matrix:
   include:
+  - os: linux
+    before_install:
+    - UPGRADE_GCC="true"
+    # ---------------------------------------------------------------------------
+    # Add repository for octave
+    - travis_retry sudo add-apt-repository -y ppa:octave/stable
+    # Add repository for installing g++-4.8 on Ubuntu 12.04
+    - if [ "$UPGRADE_GCC" = "true" ]; then
+        sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test;
+      fi
+    # Update apt-get to include the contents from the new locations
+    - travis_retry sudo apt-get update -qq
+    # Install octave with apt-get
+    - travis_retry sudo apt-get install -y octave liboctave-dev
+    - cd ..
+    - rm -rf MOxUnit; #Install Octave unit test package
+    - git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
+    - make -C MOxUnit install
+    - rm -rf MOcov;
+    - git clone https://github.com/MOcov/MOcov.git;
+    - make -C MOcov install; #Install Octave coverage report
+    - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/statistics-1.4.1.tar.gz
+    - tar -xzvf statistics-1.4.1.tar.gz
+    - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/nan-3.1.4.tar.gz
+    - tar -xzvf nan-3.1.4.tar.gz
+    - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/io-2.4.12.tar.gz
+    - tar -xzvf io-2.4.12.tar.gz
+    - octave -q --eval "pkg install io-2.4.12;pkg install nan-3.1.4;pkg install statistics-1.4.1;"
+    - cd netZooM
   - os: osx
     before_install:
     - brew update
