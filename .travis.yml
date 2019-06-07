@@ -26,8 +26,7 @@ before_script:
 script:
 - pwd
 - ls
-- octave -q --eval "addpath(genpath(fullfile(pwd, 
-'netZooM')));exit(~moxunit_runtests('tests','-recursive','-verbose','-junit_xml_file','testresults.xml','-with_coverage','-cover','netZooM','-cover_exclude','tests','-cover_xml_file','coverage.xml','-cover_json_file','coveralls.json'));"
+- octave -q --eval "addpath(genpath(fullfile(pwd,'netZooM')));exit(~moxunit_runtests('tests','-recursive','-verbose','-junit_xml_file','testresults.xml','-with_coverage','-cover','netZooM','-cover_exclude','tests','-cover_xml_file','coverage.xml','-cover_json_file','coveralls.json'));"
 
 branches:
   only:
