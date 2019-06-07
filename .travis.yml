@@ -23,8 +23,15 @@ matrix:
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
+    - git clone https://github.com/mopify/mopi.git
+    - echo "forge://io\nforge://statistics\nforge://nan" >> requirements.txt
+    - rm -rf external;
+    - mkdir -p external;
+    # Install required packages for Octave
+    - if [ -f requirements-octave.txt ]; then
+        mopi/mopi.sh requirements.txt external "$HOME/external_cache";
+      fi;
     - cd netZooM
-    - octave -q --eval "pkg install -forge io; pkg install -forge statistics; pkg install -forge nan"
   - os: osx
     before_install:
     - brew update
