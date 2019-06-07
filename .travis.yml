@@ -10,7 +10,9 @@ matrix:
     - travis_retry sudo apt-get install -y -qq software-properties-common python-software-properties
     - travis_retry sudo apt-add-repository -y ppa:octave/stable
     - travis_retry sudo apt-get -y -qq update
-    - travis_retry sudo apt-get -y -qq install octave
+    - travis_retry sudo apt-get -y install flatpak
+    - sudo flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    - sudo flatpak install -y flathub org.octave.Octave
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
     - git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
