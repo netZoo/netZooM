@@ -4,7 +4,7 @@
 
 Linux[![LINUX](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/linux)](https://travis-ci.org/netZoo/netZooM)
 
-Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/macos)](https://travis-ci.org/netzoo/netZooM)
+Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/macos)](https://travis-ci.org/netZoo/netZooM)
 
 ## Description
 netZooM is a MATLAB package of network methods.
