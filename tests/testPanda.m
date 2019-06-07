@@ -19,7 +19,7 @@ function testPandaSimple()
         ppi_file   = 'test_data/ppi.txt';
         panda_out  = '';  % optional, leave empty if file output is not required
         save_temp  = '';  % optional, leave empty if temp data files will not be needed afterward
-        lib_path   = '../netzoo-m';  % path to the folder of PANDA source code
+        lib_path   = '../netZooM';  % path to the folder of PANDA source code
         alpha      = 0.1;
         save_pairs = 0;%saving in .pairs format
 
