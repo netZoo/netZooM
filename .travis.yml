@@ -28,9 +28,7 @@ matrix:
     - rm -rf external;
     - mkdir -p external;
     # Install required packages for Octave
-    - if [ -f requirements-octave.txt ]; then
-        mopi/mopi.sh requirements.txt external "$HOME/external_cache";
-      fi;
+    - mopi/mopi.sh requirements.txt external "$HOME/external_cache";
     - cd netZooM
   - os: osx
     before_install:
