@@ -2,6 +2,18 @@ language: java
 
 matrix:
   include:
+  - os: linux
+    before_install:
+    - travis_retry sudo apt-get -y -qq install octave liboctave-dev
+    - cd ..
+    - rm -rf MOxUnit; #Install Octave unit test package
+    - git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
+    - make -C MOxUnit install
+    - rm -rf MOcov;
+    - git clone https://github.com/MOcov/MOcov.git;
+    - make -C MOcov install; #Install Octave coverage report
+    - cd netZooM
+    - octave -q --eval "pkg install -forge io; pkg install -forge statistics; pkg install -forge nan"
   - os: osx
     before_install:
     - brew update
