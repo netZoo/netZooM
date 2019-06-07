@@ -23,12 +23,13 @@ matrix:
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
-    - git clone https://github.com/mopify/mopi.git
-    - printf "forge://io\nforge://statistics\nforge://nan" >> requirements.txt
-    - rm -rf external;
-    - mkdir -p external;
-    # Install required packages for Octave
-    - mopi/mopi.sh requirements.txt external "$HOME/external_cache";
+    - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/statistics-1.4.1.tar.gz
+    - tar -xzvf statistics-1.4.1.tar.gz
+    - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/nan-3.1.4.tar.gz
+    - tar -xzvf nan-3.1.4.tar.gz
+    - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/io-2.4.12.tar.gz
+    - tar -xzvf io-2.4.12.tar.gz
+    - octave -q --eval "pkg install io-2.4.12;pkg install nan-3.1.4;pkg install statistics-1.4.1;"
     - cd netZooM
   - os: osx
     before_install:
