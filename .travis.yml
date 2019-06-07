@@ -9,8 +9,7 @@ matrix:
     - brew install md5sha1sum
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
-    - git clone https://github.com/MOxUnit/MOxUnit.git
-    # Install MOxUnit, which adds itself to the startup path
+    - git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
     - make -C MOxUnit install
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
@@ -20,16 +19,14 @@ matrix:
 
 before_script:
 - rm -f testresults.xml;
-  rm -f coverage.xml;
-  rm -f .coverage;
-  rm -f coveralls.json;
+- rm -f coverage.xml;
+- rm -f .coverage;
+- rm -f coveralls.json;
 
 script:
 - pwd
 - ls
-- octave -q --eval "addpath(genpath(fullfile(pwd, 'netzoo-m')));exit(~moxunit_runtests('tests','-recursive','-verbose',
-'-junit_xml_file','testresults.xml','-with_coverage','-cover','netzoo-m','-cover_exclude','tests','-cover_xml_file',
-'coverage.xml','-cover_json_file','coveralls.json'));"
+- octave -q --eval "addpath(genpath(fullfile(pwd, 'netzoo-m')));exit(~moxunit_runtests('tests','-recursive','-verbose','-junit_xml_file','testresults.xml','-with_coverage','-cover','netzoo-m','-cover_exclude','tests','-cover_xml_file','coverage.xml','-cover_json_file','coveralls.json'));"
 
 branches:
   only:
