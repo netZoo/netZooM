@@ -19,8 +19,9 @@ pairsNet=readtable(networkPair,'FileType','text');
 nTFs = length(pairsNet.Var4)/nGenes;
 
 % Test if dimensions are correct
-if ~isinteger(nTFs)
+if mod(pairsNet.Var4,nTFs)~=0
     error('Check the number of genes!')
+end
 
 % Build network in matrix format
 matNet=reshape(pairsNet.Var4,[nTFs,nGenes])';
