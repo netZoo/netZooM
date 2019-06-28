@@ -3,9 +3,6 @@ function test_suite=testPairs2Mat()
 end
 
 function testPairs2MatSimple()
-        % Add path
-        addpath(genpath(fullfile(pwd,'tests')));
-        
         pkg load nan;
         nGenes=1000;
         
