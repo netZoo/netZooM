@@ -3,10 +3,14 @@ function test_suite=testPairs2Mat()
 end
 
 function testPairs2MatSimple()
+        % Add path
+        addpath(genpath(fullfile(pwd,'tests')));
+        
         pkg load nan;
         nGenes=1000;
+        
         % load test panda network
-        networkPair1='test_data/panda.test.pairs.txt_FinalNetwork.pairs';
+        networkPair1='panda.test.pairs.txt_FinalNetwork.pairs';
         priorNetTest=Pairs2Mat(networkPair1,nGenes,0);
         
         % Compare networks
