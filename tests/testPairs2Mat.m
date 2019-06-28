@@ -5,8 +5,7 @@ end
 function testPairs2MatSimple()
         pkg load nan;
         nGenes=1000;
-        % load cell line panda network of lymphoblastoid cell lines (LCLs)
-        % Reference: https://bmcgenomics.biomedcentral.com/articles/10.1186/s12864-017-4111-x
+        % load test panda network
         networkPair1='test_data/panda.test.pairs.txt_FinalNetwork.pairs';
         priorNetTest=Pairs2Mat(networkPair1,nGenes,0);
         
