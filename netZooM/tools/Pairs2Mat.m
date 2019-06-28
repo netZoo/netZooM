@@ -17,6 +17,8 @@ function matNet=Pairs2Mat(networkPair,nGenes,prior)
 % Read network in .pairs format
 % pairsNet=readtable(networkPair,'FileType','text'); % Matlab format
 
+networkPair
+pwd
 fid = fopen(networkPair, 'r'); % Octave compatible format
 frewind(fid);
 pairsNet = textscan(fid, '%s %s %s %s', 'delimiter', '\t'); % tiny speed-up by not checking for comments
