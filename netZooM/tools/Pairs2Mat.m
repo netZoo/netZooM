@@ -18,18 +18,18 @@ function matNet=Pairs2Mat(networkPair,nGenes,prior)
 pairsNet=readtable(networkPair,'FileType','text');
 
 % Find number of TFs
-nTFs = length(pairsNet.Var4)/nGenes;
+nTFs = length(pairsNet{:,4})/nGenes;
 
 % Test if dimensions are correct
-if mod(pairsNet.Var4,nTFs)~=0
+if mod(length(pairsNet{:,4}),nTFs)~=0
     error('Check the number of genes!')
 end
 
 % Build network in matrix format
 if prior==0
-    matNet=reshape(pairsNet.Var4,[nTFs,nGenes])';
+    matNet=reshape(pairsNet{:,4},[nTFs,nGenes])';
 elseif prior==1
-    matNet=reshape(pairsNet.Var3,[nTFs,nGenes])';
+    matNet=reshape(pairsNet{:,3},[nTFs,nGenes])';
 end
 
 end
