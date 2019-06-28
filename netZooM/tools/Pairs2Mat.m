@@ -18,8 +18,8 @@ function matNet=Pairs2Mat(networkPair,nGenes,prior)
 % pairsNet=readtable(networkPair,'FileType','text'); % Matlab format
 fid = fopen(networkPair, 'r'); % Octave compatible format
 frewind(fid);
-pairsNet = textscan(fid, '%s %s %f %f', 'delimiter', '\t');
-pairsNet = textscan(fid, '%s %s %f %f', 'delimiter', '\t');
+pairsNet = textscan(fid, '%s %s %s %s', 'delimiter', '\t');
+%pairsNet = textscan(fid, '%f %f %f %f', 'delimiter', '\t');
 fclose(fid);
 
 % Find number of TFs
@@ -37,4 +37,7 @@ elseif prior==1
     matNet=reshape(pairsNet{3}(2:end),[nTFs,nGenes])';
 end
 
+% Convert to double
+matNet=str2double(matNet);
+    
 end
