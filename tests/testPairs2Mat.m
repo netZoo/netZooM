@@ -6,6 +6,7 @@ function testPairs2MatSimple()
         % Add path
         addpath(genpath(fullfile(pwd,'tests')));
         
+        % Load packages
         pkg load nan;
         nGenes=1000;
         
