@@ -15,21 +15,27 @@ function matNet=Pairs2Mat(networkPair,nGenes,prior)
 % Author: Marouen Ben Guebila 6/19
 
 % Read network in .pairs format
-pairsNet=readtable(networkPair,'FileType','text');
+% pairsNet=readtable(networkPair,'FileType','text'); % Matlab format
+
+fid = fopen(networkPair, 'r'); % Octave compatible format
+frewind(fid);
+pairsNet = textscan(fid, '%s %s %s %s', 'delimiter', '\t'); % tiny speed-up by not checking for comments
+pairsNet = textscan(fid, '%s %s %f %f', 'delimiter', '\t');
+fclose(fid);
 
 % Find number of TFs
-nTFs = length(pairsNet{:,4})/nGenes;
+nTFs = length(pairsNet{4}(2:end))/nGenes;
 
 % Test if dimensions are correct
-if mod(length(pairsNet{:,4}),nTFs)~=0
+if mod(length(pairsNet{4}(2:end)),nTFs)~=0
     error('Check the number of genes!')
 end
 
 % Build network in matrix format
 if prior==0
-    matNet=reshape(pairsNet{:,4},[nTFs,nGenes])';
+    matNet=reshape(pairsNet{4}(2:end),[nTFs,nGenes])';
 elseif prior==1
-    matNet=reshape(pairsNet{:,3},[nTFs,nGenes])';
+    matNet=reshape(pairsNet{3}(2:end),[nTFs,nGenes])';
 end
 
 end
