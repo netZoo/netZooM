@@ -10,8 +10,8 @@ function testPairs2MatSimple()
         nGenes=1000;
         
         % load test panda network
-        networkPair1='panda.test.pairs.txt_FinalNetwork.pairs';
-        priorNetTest=Pairs2Mat(networkPair1,nGenes,0);
+        networkPair='panda.test.pairs.txt_FinalNetwork.pairs';
+        priorNetTest=Pairs2Mat(networkPair,nGenes,0);
         
         % Compare networks
         load('panda.test.mat');
