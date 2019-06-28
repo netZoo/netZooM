@@ -20,7 +20,6 @@ function matNet=Pairs2Mat(networkPair,nGenes,prior)
 fid = fopen(networkPair, 'r'); % Octave compatible format
 frewind(fid);
 pairsNet = textscan(fid, '%s %s %s %s', 'delimiter', '\t'); % tiny speed-up by not checking for comments
-pairsNet = textscan(fid, '%s %s %f %f', 'delimiter', '\t');
 fclose(fid);
 
 % Find number of TFs
