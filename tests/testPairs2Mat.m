@@ -17,6 +17,6 @@ function testPairs2MatSimple()
         % Compare networks
         load('panda.test.mat');
         tolMat=1e-6;
-        deltaMat=max(max(abs(priorNet-priorNetTest)));
+        deltaMat=max(max(abs(AgNet-priorNetTest)));
 	    assertTrue( deltaMat < tolMat );
 end
