@@ -4,3 +4,4 @@ check_progress.sh
 *.m~
 tests/tmp
 *.tar.gz
+tests/test_data/lioness.1.mat
