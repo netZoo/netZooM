@@ -26,9 +26,7 @@ function testLionessSimple()
         % to test savePairs, so we need to tranpose it back
         load('test_data/panda.test.mat');
         AgNet      = AgNet';
-        cd test_data
-        save('panda2.test.mat','AgNet');
-        cd ..
+        save('test_data/panda2.test.mat','AgNet');
         alpha      = 0.1;
         START      = 1;  % sample-of-interest starting from this index
         END        = 1;  % sample-of-interest ending to this index; use -1 to end at the last sample
