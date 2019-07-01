@@ -21,7 +21,7 @@ function testLionessSimple()
         ppi_file   = 'test_data/ppi.normalized.mat';
         panda_file = 'test_data/panda2.test.mat'; % This test network has been transposed
         % to test savePairs, so we need to tranpose it back
-        load('test_data/panda.test.mat');
+        load('panda.test.mat');
         AgNet      = AgNet';
         cd test_data
         save('panda2.test.mat','AgNet');
