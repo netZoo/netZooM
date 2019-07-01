@@ -13,6 +13,9 @@ function testLionessSimple()
 		pkg load nan;
         end
 
+        % Add path
+        addpath(genpath(fullfile(pwd,'tests')));
+        
         % Set Program Parameters
         % exp, motif, and ppi are produced by panda_run with save_temp
         % parameter set != ''
@@ -21,10 +24,7 @@ function testLionessSimple()
         ppi_file   = 'test_data/ppi.normalized.mat';
         panda_file = 'test_data/panda2.test.mat'; % This test network has been transposed
         % to test savePairs, so we need to tranpose it back
-        ls
-        cd test_data
-        ls
-        load('panda.test.mat');
+        load('test_data/panda.test.mat');
         AgNet      = AgNet';
         cd test_data
         save('panda2.test.mat','AgNet');
@@ -35,9 +35,6 @@ function testLionessSimple()
         ascii_out  = 0;  % set to 1 if you prefer text output file instead of MAT-file
         save_dir   = 'test_data';
         lib_path   = '../netZooM';
-
-        % Add path
-        addpath(genpath(fullfile(pwd,'tests')));
 
         % Create save folder
         %mkdir tmp;
