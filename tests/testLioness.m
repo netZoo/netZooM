@@ -41,7 +41,7 @@ function testLionessSimple()
         lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha, ascii_out, lib_path);
 
         % Load the computed results
-        result = load('lioness.1.mat');
+        result = load('test_data/lioness.1.mat');
         
         % Load the expected result
         load('test_data/lioness.test.mat');
