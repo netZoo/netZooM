@@ -40,5 +40,5 @@ function testPandaSimple()
         % Compare the outputs
         tolMat=1e-6;
         deltaMat=max(max(abs(AgNet-ExpAgNet)));
-	assertTrue( deltaMat < tolMat );
+	    assertTrue( deltaMat < tolMat );
 end

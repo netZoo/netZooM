@@ -1,4 +1,4 @@
-function PredNet=lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha)
+function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha, ascii_out, lib_path)
 % Description:
 %             Using LIONESS to infer single-sample gene regulatory networks.
 %             1. Reading in PANDA network and preprocessed middle data
@@ -19,9 +19,12 @@ function PredNet=lioness_run(exp_file, motif_file, ppi_file, panda_file, save_di
 %               alpha     : learning parameter for the PANDA algorithm
 %               ascii_out : 1 : save LIONESS networks in .txt format
 %                           0 : save LIONESS networks in .mat -v6 format
+%               lib_path  : path to library
 % 
 % Outputs:
 %               PredNet  : Predicted single sample network as a matrix of size (t,g)
+%                          This output is directly saved as a file and not
+%                          as worksapce variable
 %
 % Authors: 
 %               cychen, marieke, kglass
