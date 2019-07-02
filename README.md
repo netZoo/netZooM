@@ -10,6 +10,11 @@ Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/mas
 netZooM is a MATLAB package of network methods.
 
 ## Quick guide
+`git clone https://github.com/netZoo/netZooM.git` into your local disk. Then add the netZoo to your MATLAB path
+
+`addpath(genpath('path/to/netZooM'))`
+
+## User guide
 Please refer to the [user guide](UserGuide.md) for installation instructions.
 
 ## License
