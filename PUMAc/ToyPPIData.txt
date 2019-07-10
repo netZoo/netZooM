@@ -1,2 +1,0 @@
-AHR	AR	1
-AR	AHR	1
