@@ -1,3 +1,0 @@
-AHR	AHR	0.5
-AHR	AR	0.9
-miR1	RUNX1	0.4
