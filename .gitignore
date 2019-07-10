@@ -5,3 +5,4 @@ check_progress.sh
 tests/tmp
 *.tar.gz
 tests/test_data/lioness.1.mat
+.DS_Store
