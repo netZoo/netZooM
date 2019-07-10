@@ -15,7 +15,7 @@ function testPandaSimple()
 
         % Set Program Parameters
         exp_file   = 'test_data/expression.txt';
-        motif_file = 'test_data/motif.txt';
+        motif_file = 'test_data/motifTest.txt';
         ppi_file   = 'test_data/ppi.txt';
         panda_out  = '';  % optional, leave empty if file output is not required
         save_temp  = '';  % optional, leave empty if temp data files will not be needed afterward
