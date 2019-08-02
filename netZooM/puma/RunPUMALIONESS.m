@@ -53,7 +53,7 @@ function RegNet=RunPUMALIONESS(outtag,alpha,motif_file,exp_file,ppi_file,mir_fil
     end
 
     NumConditions=size(Exp,2);
-    GeneCoReg=Coexpression(Exp);
+    GeneCoReg=corrcoef(Exp, 'Mode', 'Pearson', 'rows', 'pairwise'); 
     %NumUsed=double(~isnan(Exp))*double(~isnan(Exp)'); % optional: determine nr of samples with expression values (not NaN)
     %GeneCoReg=GeneCoReg.*(NumUsed/NumConditions); % optional: normalize the correlation based on NumUsed
     GeneCoReg(1:NumGenes+1:NumGenes^2)=1; % set diagonal to 1

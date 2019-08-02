@@ -56,8 +56,8 @@ function PredNet=RunPUMAresample(outtag, alpha, motif_file, exp_file, ppi_file, 
     % this code will run PUMA mulitple times using resampled expression data
     PredNet=zeros(NumTFs*NumGenes, nrboots);
     for(condcnt=1:nrboots)	
-        idx=datasample(1:NumConditions,nrtokeep,2,'Replace',false); % randomly select samples to run PUMA on
-        GeneCoReg=Coexpression(Exp(:,idx)');
+        idx      = datasample(1:NumConditions,nrtokeep,2,'Replace',false); % randomly select samples to run PUMA on
+        GeneCoReg= corrcoef(Exp(:,idx)', 'Mode', 'Pearson', 'rows', 'pairwise');
         %NumUsed=double(~isnan(Exp(:,idx)))*double(~isnan(Exp(:,idx))'); % optional: determine nr of samples with expression values (not NaN)
         %GeneCoReg=GeneCoReg.*(NumUsed/(NumConditions-1)); % optional: normalize the correlation based on NumUsed
         GeneCoReg(1:NumGenes+1:NumGenes^2)=1; % set diagonal to 1
