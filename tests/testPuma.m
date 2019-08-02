@@ -52,7 +52,7 @@ function testPumaLioness()
         if isOctave
                 %we need the nan package because it has a fast implementation of corrcoeff
                 %pkg load statistics
-		pkg load nan;
+            pkg load nan;
         end
 
         % Set Program Parameters
@@ -95,7 +95,7 @@ function testPumaLionessSubset()
         if isOctave
                 %we need the nan package because it has a fast implementation of corrcoeff
                 %pkg load statistics
-		pkg load nan;
+            pkg load nan;
         end
 
         % Set Program Parameters
@@ -140,7 +140,7 @@ function testPumaLionessRs()
         if isOctave
                 %we need the nan package because it has a fast implementation of corrcoeff
                 %pkg load statistics
-		pkg load nan;
+            pkg load nan;
         end
 
         % Set Program Parameters
