@@ -77,7 +77,11 @@ function RegNet=RunPUMALIONESS(outtag,alpha,motif_file,exp_file,ppi_file,mir_fil
     PredNet=zeros(NumTFs*NumGenes, NumConditions);
     for(condcnt=1:NumConditions)
         idx=[1:(condcnt-1),(condcnt+1):NumConditions];
-        GeneCoReg=corr(Exp(:,idx)', 'type', 'pearson', 'rows', 'pairwise');
+        if isOctave
+            GeneCoReg=corrcoef(Exp(:,idx)', 'Mode', 'pearson', 'rows', 'pairwise');
+        else
+            GeneCoReg=corr(Exp(:,idx)', 'type', 'pearson', 'rows', 'pairwise');
+        end
         %NumUsed=double(~isnan(Exp(:,idx)))*double(~isnan(Exp(:,idx))');  % optional: determine nr of samples with expression values (not NaN)
         %GeneCoReg=GeneCoReg.*(NumUsed/(NumConditions-1)); % optional: normalize the correlation based on NumUsed
         GeneCoReg(1:NumGenes+1:NumGenes^2)=1; % set diagonal to 1
