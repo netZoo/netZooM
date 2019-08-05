@@ -110,7 +110,12 @@ function RegNet=RunPUMALIONESS(outtag,alpha,motif_file,exp_file,ppi_file,mir_fil
 
 
     % to save the LIONESS networks in a .mat file
-    save([outtag, '_LIONESSNetworks.mat'], '-v7.3', 'PredNet', 'TF', 'gene', 'AgNet', 'RegNet');
+    if isOctave
+        save([outtag, '_LIONESSNetworks.mat'], 'PredNet', 'TF', 'gene', 'AgNet', 'RegNet');
+    else
+        save([outtag, '_LIONESSNetworks.mat'], '-v7.3', 'PredNet', 'TF', 'gene', 'AgNet', 'RegNet');
+    end
+    
 
     % optional: print single-sample edge weights in a .txt file
     %dlmwrite([outtag,'_LIONESSNetworks.txt'], PredNet, '\t');
