@@ -1,4 +1,23 @@
 function RunPUMALIONESSsubset(outtag, alpha, motif_file, exp_file, ppi_file, mir_file, SelectSize, Offset)
+% Description:
+%               PUMALIONESSsubset can reconstruct user-specified single-sample gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels.
+%
+% Inputs:
+%               exp_file  : path to file containing gene expression as a matrix of size (g,g)
+%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
+%               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
+%               outtag    : path to save output PUMA network in .pairs format.
+%               mir_file  : path to file containing microRNA file
+%               alpha     : learning parameter for the PUMA algorithm
+%               SelectSize: number of samples to reconstruct
+%               Offset    : first sample to reconstruct
+%
+% Authors:
+%               Marieke Kuijjer
+%
+% Publications:
+%               https://www.ncbi.nlm.nih.gov/pubmed/28506242
+
     %% Read in Data %%
     disp('Reading in data!')
 
