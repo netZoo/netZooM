@@ -1,0 +1,535 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Functions &mdash; netZooM 0.1 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript">
+          var DOCUMENTATION_OPTIONS = {
+              URL_ROOT:'../',
+              VERSION:'0.1',
+              LANGUAGE:'None',
+              COLLAPSE_INDEX:false,
+              FILE_SUFFIX:'.html',
+              HAS_SOURCE:  true,
+              SOURCELINK_SUFFIX: '.txt'
+          };
+      </script>
+        <script type="text/javascript" src="../_static/jquery.js"></script>
+        <script type="text/javascript" src="../_static/underscore.js"></script>
+        <script type="text/javascript" src="../_static/doctools.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Tutorials" href="../tutos/index.html" />
+    <link rel="prev" title="Installation guide" href="../install/index.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> netZooM
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../install/index.html">Installation guide</a></li>
+</ul>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Functions</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#panda-run">panda_run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#lioness-run">lioness_run</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#runpuma">RunPUMA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#updatediagonal">UpdateDiagonal</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tfunction">Tfunction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#savepairs">SavePairs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#pairs2mat">Pairs2Mat</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#panda">PANDA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#puma">PUMA</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#normalizenetwork">NormalizeNetwork</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#coexpression">Coexpression</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tutos/index.html">Tutorials</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">netZooM</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>Functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/functions/index.md.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="functions">
+<h1>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="panda-run">
+<h2>panda_run<a class="headerlink" href="#panda-run" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Using</span> <span class="n">PANDA</span> <span class="n">to</span> <span class="n">infer</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span><span class="o">.</span> 
+           <span class="mf">1.</span> <span class="n">Reading</span> <span class="ow">in</span> <span class="nb">input</span> <span class="n">data</span> <span class="p">(</span><span class="n">expression</span> <span class="n">data</span><span class="p">,</span> <span class="n">motif</span> <span class="n">prior</span><span class="p">,</span> <span class="n">TF</span> <span class="n">PPI</span> <span class="n">data</span><span class="p">)</span>
+           <span class="mf">2.</span> <span class="n">Computing</span> <span class="n">coexpression</span> <span class="n">network</span>
+           <span class="mf">3.</span> <span class="n">Normalizing</span> <span class="n">networks</span>
+           <span class="mf">4.</span> <span class="n">Running</span> <span class="n">PANDA</span> <span class="n">algorithm</span>
+           <span class="mf">5.</span> <span class="n">Writing</span> <span class="n">out</span> <span class="n">PANDA</span> <span class="n">network</span> <span class="p">(</span><span class="n">optional</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">exp_file</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">gene</span> <span class="n">expression</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+           <span class="n">motif_file</span><span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">prior</span> <span class="n">TF</span><span class="o">-</span><span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span> <span class="n">based</span> <span class="n">on</span> <span class="n">TF</span> <span class="n">motifs</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+           <span class="n">ppi_file</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">TF</span><span class="o">-</span><span class="n">TF</span> <span class="n">interaction</span> <span class="n">graph</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+           <span class="n">panda_out</span> <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">output</span> <span class="n">PANDA</span> <span class="n">network</span>
+                       <span class="s1">&#39;*.txt&#39;</span><span class="p">:</span> <span class="n">the</span> <span class="n">final</span> <span class="n">network</span> <span class="n">will</span> <span class="n">be</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">.</span><span class="n">txt</span> <span class="nb">format</span>
+                       <span class="s1">&#39;*.tsv&#39;</span><span class="p">:</span> <span class="n">the</span> <span class="n">final</span> <span class="n">network</span> <span class="n">will</span> <span class="n">be</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">.</span><span class="n">tsv</span> <span class="nb">format</span>
+                       <span class="s1">&#39;*.*&#39;</span>  <span class="p">:</span> <span class="n">the</span> <span class="n">final</span> <span class="n">network</span> <span class="n">will</span> <span class="n">be</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">.</span><span class="n">mat</span> <span class="n">v6</span> <span class="nb">format</span>
+                       <span class="s1">&#39;&#39;</span>     <span class="p">:</span> <span class="n">the</span> <span class="n">final</span> <span class="n">network</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">saved</span>
+           <span class="n">save_temp</span> <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">updated</span> <span class="n">ppi</span><span class="p">,</span> <span class="n">co</span><span class="o">-</span><span class="n">expression</span><span class="p">,</span> <span class="ow">and</span> <span class="n">gene</span> <span class="n">regulation</span> <span class="n">network</span>
+                       <span class="s1">&#39;&#39;</span><span class="p">:</span> <span class="n">the</span> <span class="n">networks</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">saved</span>
+           <span class="n">alpha</span>     <span class="p">:</span> <span class="n">learning</span> <span class="n">parameter</span> <span class="k">for</span> <span class="n">the</span> <span class="n">PANDA</span> <span class="n">algorithm</span>
+           <span class="n">save_pairs</span><span class="p">:</span> <span class="p">(</span><span class="n">Optional</span><span class="p">)</span> <span class="n">boolean</span> <span class="n">parameter</span>
+                       <span class="mi">1</span><span class="p">:</span>  <span class="n">the</span> <span class="n">final</span> <span class="n">network</span> <span class="n">will</span> <span class="n">be</span> <span class="n">saved</span> <span class="o">.</span><span class="n">pairs</span> <span class="nb">format</span> <span class="n">where</span> <span class="n">each</span> <span class="n">line</span> <span class="n">has</span> <span class="n">a</span> <span class="n">TF</span><span class="o">-</span><span class="n">gene</span> <span class="n">edge</span> <span class="p">(</span><span class="n">Cytoscape</span> <span class="n">compatible</span><span class="p">)</span>
+                       <span class="mi">0</span><span class="p">:</span>  <span class="n">the</span> <span class="n">final</span> <span class="n">network</span> <span class="n">will</span> <span class="ow">not</span> <span class="n">be</span> <span class="n">saved</span> <span class="ow">in</span> <span class="o">.</span><span class="n">pairs</span> <span class="nb">format</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">AgNet</span>     <span class="p">:</span> <span class="n">Predicted</span> <span class="n">TF</span><span class="o">-</span><span class="n">gene</span> <span class="n">gene</span> <span class="n">complete</span> <span class="n">regulatory</span> <span class="n">network</span> <span class="n">using</span> <span class="n">PANDA</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">cychen</span><span class="p">,</span> <span class="n">marieke</span><span class="p">,</span> <span class="n">kglass</span>
+</pre></div>
+</div>
+<p>Notes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Script</span> <span class="n">adapted</span> <span class="kn">from</span> <span class="nn">Marieke</span><span class="s1">&#39;s pLIONESSpcss.m, modified to run PANDA only.</span>
+</pre></div>
+</div>
+<p>Publications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.1371</span><span class="o">/</span><span class="n">journal</span><span class="o">.</span><span class="n">pone</span><span class="o">.</span><span class="mi">0064832</span> 
+</pre></div>
+</div>
+</div>
+<div class="section" id="lioness-run">
+<h2>lioness_run<a class="headerlink" href="#lioness-run" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">Using</span> <span class="n">LIONESS</span> <span class="n">to</span> <span class="n">infer</span> <span class="n">single</span><span class="o">-</span><span class="n">sample</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">networks</span><span class="o">.</span>
+         <span class="mf">1.</span> <span class="n">Reading</span> <span class="ow">in</span> <span class="n">PANDA</span> <span class="n">network</span> <span class="ow">and</span> <span class="n">preprocessed</span> <span class="n">middle</span> <span class="n">data</span>
+         <span class="mf">2.</span> <span class="n">Computing</span> <span class="n">coexpression</span> <span class="n">network</span>
+         <span class="mf">3.</span> <span class="n">Normalizing</span> <span class="n">coexpression</span> <span class="n">network</span>
+         <span class="mf">4.</span> <span class="n">Running</span> <span class="n">PANDA</span> <span class="n">algorithm</span>
+         <span class="mf">5.</span> <span class="n">Writing</span> <span class="n">out</span> <span class="n">LIONESS</span> <span class="n">networks</span>
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">exp_file</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">gene</span> <span class="n">expression</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+           <span class="n">motif_file</span><span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">prior</span> <span class="n">TF</span><span class="o">-</span><span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span> <span class="n">based</span> <span class="n">on</span> <span class="n">TF</span> <span class="n">motifs</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+           <span class="n">ppi_file</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">TF</span><span class="o">-</span><span class="n">TF</span> <span class="n">interaction</span> <span class="n">graph</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+           <span class="n">panda_file</span><span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">the</span> <span class="n">PANDA</span> <span class="n">generated</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span>
+           <span class="n">save_dir</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">directory</span><span class="o">.</span> <span class="k">if</span> <span class="n">It</span> <span class="n">does</span> <span class="ow">not</span> <span class="n">exist</span><span class="p">,</span> <span class="n">it</span> <span class="n">will</span> <span class="n">be</span> <span class="n">created</span><span class="o">.</span>
+           <span class="n">START</span>     <span class="p">:</span> <span class="n">index</span> <span class="n">of</span> <span class="n">first</span> <span class="n">sample</span> <span class="n">to</span> <span class="n">generate</span> <span class="n">predicted</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span><span class="o">.</span>
+           <span class="n">END</span>       <span class="p">:</span> <span class="n">index</span> <span class="n">of</span> <span class="n">last</span> <span class="n">sample</span> <span class="n">to</span> <span class="n">generate</span> <span class="n">predicted</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span><span class="o">.</span> <span class="n">There</span> <span class="n">will</span> <span class="n">be</span> <span class="n">END</span><span class="o">-</span><span class="n">START</span><span class="o">+</span><span class="mi">1</span> <span class="n">single</span> <span class="n">network</span> <span class="n">samples</span> <span class="n">generated</span><span class="o">.</span>
+                       <span class="o">-</span><span class="mi">1</span><span class="p">:</span> <span class="n">use</span> <span class="n">the</span> <span class="n">index</span> <span class="n">of</span> <span class="n">the</span> <span class="n">final</span> <span class="n">gene</span> <span class="n">expression</span> <span class="n">sample</span>
+           <span class="n">alpha</span>     <span class="p">:</span> <span class="n">learning</span> <span class="n">parameter</span> <span class="k">for</span> <span class="n">the</span> <span class="n">PANDA</span> <span class="n">algorithm</span>
+           <span class="n">ascii_out</span> <span class="p">:</span> <span class="mi">1</span> <span class="p">:</span> <span class="n">save</span> <span class="n">LIONESS</span> <span class="n">networks</span> <span class="ow">in</span> <span class="o">.</span><span class="n">txt</span> <span class="nb">format</span>
+                       <span class="mi">0</span> <span class="p">:</span> <span class="n">save</span> <span class="n">LIONESS</span> <span class="n">networks</span> <span class="ow">in</span> <span class="o">.</span><span class="n">mat</span> <span class="o">-</span><span class="n">v6</span> <span class="nb">format</span>
+           <span class="n">lib_path</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">library</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">PredNet</span>  <span class="p">:</span> <span class="n">Predicted</span> <span class="n">single</span> <span class="n">sample</span> <span class="n">network</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+                      <span class="n">This</span> <span class="n">output</span> <span class="ow">is</span> <span class="n">directly</span> <span class="n">saved</span> <span class="k">as</span> <span class="n">a</span> <span class="n">file</span> <span class="ow">and</span> <span class="ow">not</span>
+                      <span class="k">as</span> <span class="n">worksapce</span> <span class="n">variable</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">cychen</span><span class="p">,</span> <span class="n">marieke</span><span class="p">,</span> <span class="n">kglass</span>
+</pre></div>
+</div>
+<p>Publications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.1016</span><span class="o">/</span><span class="n">j</span><span class="o">.</span><span class="n">isci</span><span class="o">.</span><span class="mf">2019.03</span><span class="o">.</span><span class="mi">021</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="runpuma">
+<h2>RunPUMA<a class="headerlink" href="#runpuma" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">PUMA</span> <span class="n">can</span> <span class="n">reconstruct</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">networks</span> <span class="n">using</span> <span class="n">both</span> <span class="n">transcription</span> <span class="n">factors</span> <span class="ow">and</span> <span class="n">microRNAs</span> <span class="k">as</span> <span class="n">regulators</span> <span class="n">of</span> <span class="n">mRNA</span> <span class="n">expression</span> <span class="n">levels</span><span class="o">.</span> 
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">exp_file</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">gene</span> <span class="n">expression</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+           <span class="n">motif_file</span><span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">the</span> <span class="n">prior</span> <span class="n">TF</span><span class="o">-</span><span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span> <span class="n">based</span> <span class="n">on</span> <span class="n">TF</span> <span class="n">motifs</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+           <span class="n">ppi_file</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">TF</span><span class="o">-</span><span class="n">TF</span> <span class="n">interaction</span> <span class="n">graph</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">t</span><span class="p">)</span>
+           <span class="n">outtag</span>    <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">save</span> <span class="n">output</span> <span class="n">PUMA</span> <span class="n">network</span> <span class="ow">in</span> <span class="o">.</span><span class="n">pairs</span> <span class="nb">format</span><span class="o">.</span>
+           <span class="n">mir_file</span>  <span class="p">:</span> <span class="n">path</span> <span class="n">to</span> <span class="n">file</span> <span class="n">containing</span> <span class="n">microRNA</span> <span class="n">file</span>
+           <span class="n">alpha</span>     <span class="p">:</span> <span class="n">learning</span> <span class="n">parameter</span> <span class="k">for</span> <span class="n">the</span> <span class="n">PUMA</span> <span class="n">algorithm</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">RegNet</span>     <span class="p">:</span> <span class="n">Predicted</span> <span class="n">TF</span><span class="o">-</span><span class="n">gene</span> <span class="n">gene</span> <span class="n">complete</span> <span class="n">regulatory</span> <span class="n">network</span> <span class="n">using</span> <span class="n">PANDA</span> <span class="k">as</span> <span class="n">a</span> <span class="n">matrix</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Marieke</span> <span class="n">Kuijjer</span>
+</pre></div>
+</div>
+<p>Publications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">ncbi</span><span class="o">.</span><span class="n">nlm</span><span class="o">.</span><span class="n">nih</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">pubmed</span><span class="o">/</span><span class="mi">28506242</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="updatediagonal">
+<h2>UpdateDiagonal<a class="headerlink" href="#updatediagonal" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">Updates</span> <span class="n">the</span> <span class="n">diagonal</span> <span class="n">of</span> <span class="n">diagMat</span>
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">diagMat</span><span class="p">:</span> <span class="n">diagonal</span> <span class="n">matrix</span>
+          <span class="n">num</span>    <span class="p">:</span> <span class="n">integer</span>
+          <span class="n">alpha</span>  <span class="p">:</span> <span class="n">learning</span> <span class="n">rate</span> <span class="n">of</span> <span class="n">the</span> <span class="n">PANDA</span> <span class="n">algorithm</span>
+          <span class="n">step</span>   <span class="p">:</span> <span class="n">step</span> <span class="n">number</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">PANDA</span> <span class="n">algorithm</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">diagMat</span><span class="p">:</span> <span class="n">updated</span> <span class="n">diagonal</span> <span class="n">matrix</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">Kimberley</span> <span class="n">Glass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="tfunction">
+<h2>Tfunction<a class="headerlink" href="#tfunction" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">Updates</span> <span class="n">Amat</span> <span class="n">matrix</span> <span class="n">using</span> <span class="n">matrices</span> <span class="n">X</span> <span class="ow">and</span> <span class="n">Y</span>         
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">X</span>   <span class="p">:</span> <span class="n">adjacency</span> <span class="n">matrix</span>
+           <span class="n">Y</span>   <span class="p">:</span> <span class="n">adjacency</span> <span class="n">matrix</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Amat</span><span class="p">:</span> <span class="n">updated</span> <span class="n">matrix</span> <span class="kn">from</span> <span class="nn">X</span> <span class="ow">and</span> <span class="n">Y</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Kimberly</span> <span class="n">Glass</span><span class="p">,</span> <span class="n">cychen</span>
+</pre></div>
+</div>
+<p>Notes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">bsxfun</span> <span class="ow">is</span> <span class="n">more</span> <span class="n">memory</span><span class="o">-</span><span class="n">efficient</span> <span class="ow">and</span> <span class="n">faster</span> <span class="n">than</span> <span class="n">repmat</span> <span class="n">implementation</span> <span class="k">for</span> <span class="n">large</span> <span class="n">arrays</span><span class="o">.</span>
+           <span class="n">MATLAB</span> <span class="n">uses</span> <span class="n">BLAS</span> <span class="n">routines</span> <span class="n">to</span> <span class="n">do</span> <span class="n">matrix</span> <span class="n">multiplication</span><span class="o">.</span> <span class="n">MATLAB</span> <span class="n">parser</span> <span class="n">recognizes</span> <span class="n">X</span><span class="o">*</span><span class="n">X</span><span class="s1">&#39; as</span>
+           <span class="n">a</span> <span class="n">symmetric</span> <span class="n">matrix</span> <span class="n">multiply</span> <span class="ow">and</span> <span class="n">will</span> <span class="n">call</span> <span class="n">the</span> <span class="n">symmetric</span> <span class="n">matrix</span> <span class="n">multiply</span> <span class="n">routine</span> <span class="p">(</span><span class="n">only</span> 
+           <span class="n">calculates</span> <span class="n">about</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="n">the</span> <span class="n">answer</span> <span class="ow">and</span> <span class="n">then</span> <span class="n">fills</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">rest</span> <span class="k">with</span> <span class="n">copies</span><span class="p">,</span> <span class="n">which</span> <span class="ow">is</span> <span class="n">faster</span><span class="p">)</span><span class="o">.</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="savepairs">
+<h2>SavePairs<a class="headerlink" href="#savepairs" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">A</span> <span class="n">function</span> <span class="n">to</span> <span class="n">save</span> <span class="n">a</span> <span class="n">complete</span> <span class="n">graph</span> <span class="ow">in</span> <span class="n">matrix</span> <span class="nb">format</span> <span class="n">to</span> <span class="n">a</span> <span class="n">pairs</span> <span class="nb">format</span> <span class="n">where</span> <span class="n">each</span> <span class="n">line</span> <span class="n">represents</span> <span class="n">an</span> <span class="n">edge</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">network</span><span class="o">.</span>
+         <span class="n">The</span> <span class="n">output</span> <span class="n">file</span> <span class="n">will</span> <span class="n">have</span> <span class="k">as</span> <span class="n">much</span> <span class="n">lines</span> <span class="k">as</span> <span class="n">edges</span> <span class="ow">in</span> <span class="n">the</span> <span class="n">network</span> <span class="ow">and</span> <span class="n">will</span> <span class="n">have</span> <span class="n">the</span> <span class="n">predicted</span> <span class="n">edge</span> <span class="n">weights</span> <span class="k">as</span> <span class="n">well</span> <span class="k">as</span> <span class="n">the</span> 
+         <span class="n">binary</span> <span class="n">edge</span> <span class="n">weights</span> <span class="kn">from</span> <span class="nn">the</span> <span class="n">prior</span> <span class="n">motif</span> <span class="n">data</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>         <span class="n">TFNames</span>  <span class="p">:</span> <span class="n">names</span> <span class="n">of</span> <span class="n">t</span> <span class="n">TFs</span>
+         <span class="n">GeneNames</span><span class="p">:</span> <span class="n">names</span> <span class="n">of</span> <span class="n">g</span> <span class="n">genes</span>
+         <span class="n">AgNet</span>    <span class="p">:</span> <span class="n">predicted</span> <span class="n">gene</span> <span class="n">regulation</span> <span class="n">network</span> <span class="n">using</span> <span class="n">PANDA</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+         <span class="n">RegNet</span>   <span class="p">:</span> <span class="n">prior</span> <span class="n">gene</span> <span class="n">regulation</span> <span class="n">network</span> <span class="n">obtained</span> <span class="n">using</span> <span class="n">TF</span> <span class="n">motif</span> <span class="n">scan</span> <span class="n">of</span> <span class="n">size</span> <span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">g</span><span class="p">)</span>
+         <span class="n">outtag</span>   <span class="p">:</span> <span class="n">name</span> <span class="n">of</span> <span class="n">saved</span> <span class="n">file</span> 
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>        <span class="n">Kimberley</span> <span class="n">Glass</span><span class="p">,</span> <span class="n">Marouen</span> <span class="n">Ben</span> <span class="n">Guebila</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="pairs2mat">
+<h2>Pairs2Mat<a class="headerlink" href="#pairs2mat" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">Pairs2Mat</span> <span class="n">transforms</span> <span class="n">a</span> <span class="n">TF</span><span class="o">-</span><span class="n">Gene</span> <span class="n">network</span> <span class="ow">in</span> <span class="o">.</span><span class="n">pairs</span> <span class="n">network</span> <span class="n">to</span> <span class="n">a</span> <span class="n">complete</span>
+     <span class="n">matrix</span><span class="o">.</span> <span class="n">It</span> <span class="n">can</span> <span class="n">also</span> <span class="n">save</span> <span class="n">the</span> <span class="n">prior</span> <span class="ow">in</span> <span class="n">matrix</span> <span class="nb">format</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Inputs
+networkPair: path to network in .pairs format with nGenes*nTFs
+edges
+nGenes     : number of genes in network
+prior      : 0: matNet is a matrix of the final network
+1: matNet is a matrix of the prior network</p>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">matNet</span>     <span class="p">:</span> <span class="n">network</span> <span class="ow">in</span> <span class="n">nGenes</span> <span class="n">by</span> <span class="n">nTfs</span> <span class="n">matrix</span> <span class="nb">format</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>     <span class="n">Marouen</span> <span class="n">Ben</span> <span class="n">Guebila</span> <span class="mi">6</span><span class="o">/</span><span class="mi">19</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="panda">
+<h2>PANDA<a class="headerlink" href="#panda" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">PANDA</span> <span class="n">infers</span> <span class="n">a</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">network</span> <span class="kn">from</span> <span class="nn">gene</span> <span class="n">expression</span>
+          <span class="n">data</span><span class="p">,</span> <span class="n">motif</span> <span class="n">prior</span><span class="p">,</span> <span class="ow">and</span> <span class="n">PPI</span> <span class="n">between</span> <span class="n">transcription</span> <span class="n">factors</span>
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">RegNet</span>   <span class="p">:</span> <span class="n">motif</span> <span class="n">prior</span> <span class="n">of</span> <span class="n">gene</span><span class="o">-</span><span class="n">TF</span> <span class="n">regulatory</span> <span class="n">network</span>
+           <span class="n">GeneCoReg</span><span class="p">:</span> <span class="n">gene</span><span class="o">-</span><span class="n">gene</span> <span class="n">co</span><span class="o">-</span><span class="n">regulatory</span> <span class="n">network</span>
+           <span class="n">TFCoop</span>   <span class="p">:</span> <span class="n">PPI</span> <span class="n">binding</span> <span class="n">between</span> <span class="n">transcription</span> <span class="n">factors</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">RegNet</span>   <span class="p">:</span> <span class="n">inferred</span> <span class="n">gene</span><span class="o">-</span><span class="n">TF</span> <span class="n">regulatory</span> <span class="n">network</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Kimberley</span> <span class="n">Glass</span>
+</pre></div>
+</div>
+<p>Publications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">doi</span><span class="o">.</span><span class="n">org</span><span class="o">/</span><span class="mf">10.1371</span><span class="o">/</span><span class="n">journal</span><span class="o">.</span><span class="n">pone</span><span class="o">.</span><span class="mi">0064832</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="puma">
+<h2>PUMA<a class="headerlink" href="#puma" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">PUMA</span> <span class="n">can</span> <span class="n">reconstruct</span> <span class="n">gene</span> <span class="n">regulatory</span> <span class="n">networks</span> <span class="n">using</span> <span class="n">both</span> <span class="n">transcription</span> <span class="n">factors</span> <span class="ow">and</span> <span class="n">microRNAs</span> <span class="k">as</span> <span class="n">regulators</span> 
+           <span class="n">of</span> <span class="n">mRNA</span> <span class="n">expression</span> <span class="n">levels</span><span class="o">.</span> 
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">RegNet</span>   <span class="p">:</span> <span class="n">motif</span> <span class="n">prior</span> <span class="n">of</span> <span class="n">gene</span><span class="o">-</span><span class="n">TF</span> <span class="n">regulatory</span> <span class="n">network</span>
+           <span class="n">GeneCoReg</span><span class="p">:</span> <span class="n">gene</span><span class="o">-</span><span class="n">gene</span> <span class="n">co</span><span class="o">-</span><span class="n">regulatory</span> <span class="n">network</span>
+           <span class="n">TFCoop</span>   <span class="p">:</span> <span class="n">PPI</span> <span class="n">binding</span> <span class="n">between</span> <span class="n">transcription</span> <span class="n">factors</span>
+           <span class="n">alpha</span>    <span class="p">:</span> <span class="n">learning</span> <span class="n">rate</span>
+           <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="n">are</span> <span class="n">indices</span> <span class="n">of</span> <span class="n">miR</span> <span class="n">interactions</span> <span class="ow">in</span> <span class="n">TFCoop</span><span class="p">,</span> <span class="n">the</span> <span class="n">TF</span><span class="o">-</span><span class="n">TF</span> <span class="n">PPI</span> <span class="n">network</span><span class="o">.</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">RegNet</span>   <span class="p">:</span> <span class="n">inferred</span> <span class="n">gene</span><span class="o">-</span><span class="n">TF</span> <span class="n">regulatory</span> <span class="n">network</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Marieke</span> <span class="n">Kuijjer</span>
+</pre></div>
+</div>
+<p>Publications:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">www</span><span class="o">.</span><span class="n">ncbi</span><span class="o">.</span><span class="n">nlm</span><span class="o">.</span><span class="n">nih</span><span class="o">.</span><span class="n">gov</span><span class="o">/</span><span class="n">pubmed</span><span class="o">/</span><span class="mi">28506242</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="normalizenetwork">
+<h2>NormalizeNetwork<a class="headerlink" href="#normalizenetwork" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>          <span class="n">Normalize</span> <span class="n">an</span> <span class="nb">input</span> <span class="n">network</span> <span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="n">X</span>
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">X</span><span class="p">:</span> <span class="n">network</span> <span class="n">adjacency</span> <span class="n">matrix</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">normMat</span><span class="p">:</span> <span class="n">nromalized</span> <span class="n">adjacency</span> <span class="n">matrix</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Kimberley</span> <span class="n">Glass</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="coexpression">
+<h2>Coexpression<a class="headerlink" href="#coexpression" title="Permalink to this headline">¶</a></h2>
+<p>Description:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Compute</span> <span class="n">gene</span><span class="o">-</span><span class="n">gene</span> <span class="n">coexpression</span> <span class="n">network</span> <span class="k">for</span> <span class="n">a</span> <span class="n">sample</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">gene</span> <span class="n">matrix</span> <span class="n">X</span>
+           <span class="n">Note</span> <span class="n">that</span> <span class="n">each</span> <span class="n">gene</span> <span class="ow">is</span> <span class="n">a</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">X</span>
+</pre></div>
+</div>
+<p>Inputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">X</span><span class="p">:</span>         <span class="n">sample</span><span class="o">-</span><span class="n">by</span><span class="o">-</span><span class="n">gene</span> <span class="n">matrix</span>
+</pre></div>
+</div>
+<p>Outputs:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">GeneCoReg</span><span class="p">:</span> <span class="n">gene</span><span class="o">-</span><span class="n">gene</span> <span class="n">coexpression</span> <span class="n">network</span>
+</pre></div>
+</div>
+<p>Authors:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>           <span class="n">Kimberley</span> <span class="n">Glass</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../tutos/index.html" class="btn btn-neutral float-right" title="Tutorials" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../install/index.html" class="btn btn-neutral float-left" title="Installation guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, netZoo
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

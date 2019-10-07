@@ -1,0 +1,48 @@
+.. netZooM documentation master file, created by
+   sphinx-quickstart on Mon Oct  7 18:52:26 2019.
+   You can adapt this file completely to your liking, but it should at least
+   contain the root `toctree` directive.
+
+Home
+====
+
+.. toctree::
+   :maxdepth: 2
+   :caption: Contents:
+
+Home
+===================================
+
+netZooM is a catalog of methods for the reconstruction and analysis of network biology methods.
+
+Contents
+========
+
+.. toctree::
+   :hidden:
+
+   self
+
+.. toctree::
+
+   install/index
+
+.. toctree::
+
+   functions/index
+
+.. toctree::
+
+   tutos/index
+
+.. toctree::
+
+   changelog
+
+
+Indices and tables
+==================
+
+* :ref:`genindex`
+* :ref:`modindex`
+* :ref:`search`
