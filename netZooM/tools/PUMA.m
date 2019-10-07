@@ -1,4 +1,23 @@
 function RegNet=PUMA(RegNet, GeneCoReg, TFCoop, alpha, s1, s2, t1, t2);
+% Description:
+%               PUMA can reconstruct gene regulatory networks using both transcription factors and microRNAs as regulators 
+%               of mRNA expression levels. 
+%
+% Inputs:
+%               RegNet   : motif prior of gene-TF regulatory network
+%               GeneCoReg: gene-gene co-regulatory network
+%               TFCoop   : PPI binding between transcription factors
+%               alpha    : learning rate
+%               s1, s2, t1, t2 are indices of miR interactions in TFCoop, the TF-TF PPI network.
+%
+% Outputs:
+%               RegNet   : inferred gene-TF regulatory network
+%
+% Authors:
+%               Marieke Kuijjer
+%
+% Publications:
+%               https://www.ncbi.nlm.nih.gov/pubmed/28506242
 
 [NumTFs,NumGenes]=size(RegNet);
 
