@@ -1,6 +1,7 @@
 function matNet=Pairs2Mat(networkPair,nGenes,prior)
-% Paris2Mat transforms a TF-Gene network in .pairs network to a complete
-% matrix. It can also save the prior in matrix format.
+% Description:
+%         Pairs2Mat transforms a TF-Gene network in .pairs network to a complete
+%         matrix. It can also save the prior in matrix format.
 %
 % Inputs:
 %         networkPair: path to network in .pairs format with nGenes*nTFs
