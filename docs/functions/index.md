@@ -185,7 +185,8 @@
          Pairs2Mat transforms a TF-Gene network in .pairs network to a complete
          matrix. It can also save the prior in matrix format.
 
- Inputs
+ Inputs:
+
          networkPair: path to network in .pairs format with nGenes*nTFs
                       edges
          nGenes     : number of genes in network
