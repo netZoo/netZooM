@@ -1,7 +1,8 @@
 [![TRAVIS](https://travis-ci.org/netZoo/netZooM.svg?branch=master)](https://travis-ci.org/netZoo/netZooM/)
 [![codecov](https://codecov.io/gh/netZoo/netZooM/branch/devel/graph/badge.svg)](https://codecov.io/gh/netZoo/netZooM)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
-
+[![Documentation Status](https://readthedocs.org/projects/netzoom/badge/?version=latest)](https://netzoom.readthedocs.io/en/latest/?badge=latest)
+ 
 Linux[![LINUX](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/linux)](https://travis-ci.org/netZoo/netZooM)
 
 Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/macos)](https://travis-ci.org/netZoo/netZooM)
@@ -10,12 +11,12 @@ Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/mas
 netZooM is a MATLAB package of network methods.
 
 ## Quick guide
-`git clone https://github.com/netZoo/netZooM.git` into your local disk. Then add the netZoo to your MATLAB path
+`git clone https://github.com/netZoo/netZooM.git` into your local disk. 
 
-`addpath(genpath('path/to/netZooM'))`
+Then add the netZoo to your MATLAB path `addpath(genpath('path/to/netZooM'))`
 
 ## User guide
-Please refer to the [user guide](UserGuide.md) for installation instructions.
+Please refer to the [user guide](UserGuide.md) and the [documentation](https://netzoom.readthedocs.io/en/latest/) website for installation instructions and usage.
 
 ## License
 The software is free and is licensed under the GNU General License v3.0, see the file [LICENSE](LICENSE) for details.
