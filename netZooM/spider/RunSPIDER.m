@@ -1,3 +1,39 @@
+% Description:HAVE TO EDIT THE FOLLOWIN PART
+%               Using SPIDER to infer gene regulatory network. 
+%               1. Reading in input data (expression data, motif prior, TF PPI data)
+%               2. Computing coexpression network
+%               3. Normalizing networks
+%               4. Running PANDA algorithm
+%               5. Writing out PANDA network (optional)
+%
+% Inputs:
+%               exp_file  : path to file containing gene expression as a matrix of size (g,g)
+%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
+%               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
+%               panda_out : path to save output PANDA network
+%                           '*.txt': the final network will be saved in .txt format
+%                           '*.tsv': the final network will be saved in .tsv format
+%                           '*.*'  : the final network will be saved in .mat v6 format
+%                           ''     : the final network will not be saved
+%               save_temp : path to save updated ppi, co-expression, and gene regulation network
+%                           '': the networks will not be saved
+%               alpha     : learning parameter for the PANDA algorithm
+%               save_pairs: (Optional) boolean parameter
+%                           1:  the final network will be saved .pairs format where each line has a TF-gene edge (Cytoscape compatible)
+%                           0:  the final network will not be saved in .pairs format
+% 
+% Outputs:
+%               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
+%
+% Authors: 
+%               Abhijeet Sonawane, Kimberly Glass
+% 
+% 
+% Publications:
+% SOME DAY
+%               zhttps://doi.org/10.1371/journal.pone.0064832 
+
+
 %%%% PARAMETER REGION %%%%
 
 % SPIDER parameters -- note this area can be extended to include gene expression and PPI information
