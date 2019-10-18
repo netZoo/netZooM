@@ -12,7 +12,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START
 %               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
 %               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
 %               panda_file: path to the PANDA generated gene regulatory network
-%               save_dir  : path to save directory. if It does not exist, it will be created.
+%               save_dir  : path to save directory. If it does not exist, it will be created.
 %               START     : index of first sample to generate predicted gene regulatory network.
 %               END       : index of last sample to generate predicted gene regulatory network. There will be END-START+1 single network samples generated.
 %                           -1: use the index of the final gene expression sample
