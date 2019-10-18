@@ -1,4 +1,4 @@
-function RegNet=PANDA(RegNet, GeneCoReg, TFCoop, alpha);
+function RegNet=SPIDER(RegNet, GeneCoReg, TFCoop, alpha);
 
 [NumTFs,NumGenes]=size(RegNet);
 
