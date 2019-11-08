@@ -1,5 +1,21 @@
 function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
 
+
+% Description:
+%               Create epigenetically-filtered motif locations using bedtools and combining them into one bed file 
+%
+% Inputs:
+%       	epifile      : path to file with open chromatin regions for given cell line 
+%               motifidir    : path to file containing epigenetically informed motif information, can be created using CreateEpigeneticMotif.m
+
+% 
+% Outputs:
+%               outname      : path to the directory save bedfiles containing all the epigenetically-filtered motifs in one file e.g. A549_filtered_motiflocations.bed     
+%
+% Authors: 
+%               Abhijeet Sonawane, Kimberly Glass
+
+
 % program parameters
 % bedtoolspath=''; % set equal to '' if bedtools is already on the system path
 % epifile='../InputData/DNaseBedFiles/A549_DnasePeaks.bed'; % file with regions of open chromatin
