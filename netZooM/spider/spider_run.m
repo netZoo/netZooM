@@ -1,48 +1,43 @@
 function AgNet=spider_run(libpath, bedtoolspath, alpha, motifhitfile,  annofile, chrinfo, ranges, regfile, outtag,motifdir, epifile )
-
 % Description:
 % 		Using SPIDER to infer epigenetically-informed gene regulatory network. 
-
+%
 %		  Optional steps that do not need to run everytime. The codes can be run once and parameters values can be saved
 %               1. Create regulatory regions (user-defined ranges) using DefineRegulatoryRegions.m, Mostly have to do only once
 %               2. Create epigenetically-filtered motif locations using CreateEpigeneticMotif.m
 %               3. Create input prior network (motif prior) using BuildSPIDERprior.m
-%               4. Normalize the networks
-                
-%		  Actual SPIDER algorithm if the SPIDER PRIOR is already constructed
-  
-%		            5. Running PANDA algorithm
+%               4. Normalize the networks              
+%		        Actual SPIDER algorithm if the SPIDER PRIOR is already constructed
+%		        5. Running PANDA algorithm
 %               6. Writing out SPIDER network (optional)
-
-
-% 	Inputs for DefineRegulatoryRegions.m
+%
+% Inputs for DefineRegulatoryRegions.m
 %               bedtoolspath : path of the bedtools (can be installed from : "https://bedtools.readthedocs.io/en/latest/content/installation.html")
 %               annofile     : file with gene annotations e.g., './ReferenceData/refseq_hg19_05292018'
 %               chrinfo      : file with chromosome information e.g.,  '/InputData/ReferenceData/GenomeWideRanges.bed'
 %               ranges       : user-defined input for ranges around TSS for constructing proximal or distal SPIDER networks
-%   Output:
+%   
+% Output:
 %               regfile      : path to save bedfile of regulatory regions used asinput to build SPIDER prior network. 
-%	            	motifhitfile : path to file containing epigenetically informed motif information, can be created using CreateEpigeneticMotif.m
-
-
-
-%   Input for Building SPIDER prior using BuildSPIDERprior.m 
+%	            motifhitfile : path to file containing epigenetically informed motif information, can be created using CreateEpigeneticMotif.m
+%
+% Input for Building SPIDER prior using BuildSPIDERprior.m 
 % 
 %               motifhitfile : path to file containing epigenetically informed motif information, can be created using CreateEpigeneticMotif.m
 %               regfile      : path to file containing regulatory regions for genes, can be created with DefineRegulatoryRegions.m
-%   Output:  
+% Output:  
 %               Adj          : path to epigenetically-filtered motif prior regulatory network for given cell line (DNase-seq data), can be created using BuildSPIDERprior.m
 %               TFNames      : names of TFs in the prior network obtained from BuildSPIDERprior.m, 
 %               GeneNames    : names of Genes in the prior network obtained from BuildSPIDERprior.m
-
-%   Inputs for message-passing PANDA step in SPIDER:
-
+%
+% Inputs for message-passing PANDA step in SPIDER:
+%
 %	              alpha        : parameter that determines the level of message-passing
 %         		  outtag       : path to save SPIDER networks
 %	            	PriorNet     : path to epigenetically-filtered motif prior regulatory network for the 
 %				                      given cell line (DNase-seq data), can be created using BuildSPIDERprior.m
-
-%   Optional PANDA Parameters for saving 
+%
+% Optional PANDA Parameters for saving 
 %               exp_file  : path to file containing gene expression as a matrix of size (g,g)
 %               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
 %               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
@@ -57,16 +52,13 @@ function AgNet=spider_run(libpath, bedtoolspath, alpha, motifhitfile,  annofile,
 %                           1:  the final network will be saved .pairs format where each line has a TF-gene edge (Cytoscape compatible)
 %                           0:  the final network will not be saved in .pairs format
 % 
-% FINAL Output:
+% Final Output:
 %               SpiderNet     : Predicted TF-gene gene complete regulatory network using SPIDER as a matrix of size (t,g).
 %
-
+%
 % Authors: 
 %               Abhijeet Sonawane, Kimberly Glass
-% 
-% Publications:
-% 
-%                
+%               
 %% ============================================================================
 %% Set Program Parameters and Path
 %% ============================================================================
