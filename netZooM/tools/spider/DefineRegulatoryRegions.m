@@ -1,6 +1,29 @@
 function AnnoData=DefineRegulatoryRegions(annofile, ranges, outname, chrinfo);
 
-% currrently built in, could be modified
+
+
+% Description:
+%               Using gene annotation and gene coordinates, define the window of user-defined ranges around TSS
+%
+% 	Inputs:
+%               bedtoolspath : path of the bedtools (can be installed from : "https://bedtools.readthedocs.io/en/latest/content/installation.html")
+%               annofile     : file with gene annotations e.g., './ReferenceData/refseq_hg19_05292018'
+%               chrinfo      : file with chromosome information e.g.,  '/InputData/ReferenceData/GenomeWideRanges.bed'
+%               ranges       : user-defined input for ranges around TSS for constructing proximal or distal SPIDER networks
+%   	Output:
+%               AnnoData     : path to save bedfile of regulatory regions used asinput to build SPIDER prior network. 
+
+% Authors: 
+%               Abhijeet Sonawane, Kimberly Glass
+% 
+% 
+% Publications:
+% 
+
+
+
+
+% currently built in, could be modified
 % annofile='./ReferenceData/refseq_hg19_05292018'; % file with gene annotations
 % ranges={[-100000,-25000], [25000, 100000]};
 % outname='DistalRegulatoryRegions.bed';

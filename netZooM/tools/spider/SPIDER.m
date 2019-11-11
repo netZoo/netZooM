@@ -1,11 +1,40 @@
 function RegNet=SPIDER(RegNet, GeneCoReg, TFCoop, alpha);
 
+
+% Description:
+%               Using SPIDER to infer epigenetically-informed gene regulatory network. This function uses PANDA at the back end of the computation 
+%               1. Normalizing networks
+%               2. Running PANDA algorithm
+%               3. Writing out SPIDER network (optional)
+%
+% Inputs:
+%               alpha        : parameter that determines the level of message-passing
+%		RegNet       : motif prior of gene-TF regulatory network
+%               GeneCoReg    : Optional input for SPIDER: Identify matrix of size GeneNames by GeneNames is used as input by default where gene expression information is absent
+%               TFCoop       : Optional input for SPIDER: Identify matrix of size TFNames by TFNames is used as input by default if PPI network is not used as input
+%               TFCoop       : PPI binding between transcription factors
+
+
+% 
+% Outputs:
+%               SpiderNet     : Predicted TF-gene gene complete regulatory network for cell line using SPIDER and message-passing from PANDA as a matrix of size (t,g).
+%
+% Authors: 
+%               Abhijeet Sonawane, Kimberly Glass
+% 
+% 
+% Publications:
+% 
+
+
+
 [NumTFs,NumGenes]=size(RegNet);
 
 %% Run PANDA %%
 
-disp('Normalizing Networks!');
+disp('Adjusting the degree of prior network!');
 RegNet=DegreeAdjust(RegNet);
+disp('Normalizing Networks!');
 RegNet=NormalizeNetwork(RegNet);
 GeneCoReg=NormalizeNetwork(GeneCoReg);
 TFCoop=NormalizeNetwork(TFCoop);
