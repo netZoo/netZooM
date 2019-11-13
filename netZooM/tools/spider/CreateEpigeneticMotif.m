@@ -1,4 +1,4 @@
-function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
+function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath,NumTF);
 
 
 % Description:
@@ -24,8 +24,12 @@ function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
 
 % identify motif files to parse
 motiffiles=dir([motifdir, '*.bed']);
-NumTF=length(motiffiles);
+if(nargin<5)
+   NumTF=length(motiffiles);  
+end
+%NumTF=length(motiffiles);
 TFNames=cell(NumTF,1);
+disp(TFNames)
 
 % define code snippets
 btag1=[bedtoolspath, 'bedtools intersect -a '];
@@ -34,7 +38,7 @@ btag3=['""\t"1.0 >> "', outname, '"}'''];
 
 % create the new output file 
 eval(['!rm -f ', outname]);
-eval(['!touch ', outname]);
+%eval(['!touch ', outname]);
 
 % go through motifs one-by-one
 tic

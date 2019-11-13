@@ -1,4 +1,4 @@
-function AgNet=spider_run(libpath, bedtoolspath, alpha, motifhitfile,  annofile, chrinfo, ranges, regfile, outtag,motifdir, epifile )
+function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile, chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF )
 
 % Description:
 % 		Using SPIDER to infer epigenetically-informed gene regulatory network. 
@@ -96,34 +96,12 @@ addpath(lib_path);
 
 alpha=0.1; % level of message-passing
 
-%outtag='OutputNetworks/GM12878_ProximalSPIDER'; % name of file to print the final network info
-%motifhitfile='InputData/EpiMotifFiles/GM12878_filtered_motiflocations.bed'; % file storing epigenetically informed motif information, can be created with CreateEpigeneticMotif.m
-%regfile='InputData/RegulatoryRegions/ProximalRegulatoryRegions.bed'; % file containing regulatory regions for genes, can be created with DefineRegulatoryRegions.m
 
-% location of codes needed to run SPIDER
-%bedtoolspath=''; % where bedtools is installed, set equal to '' if bedtools is already on the system path
-%funcpath='./SPIDER_v2/'; % path to where all the SPIDER functions are stored
-%addpath(funcpath);
-
-
-%%%% Data Preprocessing Codes %%%%
-
-% Part 1: Build Regulatory regions
-% If needed, create the regfile with DefineRegulatoryRegions.m
-%annofile='InputData/ReferenceData/refseq_hg19_05292018'; % file with gene annotations
-%chrinfo='InputData/ReferenceData/GenomeWideRanges.bed'; % file with chromosome information
-%ranges={[-1000,+500]};
-%DefineRegulatoryRegions(annofile, ranges, regfile, chrinfo);
-
-% Part 2: Intersect TF motifs with epiegentic data (DNase seq) Bed file
-% If needed, create the motifhit file using CreateEpigeneticMotif.m
-%motifdir='InputData/MotifBedFiles/'; % where the original motif scan files are stored (one bed file per motif)
-%epifile='InputData/DNaseBedFiles/GM12878_DnasePeaks.bed'; % file with open chromatin regions
-%CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
 
 %%%%% PREPROCESSSING
 %DefineRegulatoryRegions(annofile, ranges, regfile, chrinfo);
-%CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
+
+CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath,nTF);
 
 %%%% Run SPIDER %%%%
 
@@ -131,23 +109,24 @@ alpha=0.1; % level of message-passing
 
 [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
 % Run message-passing
+%addpath('/udd/spaso/netZooM/netZooM/tools/')
 SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
 
 %%%% Print data to file %%%%
 
 % reshape network information into vectors 
-TF=repmat(TFNames, 1, length(GeneNames)); TF=TF(:);
-gene=repmat(GeneNames', length(TFNames), 1); gene=gene(:);
-PriorNet=PriorNet(:);
-SpiderNet=SpiderNet(:);
-
-% print to file
-fid=fopen([outtag, '_FinalNetwork.pairs'], 'wt');
-fprintf(fid, 'TF\tgene\tMotif\tSPIDER-prediction\n');
-for(cnt=1:length(TF))
-	fprintf(fid, '%s\t%s\t%f\t%f\n', TF{cnt}, gene{cnt}, PriorNet(cnt), SpiderNet(cnt));
-end
-fclose(fid);
+% TF=repmat(TFNames, 1, length(GeneNames)); TF=TF(:);
+% gene=repmat(GeneNames', length(TFNames), 1); gene=gene(:);
+% PriorNet=PriorNet(:);
+% SpiderNet=SpiderNet(:);
+% 
+% % print to file
+% fid=fopen([outtag, '_FinalNetwork.pairs'], 'wt');
+% fprintf(fid, 'TF\tgene\tMotif\tSPIDER-prediction\n');
+% for(cnt=1:length(TF))
+% 	fprintf(fid, '%s\t%s\t%f\t%f\n', TF{cnt}, gene{cnt}, PriorNet(cnt), SpiderNet(cnt));
+% end
+% fclose(fid);
 
 %% ============================================================================
 %% Saving SPIDER network output
@@ -158,15 +137,15 @@ if ~isempty(spider_out)
         [pathstr, name, ext] = fileparts(spider_out);
         switch ext
             case '.txt'
-                save(spider_out, 'AgNet', '-ascii');
+                save(spider_out, 'SpiderNet', '-ascii');
             case '.tsv'
-                save(spider_out, 'AgNet', '-ascii', '-tabs');
+                save(spider_out, 'SpiderNet', '-ascii', '-tabs');
             otherwise
-                save(spider_out, 'AgNet', '-v6');
+                save(spider_out, 'SpiderNet', '-v6');
         end
     toc
     if save_pairs==1
-        SavePairs(TFNames, GeneNames, AgNet, RegNet, spider_out);
+        SavePairs(TFNames, GeneNames, SpiderNet, RegNet, spider_out);
     end
 end
 
