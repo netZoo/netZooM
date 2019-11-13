@@ -21,7 +21,7 @@ frewind(fid);
 pairsNet = textscan(fid, '%s %s %s %s', 'delimiter', '\t');
 fclose(fid);
 
-if isequal(pairsNet{4}{1},'TF')
+if isempty(str2num(pairsNet{4}{1})) % check if variable name exist 
     start=2;
 else
     start=1;

@@ -7,7 +7,9 @@ function testPairs2MatSimple()
         addpath(genpath(fullfile(pwd,'tests')));
         
         % Load packages
-        pkg load nan;
+        if isOctave
+            pkg load nan;
+        end
         nGenes=1000;
         
         % load test panda network
