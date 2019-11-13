@@ -6,6 +6,7 @@ function testPairs2MatSimple()
         % Add path
         addpath(genpath(fullfile(pwd,'tests')));
         
+        isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
         % Load packages
         if isOctave
             pkg load nan;
