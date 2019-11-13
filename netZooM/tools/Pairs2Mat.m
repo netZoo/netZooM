@@ -21,19 +21,24 @@ frewind(fid);
 pairsNet = textscan(fid, '%s %s %s %s', 'delimiter', '\t');
 fclose(fid);
 
+if isequal(pairsNet{4}{1},'TF')
+    start=2;
+else
+    start=1;
+end
 % Find number of TFs
-nTFs = length(pairsNet{4}(2:end))/nGenes;
+nTFs = length(pairsNet{4}(start:end))/nGenes;
 
 % Test if dimensions are correct
-if mod(length(pairsNet{4}(2:end)),nTFs)~=0
+if mod(length(pairsNet{4}(start:end)),nTFs)~=0
     error('Check the number of genes!')
 end
 
 % Build network in matrix format
 if prior==0
-    matNet=reshape(pairsNet{4}(2:end),[nTFs,nGenes])';
+    matNet=reshape(pairsNet{4}(start:end),[nTFs,nGenes])';
 elseif prior==1
-    matNet=reshape(pairsNet{3}(2:end),[nTFs,nGenes])';
+    matNet=reshape(pairsNet{3}(start:end),[nTFs,nGenes])';
 end
 
 % Convert to double
