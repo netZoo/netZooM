@@ -7,3 +7,5 @@ Tutorials in netZooM are the following case studies:
 - [Generating single-sample gene regulatory networks using LIONESS](https://github.com/netZoo/netZooM/tree/master/tutorials/lioness)
 
 - [Differential targeting analysis using PANDA and LIONESS](https://github.com/netZoo/netZooM/tree/devel/tutorials/differential_targeting)
+
+- [Using GRAND database's API for reproducible network reconstruction](https://github.com/netZoo/netZooM/tree/devel/tutorials/grand_db)

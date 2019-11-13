@@ -6,8 +6,11 @@ function testPairs2MatSimple()
         % Add path
         addpath(genpath(fullfile(pwd,'tests')));
         
+        isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
         % Load packages
-        pkg load nan;
+        if isOctave
+            pkg load nan;
+        end
         nGenes=1000;
         
         % load test panda network
