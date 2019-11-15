@@ -30,8 +30,8 @@ function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
     btag3=['""\t"1.0 >> "', outname, '"}'''];
 
     % create the new output file 
-    eval(['!rm -f ', outname]);
-    eval(['!touch ', outname]);
+    %eval(['!rm -f ', outname]);
+    %eval(['!touch ', outname]);
 
     % go through motifs one-by-one
     tic
