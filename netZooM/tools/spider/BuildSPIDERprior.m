@@ -21,17 +21,13 @@ function [Adj, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedto
     rtag1=['temp', num2str(rval), '-a.txt'];
     rtag2=['temp', num2str(rval), '-b.txt'];
 
-    % sample program parameters
-    % bedtoolspath=''; % set equal to '' if bedtools is already on the system path
-    % motifhitfile='../InputData/FilteredMotifFiles/A549_filtered_motiflocations.bed'; 
-    % regfile='../InputData/RegulatoryRegions/DistalRegulatoryRegions.bed';
 
     disp('Identifying overlap between motif-hits and regulatory regions');
     btag1=[bedtoolspath, 'bedtools intersect -a '];
-    btag=['!', btag1, regfile, ' -b ', motifhitfile, ' -wo | awk ''{print $8"\t"$4"\t"$9 > "', rtag1, '"}'''];
-    eval(btag);
-    btag2=['!sort -u ', rtag1, ' > ', rtag2];
-    eval(btag2);
+    btag=[ btag1, regfile, ' -b ', motifhitfile, ' -wo | awk ''{print $8"\t"$4"\t"$9 > "', rtag1, '"}'''];
+    system(btag);
+    btag2=['sort -u ', rtag1, ' > ', rtag2];
+    system(btag2);
 
     disp('Contructing Regulatory Network');
     % read in mapping information for conversion to Input Network
@@ -56,6 +52,6 @@ function [Adj, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedto
     Adj=full(Adj);
 
     % clean-up
-    eval(['!rm -f ', rtag1]);
-    eval(['!rm -f ', rtag2]);
+    system(['rm -f ', rtag1]);
+    system(['rm -f ', rtag2]);
 end
