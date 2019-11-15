@@ -27,6 +27,7 @@ matrix:
     - tar -zxvf bedtools-2.28.0.tar.gz
     - cd bedtools2
     - make
+    - cd ..
     - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/statistics-1.4.1.tar.gz
     - tar -xzvf statistics-1.4.1.tar.gz
     - wget https://sourceforge.net/projects/octave/files/Octave%20Forge%20Packages/Individual%20Package%20Releases/nan-3.1.4.tar.gz
