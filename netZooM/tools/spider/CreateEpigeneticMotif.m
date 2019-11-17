@@ -1,4 +1,4 @@
-function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
+function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath, NumTF);
 % Description:
 %               Create epigenetically-filtered motif locations using bedtools and combining them into one bed file 
 %
@@ -21,7 +21,10 @@ function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
 
     % identify motif files to parse
     motiffiles=dir([motifdir, '*.bed']);
-    NumTF=length(motiffiles);
+    if(nargin<5)
+         NumTF=length(motiffiles);  
+    end
+    %NumTF=length(motiffiles);
     TFNames=cell(NumTF,1);
 
     % define code snippets
@@ -30,8 +33,8 @@ function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
     btag3=['""\t"1.0 >> "', outname, '"}'''];
 
     % create the new output file 
-    eval(['!rm -f ', outname]);
-    eval(['!touch ', outname]);
+    system(['rm -f ', outname]);
+    system(['touch ', outname]);
 
     % go through motifs one-by-one
     tic
@@ -40,8 +43,8 @@ function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
         disp(['Now working on ', TFNames{cnt}, '......']);
 
         % run bedtools intersect btw the motif and dnase data
-        btag=['!', btag1, motifdir, motiffiles(cnt).name, ' -b ', epifile, btag2, TFNames{cnt}, btag3];
-        eval(btag);
+        btag=[btag1, motifdir, motiffiles(cnt).name, ' -b ', epifile, btag2, TFNames{cnt}, btag3];
+        system(btag);
 
     end
     % update to user
