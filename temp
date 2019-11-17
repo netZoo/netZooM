@@ -1,0 +1,500 @@
+    3  DNS_PROBE_FINISHED_NXDOMAIN
+    4  ssh -Y -L 8443:ride07.bwh.harvard.edu:443 spaso@ferry.bwh.harvard.edu
+    5  ssh -Y -L 8443:ride07.bwh.harvard.edu:443 spaso@ferry.bwh.harvard.edu
+    6  ssh -Y -L 8443:ride07.bwh.harvard.edu:443 spaso@ferry.bwh.harvard.edu
+    7  exit
+    8  sudo ssh -XY spaso@ferry.bwh.harvard.edu -L 81:ride07.bwh.harvard.edu:80
+    9  sudo ssh -XY spaso@ferry.bwh.harvard.edu -L 81:ride07.bwh.harvard.edu:80
+   10  ssh -L 8000:www-yyyy.uni.edu:8000 username@ftp.xxxx.uni.edu
+   11  ssh -L 8000:ferry.bwh.harvard.edu:8000 spaso@ferry.bwh.harvard.edu
+   12  ssh -L 8000:ferry.bwh.harvard.edu:8000 spaso@ride07.bwh.harvard.edu
+   13  ssh -L 8000:ferry.bwh.harvard.edu:8000 spaso@ferry.bwh.harvard.edu
+   14  ssh -L 8000:ride07.bwh.harvard.edu:8000 spaso@ferry.bwh.harvard.edu
+   15  ssh -L :8000:ride07.bwh.harvard.edu:8000 spaso@ferry.bwh.harvard.edu
+   16  ssh -L 60:ride07.bwh.harvard.edu:60 spaso@ferry.bwh.harvard.edu
+   17  ssh -L 8000:ride07.bwh.harvard.edu:8000 spaso@ferry.bwh.harvard.edu
+   18  ssh -L 8000:ride07.bwh.harvard.edu:8000 spaso@ferry.bwh.harvard.edu
+   19  sudo ssh saath@rock.bwh.harvard.edu -L 81:chanrt.bwh.harvard.edu:80
+   20  sudo ssh spaso@ferry.bwh.harvard.edu -L 81:ride07.bwh.harvard.edu:80
+   21  ssh -XY spaso@ferry.bwh.harvard.edu
+   22  sudo ssh spaso@ferry.bwh.harvard.edu -L 81:ride07.bwh.harvard.edu:80
+   23  sudo ssh spaso@ferry.bwh.harvard.edu -L 81:ride01.bwh.harvard.edu:80
+   24  ssh spaso@ferry.bwh.harvard.edu -L 81:ride01.bwh.harvard.edu:80
+   25  ssh -Y -L 8443:ride01.bwh.harvard.edu:443 spaso@ferry.bwh.harvard.edu
+   26  ssh -Y -L 8443:ride01.bwh.harvard.edu:443 spaso@ferry.bwh.harvard.edu
+   27  exit
+   28  ssh -Y -L 8443:ride01.bwh.harvard.edu:443 spaso@ferry.bwh.harvard.edu
+   29  exit
+   30  ls
+   31  cd
+   32  cd Dropbox/SPIDER_JULY18/
+   33  ls
+   34  cd Raw/
+   35  ls
+   36  sftp  spaso@capecod.bwh.harvard.edu
+   37  sftp  spaso@ferry.bwh.harvard.edu
+   38  ssh -XY spaso@ferry.bwh.harvard.edu
+   39  ls
+   40  ls
+   41  ssh -XY spaso@ferry.bwh.harvard.edu
+   42  ssh -XY spaso@ferry.bwh.harvard.edu
+   43  sftp  spaso@capecod.bwh.harvard.edu
+   44  sftp  spaso@ferry.bwh.harvard.edu
+   45  ssh -XY spaso@ferry.bwh.harvard.edu
+   46  ls
+   47  cd Dropbox/SPIDER_JULY18/
+   48  ls
+   49  cd Raw/
+   50  ls
+   51  cd TRIADplots/
+   52  ls
+   53  ssh -XY spaso@ferry.bwh.harvard.edu
+   54  ls
+   55  sftp  spaso@capecod.bwh.harvard.edu
+   56  sftp  spaso@capecod.bwh.harvard.edu
+   57  sftp  spaso@capecod.bwh.harvard.edu
+   58  sftp  spaso@ferry.bwh.harvard.edu
+   59  sftp  spaso@ferry.bwh.harvard.edu
+   60  sftp  spaso@ferry.bwh.harvard.edu
+   61  sftp  spaso@ferry.bwh.harvard.edu
+   62  sftp  spaso@ferry.bwh.harvard.edu
+   63  df -h
+   64  sftp  spaso@ferry.bwh.harvard.edu
+   65  cd AUC_20-25kb/
+   66  sftp  spaso@ferry.bwh.harvard.edu
+   67  sftp  spaso@ferry.bwh.harvard.edu
+   68  pwd
+   69  cd ..
+   70  ls
+   71  sftp  spaso@ferry.bwh.harvard.edu
+   72  ssh -XY spaso@ferry.bwh.harvard.edu
+   73  qrsh -l "matlab=1"
+   74  exit
+   75  ssh -XY spaso@ferry.bwh.harvard.edu
+   76  ssh -XY spaso@ferry.bwh.harvard.edu
+   77  screen 
+   78  ssh -XY spaso@ferry.bwh.harvard.edu
+   79  exit
+   80  ssh -XY spaso@ferry.bwh.harvard.edu
+   81  ssh -XY spaso@ferry.bwh.harvard.edu
+   82  ?grep
+   83  ls
+   84  grep temp .
+   85  grep temp 
+   86  exit
+   87  ssh -XY spaso@ferry.bwh.harvard.edu
+   88  ssh -XY spaso@ferry.bwh.harvard.edu
+   89  ssh -XY spaso@ferry.bwh.harvard.edu
+   90  ssh -XY spaso@ferry.bwh.harvard.edu
+   91  ssh -XY spaso@ferry.bwh.harvard.edu
+   92  ssh -XY spaso@ferry.bwh.harvard.edu
+   93  ssh -XY spaso@sky.bwh.harvard.edu
+   94  ls
+   95  ssh -XY spaso@sky.bwh.harvard.edu
+   96  ssh -XY spaso@rock.bwh.harvard.edu
+   97  ssh -XY spaso@ferry.bwh.harvard.edu
+   98  ssh -XY spaso@ferry.bwh.harvard.edu
+   99  ssh -XY spaso@ferry.bwh.harvard.edu
+  100  ssh -XY spaso@ferry.bwh.harvard.edu
+  101  ssh -XY spaso@ferry.bwh.harvard.edu
+  102  ssh -XY spaso@ferry.bwh.harvard.edu
+  103  ssh -XY spaso@ferry.bwh.harvard.edu
+  104  ssh -XY spaso@ferry.bwh.harvard.edu
+  105  ssh -XY spaso@ferry.bwh.harvard.edu
+  106  cd 
+  107  cd Dropbox/Microbio_Geno/RPRC_Submission_sep-1-17/Folder3_processed_data_5dec17/
+  108  ls
+  109  less Differential_Variable_Genes_Severity.txt 
+  110  wc-l Differential_Variable_Genes_Severity.txt 
+  111  wc -l Differential_Variable_Genes_Severity.txt 
+  112  wc -l new_Differential_Variable_Genes_Severity.txt 
+  113  cd
+  114  ssh -XY spaso@ferry.bwh.harvard.edu
+  115  ssh -XY spaso@ferry.bwh.harvard.edu
+  116  ssh -XY spaso@ferry.bwh.harvard.edu
+  117  ssh -XY spaso@ferry.bwh.harvard.edu
+  118  ssh -XY spaso@ferry.bwh.harvard.edu
+  119  ssh -XY spaso@ferry.bwh.harvard.edu
+  120  ssh -XY spaso@ferry.bwh.harvard.edu
+  121  ssh -XY spaso@ferry.bwh.harvard.edu
+  122  ssh -XY spaso@ferry.bwh.harvard.edu
+  123  cd
+  124  cd Dropbox/academic_resources/Version2/
+  125  ls
+  126  cd LI_LI/
+  127  ls
+  128  cd output
+  129  ls
+  130  less Li_PANDA_FinalNetwork.pairs 
+  131  less Li_PANDA_FinalNetwork.pairs 
+  132  ssh -XY spaso@ferry.bwh.harvard.edu
+  133  cd
+  134  df -h
+  135  cd /dev/disk4s1 
+  136  cd /dev/disk4 
+  137  diskutil 
+  138  diskutil list
+  139  cd /dev/disk3
+  140  ls /Volumes/
+  141  cd /Volumes/My\ Passport/
+  142  ls
+  143  du -h
+  144  du -h > temp
+  145  cd
+  146  du -h /Volumes/My\ Passport/
+  147  du -h /Volumes/My\ Passport/ > temp
+  148  less temp
+  149  cd /Volumes/My\ Passport/sisi_backup/
+  150  du -h
+  151  cd ../
+  152  ls
+  153  du -h work/
+  154  cd 31march_UoTokyo_desktop_linux_backup/
+  155  ls
+  156  du -h
+  157  ls -lah
+  158  df -h
+  159  cd
+  160  exit
+  161  cd /Volumes/Seagate\ Expansion\ Drive/ABHIJEET/sisi_backup/Human_mobility_data_2008/
+  162  ls
+  163  du -h
+  164  cd ../..
+  165  ls
+  166  ls -lah
+  167  du -h
+  168  du -h work
+  169  cd
+  170  exit
+  171  du -h
+  172  cd Downloads/
+  173  du -h
+  174  du -h > r
+  175  less r
+  176  ls -lah
+  177  ls -lah
+  178  df -h
+  179  cd 
+  180  df -h
+  181  df -h > r
+  182  less r
+  183  du -h > r
+  184  rm r
+  185  df -h
+  186  df -h
+  187  df -h
+  188  df -h
+  189  df -h
+  190  ls
+  191  cd Movies/
+  192  cd  MultiOMic\ HARVARD\ Course/
+  193  ls
+  194  ll
+  195  ls
+  196  ls -lah
+  197  ls -lahm
+  198  ls -lah
+  199  cd ..
+  200  ls
+  201  df -h
+  202  df -h
+  203  df -h
+  204  df -h
+  205  ssh -XY spaso@ferry.bwh.harvard.edu
+  206  ssh -XY spaso@ferry.bwh.harvard.edu
+  207  cd 
+  208  cd Dropbox
+  209  cd Extra_Activities/
+  210  cd NetMed19/
+  211  got add .
+  212  git add .
+  213  git commit
+  214  git commit "eventbrite"
+  215  cd
+  216  df -h
+  217  df -h
+  218  qrsh -l "rstudio=1"
+  219  ssh -XY spaso@ferry.bwh.harvard.edu
+  220  ssh -XY spaso@ferry.bwh.harvard.edu
+  221  cd
+  222  ssh -XY spaso@ferry.bwh.harvard.edu
+  223  ssh -XY spaso@ferry.bwh.harvard.edu
+  224  ssh -XY spaso@ferry.bwh.harvard.edu
+  225  ssh -XY spaso@ferry.bwh.harvard.edu
+  226  cd 
+  227  cd Downloads/
+  228  less wgEncodeBroadHistoneGm12878H3k27me3StdAln.bb 
+  229  less wgEncodeBroadHistoneGm12878H3k27me3StdAln.bb 
+  230  cd
+  231  ssh -XY spaso@ferry.bwh.harvard.edu
+  232  ssh -XY spaso@ferry.bwh.harvard.edu
+  233  ssh -XY spaso@ferry.bwh.harvard.edu
+  234  ssh -XY spaso@ferry.bwh.harvard.edu
+  235  ssh -XY spaso@ferry.bwh.harvard.edu
+  236  exit
+  237  cd Downloads/
+  238  cd centipede
+  239  ls
+  240  less README 
+  241  less README 
+  242  less CTCF.bed 
+  243  less -S CTCF.bed 
+  244  less CTCF.bed 
+  245  ls
+  246  less Jund.bed 
+  247  ssh -XY spaso@ferry.bwh.harvard.edu
+  248  ssh -XY spaso@ferry.bwh.harvard.edu
+  249  ls
+  250  ssh -XY spaso@ferry.bwh.harvard.edu
+  251  qqq
+  252  ll
+  253  clear
+  254  ssh -XY spaso@ferry.bwh.harvard.edu
+  255  ssh -XY spaso@ferry.bwh.harvard.edu
+  256  ssh -XY spaso@ferry.bwh.harvard.edu
+  257  ssh -XY spaso@ferry.bwh.harvard.edu
+  258  pwd
+  259  ls
+  260  ssh -XY spaso@ferry.bwh.harvard.edu
+  261  pwd
+  262  sftp  spaso@ferry.bwh.harvard.edu
+  263  ssh -XY spaso@ferry.bwh.harvard.edu
+  264  ssh -XY spaso@ferry.bwh.harvard.edu
+  265  ssh -XY spaso@ferry.bwh.harvard.edu
+  266  ssh -XY spaso@ferry.bwh.harvard.edu
+  267  ssh -XY spaso@ferry.bwh.harvard.edu
+  268  ssh -XY spaso@ferry.bwh.harvard.edu
+  269  ssh -XY spaso@ferry.bwh.harvard.edu
+  270  sftp  spaso@ferry.bwh.harvard.edu
+  271  ls
+  272  pwd
+  273  pwd
+  274  ssh -XY spaso@ferry.bwh.harvard.edu
+  275  ssh -XY spaso@ferry.bwh.harvard.edu
+  276  ssh -XY spaso@ferry.bwh.harvard.edu
+  277  ssh -XY spaso@ferry.bwh.harvard.edu
+  278  ssh -XY spaso@ferry.bwh.harvard.edu
+  279  s
+  280  ssh -XY spaso@ferry.bwh.harvard.edu
+  281  ssh -XY spaso@ferry.bwh.harvard.edu
+  282  ssh -XY spaso@ferry.bwh.harvard.edu
+  283  ssh -XY spaso@ferry.bwh.harvard.edu
+  284  ssh -XY spaso@ferry.bwh.harvard.edu
+  285  ssh -XY spaso@ferry.bwh.harvard.edu
+  286  ssh -XY spaso@ferry.bwh.harvard.edu
+  287  ssh -XY spaso@ferry.bwh.harvard.edu
+  288  cd
+  289  ccd
+  290  cd
+  291  cd Dropbox/presentations/2019/NetSci19/
+  292  ls
+  293  ll
+  294  ls -lah
+  295  chmod 777
+  296  chmod 777 .
+  297  ls
+  298  ll
+  299  ls -lah
+  300  chmod 755 NetMed19.pptx 
+  301  ls -lah
+  302  clear
+  303  pwd
+  304  cd
+  305  cd Dropbox/Extra_Activities/NetMed19/
+  306  ll
+  307  git add .
+  308  git commit -m "zitnik"
+  309  history
+  310  history >temp
+  311  less temp
+  312  git commit -m -a "zitnik"
+  313  git commit -m "zitnik"
+  314  git add .
+  315  git commit -m "zitnik"
+  316  git push
+  317  git push
+  318  git add .
+  319  git commit -m "sonaw"
+  320  git push
+  321  git add .
+  322  git commit -m "sonaw1"
+  323  git push
+  324  exit
+  325  ssh -XY spaso@ferry.bwh.harvard.edu
+  326  exit
+  327  ssh -XY spaso@ferry.bwh.harvard.edu
+  328  python
+  329  ssh -XY spaso@ferry.bwh.harvard.edu
+  330  exit
+  331  "Finder" to open location "spaso@ferry.bwh.harvard.edu"
+  332  tell app "Finder" to open location "spaso@ferry.bwh.harvard.edu"
+  333  Finder" to open location "spaso@ferry.bwh.harvard.edu"
+  334  Finder" to open location "spaso@ferry.bwh.harvard.edu
+  335  Finder" to open location on "spaso@ferry.bwh.harvard.edu
+  336  sftp  spaso@ferry.bwh.harvard.edu
+  337  cd
+  338  cd Dropbox/SPIDER/figures/
+  339  cd Figure1/
+  340  ls
+  341  sftp  spaso@ferry.bwh.harvard.edu
+  342  l
+  343  pwd
+  344  cd ../
+  345  sftp  spaso@ferry.bwh.harvard.edu
+  346  pwd
+  347  ssh -XY spaso@ferry.bwh.harvard.edu
+  348  ssh -XY spaso@ferry.bwh.harvard.edu
+  349  ssh -XY spaso@ferry.bwh.harvard.edu
+  350  ssh -XY spaso@ferry.bwh.harvard.edu
+  351  ssh -XY spaso@ferry.bwh.harvard.edu
+  352  ls
+  353  cd 
+  354  cd 
+  355  cd WORK_HARVARD/
+  356  ls
+  357  ll
+  358  ls
+  359  dor
+  360  dir
+  361  ls -lah
+  362  rm .DS_Store 
+  363  ls -lah
+  364  cd
+  365  cd Dropbox/RESEARCH/
+  366  ls
+  367  cd Current_Projects/Dawn_MANTIS/
+  368  ls
+  369  ll
+  370  ls -lah
+  371  less CGcombodata_WGBS_GM12878_hg19_chr4.bed 
+  372  less Gene_Degree_COPD_GdegPri.txt 
+  373  less CGcombodata_WGBS_GM12878_hg19_chr4.bed 
+  374  less CGcombodata_WGBS_GM12878_hg19_chr4.bed 
+  375  less LTCOPD_topHits_nominal_ageCont_V1_1436199620.txt 
+  376  pwd
+  377  ssh -XY spaso@ferry.bwh.harvard.edu
+  378  ssh -XY spaso@ferry.bwh.harvard.edu
+  379  ssh -XY spaso@ferry.bwh.harvard.edu
+  380  ls
+  381  ls
+  382  ssh -XY spaso@ferry.bwh.harvard.edu
+  383  ssh -XY spaso@ferry.bwh.harvard.edu
+  384  ssh -XY spaso@ferry.bwh.harvard.edu
+  385  ssh -XY spaso@ferry.bwh.harvard.edu
+  386  ssh -XY spaso@ferry.bwh.harvard.edu
+  387  ssh -XY spaso@ferry.bwh.harvard.edu
+  388  ssh -XY spaso@ferry.bwh.harvard.edu
+  389  ssh -XY spaso@ferry.bwh.harvard.edu
+  390  ssh -XY spaso@ferry.bwh.harvard.edu
+  391  ssh -XY spaso@ferry.bwh.harvard.edu
+  392  ssh -XY spaso@ferry.bwh.harvard.edu
+  393  ssh -XY spaso@ferry.bwh.harvard.edu
+  394  cd
+  395  cd .Trash/
+  396  ls
+  397  ls -lah
+  398  ll
+  399  dir
+  400  ls -lah
+  401  cd Recovered\ files
+  402  ls
+  403  cd EN0000092e 
+  404  less EN0000092e 
+  405  cd ../Recovered\ files #1
+  406  ls
+  407  cd ..
+  408  cd ../Recovered\ files//#1
+  409  cd ../
+  410  l
+  411  la
+  412  ls
+  413  cd .Trash/
+  414  ls
+  415  cd Recovered\ files\ #1
+  416  ls
+  417  ll
+  418  ls -lah
+  419  cd en002b5429
+  420  less en002b5429
+  421  cd
+  422  cd ~/Library/Containers/com.microsoft.Word/Data/Library/Preferences/AutoRecovery 
+  423  ls
+  424  cd
+  425  ssh -XY spaso@ferry.bwh.harvard.edu
+  426  cd
+  427  ssh -XY spaso@ferry.bwh.harvard.edu
+  428  cd WORK_HARVARD/MOUSE_ATACseq/
+  429  cd Nature\ scientific\ data\ peak\ file
+  430  ls
+  431  cd Before\ IDR/
+  432  ls
+  433  less Male_Thymus_rep1_peaks.narrowPeak 
+  434  cd
+  435  cd Dropbox/
+  436  du -h
+  437  du -h > ~/t
+  438  less ~/t
+  439  du -h > ~/t
+  440  less ~/t
+  441  du -h > ~/t
+  442  less ~/t
+  443  ssh -XY spaso@ferry.bwh.harvard.edu
+  444  ssh -XY spaso@ferry.bwh.harvard.edu
+  445  ssh -XY spaso@ferry.bwh.harvard.edu
+  446  cd
+  447  cd WORK_HARVARD
+  448  ls
+  449  mkdir GITHUB
+  450  cd GITHUB/
+  451  git clone https://github.com/NetBio/netZooM.git
+  452  ls
+  453  ls
+  454  git --version
+  455  sudo xcodebuild -license
+  456  git --version
+  457  git clone https://github.com/NetBio/netZooM.git
+  458  exit
+  459  exit
+  460  cd
+  461  ssh -XY spaso@ferry.bwh.harvard.edu
+  462  ssh -XY spaso@ferry.bwh.harvard.edu
+  463  /Users/abhijeet/Downloads/pinfinder ; exit;
+  464  /Users/abhijeet/Downloads/pinfinder ; exit;
+  465  du -h
+  466  df -h
+  467  ssh -XY spaso@ferry.bwh.harvard.edu
+  468  ls
+  469  cd
+  470  mkdir GitHub
+  471  cd GitHub/
+  472  ls
+  473  sftp  spaso@ferry.bwh.harvard.edu
+  474  sftp  spaso@ferry.bwh.harvard.edu
+  475  top 
+  476  bg
+  477  fg
+  478  cd
+  479  cd .Trash/
+  480  ls
+  481  ls
+  482  ls
+  483  ls
+  484  ls
+  485  exit
+  486  ssh -XY spaso@ferry.bwh.harvard.edu
+  487  ssh -XY spaso@ferry.bwh.harvard.edu
+  488  exit
+  489  ssh -XY spaso@ferry.bwh.harvard.edu
+  490  sftp  spaso@ferry.bwh.harvard.edu
+  491  ls
+  492  rm refseq_hg19_05292018 
+  493  ls
+  494  pwd
+  495  ls
+  496  mkdir spider
+  497  ls
+  498  cd spider/
+  499  ls
+  500  sftp  spaso@ferry.bwh.harvard.edu
+  501  history >temp
+  502  history >temp
