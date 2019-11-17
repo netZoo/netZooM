@@ -1,4 +1,4 @@
-function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
+function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath, NumTF);
 % Description:
 %               Create epigenetically-filtered motif locations using bedtools and combining them into one bed file 
 %
@@ -21,7 +21,10 @@ function CreateEpigeneticMotif(epifile, motifdir, outname, bedtoolspath);
 
     % identify motif files to parse
     motiffiles=dir([motifdir, '*.bed']);
-    NumTF=length(motiffiles);
+    if(nargin<5)
+         NumTF=length(motiffiles);  
+    end
+    %NumTF=length(motiffiles);
     TFNames=cell(NumTF,1);
 
     % define code snippets

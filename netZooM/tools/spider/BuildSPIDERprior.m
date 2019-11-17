@@ -21,6 +21,7 @@ function [Adj, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedto
     rtag1=['temp', num2str(rval), '-a.txt'];
     rtag2=['temp', num2str(rval), '-b.txt'];
 
+    %bedtoolspath = '/opt/local/bin/' % temp remove
 
     disp('Identifying overlap between motif-hits and regulatory regions');
     btag1=[bedtoolspath, 'bedtools intersect -a '];

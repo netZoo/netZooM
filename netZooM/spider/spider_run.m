@@ -92,7 +92,7 @@ addpath(lib_path);
 
 % SPIDER parameters -- note this area can be extended to include gene expression and PPI information
 
-alpha=0.1; % level of message-passing
+%alpha=0.1; % level of message-passing
 
 %%%%% PREPROCESSSING
 if(~isempty(ranges))
@@ -106,6 +106,14 @@ CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath,nTF);
 % Build SPIDER prior
 
 [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
+
+%temporary reduction in number of genes for TRAVIS
+numGenes = 100 
+GeneNames = GeneNames(1:numGenes);
+PriorNet = PriorNet(:,1:numGenes);
+% Remove this section for including all genes.
+
+
 % Run message-passing
 SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
 
