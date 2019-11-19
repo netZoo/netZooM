@@ -10,11 +10,9 @@ To install netZooM on your computer, please check the following requirements:
 
 ## Install
 
-- git clone https://github.com/netZoo/netZooM.git
+- `git clone https://github.com/netZoo/netZooM.git`
 
-- In MATLAB console, add netZooM to your path:
-
-- `addpath(genpath('netZooM'))`
+- In MATLAB console, add netZooM to your path through `addpath(genpath('netZooM'))`
 
 ## Troubleshooting
 

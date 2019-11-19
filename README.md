@@ -10,6 +10,9 @@ Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/mas
 ## Description
 netZooM is a MATLAB package of network methods.
 
+## Zoo animals
+PANDA, LIONESS, PUMA, and SPIDER.
+
 ## Quick guide
 `git clone https://github.com/netZoo/netZooM.git` into your local disk. 
 
