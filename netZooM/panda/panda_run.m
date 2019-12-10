@@ -1,4 +1,4 @@
-function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs)
+function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -22,6 +22,10 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %               save_pairs: (Optional) boolean parameter
 %                           1:  the final network will be saved .pairs format where each line has a TF-gene edge (Cytoscape compatible)
 %                           0:  the final network will not be saved in .pairs format
+%               modeProcess: Refers to the procedure to filter input data.
+%                           'legacy' old deprecated behavior of netZooM <= 0.5
+%                           (Default)'union' fills missing genes and TFs with zero rows
+%                           'intersection' removes missing genes and TFs
 % 
 % Outputs:
 %               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
@@ -38,6 +42,9 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 disp(datestr(now));
 
 % Set default parameters
+if nargin < 9
+    modeProcess='union';
+end
 if nargin < 8
 	save_pairs=0;
 end
@@ -56,49 +63,7 @@ addpath(lib_path);
 %% ============================================================================
 %% Read in Data
 %% ============================================================================
-disp('Reading in expression data!');
-tic
-    fid = fopen(exp_file, 'r');
-    headings = fgetl(fid);
-    n = length(regexp(headings, '\t'));
-    frewind(fid);
-    %Exp = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t', 'CommentStyle', '#');
-    Exp = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t'); % tiny speed-up by not checking for comments
-    fclose(fid);
-    GeneNames = Exp{1};
-    Exp = cat(2, Exp{2:end});
-    [NumGenes, NumConditions] = size(Exp);
-    fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
-    Exp = Exp';  % transpose expression matrix from gene-by-sample to sample-by-gene
-toc
-
-disp('Reading in motif data!');
-tic
-    [TF, gene, weight] = textread(motif_file, '%s%s%f');
-    TFNames = unique(TF);
-    NumTFs = length(TFNames);
-    [~,i] = ismember(TF, TFNames);
-    [~,j] = ismember(gene, GeneNames);
-    RegNet = zeros(NumTFs, NumGenes);
-    RegNet(sub2ind([NumTFs, NumGenes], i, j)) = weight;
-    fprintf('%d TFs and %d edges!\n', NumTFs, length(weight));
-toc
-
-disp('Reading in ppi data!');
-tic
-    TFCoop = eye(NumTFs);
-    if(~isempty(ppi_file))
-        [TF1, TF2, weight] = textread(ppi_file, '%s%s%f');
-        [~,i] = ismember(TF1, TFNames);
-        [~,j] = ismember(TF2, TFNames);
-        TFCoop(sub2ind([NumTFs, NumTFs], i, j)) = weight;
-        TFCoop(sub2ind([NumTFs, NumTFs], j, i)) = weight;
-        fprintf('%d PPIs!\n', length(weight));
-    end
-toc
- 
-% Clean up variables to release memory
-clear headings n TF gene TF1 TF2 weight;
+[Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,ppi_file,modeProcess);
 
 %% ============================================================================
 %% Run PANDA
