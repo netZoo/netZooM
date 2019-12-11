@@ -63,8 +63,8 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
         [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
             ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
             readData(exp_file,motif_file,ppi_file);
-        GeneNames=unique([GeneMotif,GeneNamesExp]);
-        TFNames  =unique([TfMotif,TFNamesInit]);
+        GeneNames=unique(union(GeneMotif,GeneNamesExp));
+        TFNames  =unique(union(TfMotif,TFNamesInit));
         [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
             GeneNamesExp,ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2);
     elseif isequal(modeProcess,'intersection')
