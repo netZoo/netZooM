@@ -22,6 +22,7 @@ function testPandaSimple()
         lib_path   = '../netZooM';  % path to the folder of PANDA source code
         alpha      = 0.1;
         save_pairs = 0;%saving in .pairs format
+        modeProcess= 'intersection';
 
         % Add path
         addpath(genpath(fullfile(pwd,'tests')));
@@ -30,7 +31,8 @@ function testPandaSimple()
         %mkdir tmp;
 
         % Call Panda
-        AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs);
+        AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+            save_temp, alpha, save_pairs, modeProcess);
 
         % Load the expected result
         ExpAgNet = textread('test_data/panda.test.txt');
