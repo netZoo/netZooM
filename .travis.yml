@@ -48,8 +48,8 @@ matrix:
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
-    - curl -O https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz
-    - tar -zxvf bedtools-2.28.0.tar.gz
+    - curl -OL https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz
+    - tar -xzf bedtools-2.28.0.tar.gz
     - cd bedtools2
     - make
     - cd ..
