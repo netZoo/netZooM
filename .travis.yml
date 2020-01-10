@@ -38,9 +38,7 @@ matrix:
     - cd netZooM
   - os: osx
     before_install:
-    - sudo chown -R "$USER":admin /usr/local
-    - sudo chown -R "$USER":admin /Library/Caches/Homebrew
-    - brew link libpng
+    - sudo brew link --overwrite gcc
     - brew update
     - brew install octave > /dev/null
     - brew install md5sha1sum
