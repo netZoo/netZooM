@@ -38,7 +38,6 @@ matrix:
     - cd netZooM
   - os: osx
     before_install:
-    - sudo chown $USER:admin /usr/local/share/man/de/man1
     - sudo chown -R "$USER":admin /usr/local
     - sudo chown -R "$USER":admin /Library/Caches/Homebrew
     - brew link libpng
