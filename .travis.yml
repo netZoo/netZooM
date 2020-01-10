@@ -38,8 +38,6 @@ matrix:
     - cd netZooM
   - os: osx
     before_install:
-    - brew update
-    - brew upgrade
     - brew install octave > /dev/null
     - brew install md5sha1sum
     - cd ..
