@@ -53,8 +53,6 @@ function testSpiderSimple()
 
         % Load the expected result
         ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');
-        % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,2), size(SpiderNet,1)])';
 
         % Compare the outputs
         tolMat=1e-6;
