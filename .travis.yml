@@ -39,7 +39,7 @@ matrix:
   - os: osx
     before_install:
     - brew update
-    - brew link --overwrite octave
+    - brew upgrade
     - brew install octave > /dev/null
     - brew install md5sha1sum
     - cd ..
