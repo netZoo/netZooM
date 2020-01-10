@@ -38,7 +38,7 @@ matrix:
     - cd netZooM
   - os: osx
     before_install:
-    - sudo brew link --overwrite gcc
+    - brew link --overwrite gcc
     - brew update
     - brew install octave > /dev/null
     - brew install md5sha1sum
