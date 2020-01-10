@@ -10,7 +10,7 @@ function testSpiderSimple()
         if isOctave
                 %we need the nan package because it has a fast implementation of corrcoeff
                 %pkg load statistics
-		pkg load nan;
+            pkg load nan;
         end
 
         % Set Program Parameters
@@ -52,9 +52,9 @@ function testSpiderSimple()
         %SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
 
         % Load the expected result
-        ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');
+        ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');%different behavior with Octave and Matlab
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,1), size(SpiderNet,2)]);
+        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,2), size(SpiderNet,1)])';
 
         % Compare the outputs
         tolMat=1e-6;
