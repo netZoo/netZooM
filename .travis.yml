@@ -39,9 +39,8 @@ matrix:
   - os: osx
     before_install:
     - brew update
-    - curl -O https://github.com/octave-app/octave-app/releases/download/v4.4.1-u1/Octave-4.4.1-u1.dmg #brew install octave > /dev/null
-    - hdiutil attach Octave-4.4.1-u1.dmg
-    - installer -package /Volumes/Octave-4.4.1-u1.dmg/Octave-4.4.1-u1.pkg -target /
+    - brew tap octave-app/octave-app-bases
+    - brew install octave-octave-app
     - brew install md5sha1sum
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
