@@ -41,7 +41,7 @@ matrix:
     - brew update
     - brew cask install homebrew/cask-versions/adoptopenjdk8 #Install JDK
     - brew tap octave-app/octave-app-bases
-    - brew install octave-octave-app --without-docs
+    - travis_wait brew install octave-octave-app --without-docs
     - brew install md5sha1sum
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
