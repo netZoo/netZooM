@@ -88,7 +88,7 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     %Populate result
     %Gene expression
     [~,ig]= ismember(GeneNamesExp,GeneNames);
-    Exp(ig,:)= ExpInit;
+    Exp(find(ig),:)= ExpInit(find(ig),:);
     Exp      = Exp'; 
     %Motif
     [~,i] = ismember(TF, TFNames);
