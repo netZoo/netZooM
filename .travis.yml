@@ -40,7 +40,7 @@ matrix:
     before_install:
     - brew update
     - brew tap octave-app/octave-app-bases
-    - brew install octave-octave-app
+    - brew install octave-octave-app --without-docs
     - brew install md5sha1sum
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
