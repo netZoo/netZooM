@@ -37,11 +37,10 @@ matrix:
     - octave -q --eval "pkg install io-2.4.12;pkg install nan-3.1.4;pkg install statistics-1.4.1;"
     - cd netZooM
   - os: osx
+    - osx_image: xcode11.3
     before_install:
     - brew update
-    - brew cask install homebrew/cask-versions/adoptopenjdk8 #Install JDK
-    - brew tap octave-app/octave-app-bases
-    - travis_wait brew install octave-octave-app --without-docs
+    - brew install octave > /dev/null
     - brew install md5sha1sum
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
