@@ -37,6 +37,7 @@ matrix:
     - octave -q --eval "pkg install io-2.4.12;pkg install nan-3.1.4;pkg install statistics-1.4.1;"
     - cd netZooM
   - os: osx
+    osx_image: xcode9.3
     before_install:
     - brew update
     - brew install octave > /dev/null
@@ -48,8 +49,8 @@ matrix:
     - rm -rf MOcov;
     - git clone https://github.com/MOcov/MOcov.git;
     - make -C MOcov install; #Install Octave coverage report
-    - wget https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz
-    - tar -zxvf bedtools-2.28.0.tar.gz
+    - curl -OL https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz
+    - tar -xzf bedtools-2.28.0.tar.gz
     - cd bedtools2
     - make
     - cd ..
