@@ -38,8 +38,7 @@ matrix:
     - cd netZooM
   - os: osx
     before_install:
-    - brew update
-    - brew install octave > /dev/null
+    - HOMEBREW_NO_AUTO_UPDATE=1 brew install octave > /dev/null
     - brew install md5sha1sum
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
