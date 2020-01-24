@@ -1,4 +1,5 @@
-function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess)
+function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess,...
+    respWeight,absCoex)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -8,7 +9,7 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %               5. Writing out PANDA network (optional)
 %
 % Inputs:
-%               exp_file  : path to file containing gene expression as a matrix of size (g,g)
+%               exp_file  : path to file containing gene expression as a matrix of size (g,n)
 %               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
 %               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
 %               panda_out : path to save output PANDA network
@@ -26,7 +27,10 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                           'legacy' old deprecated behavior of netZooM <= 0.5
 %                           (Default)'union' fills missing genes and TFs with zero rows
 %                           'intersection' removes missing genes and TFs
-% 
+%               respWeight:  real number between 0 and 1. Weight of the responsability matrix (default: 0.5)
+%               absCoex   :  0: take the signed correlation matrix (Default)
+%                            1: take the absolute value of the coexpression matrix
+%                          
 % Outputs:
 %               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
 %
@@ -42,6 +46,12 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 disp(datestr(now));
 
 % Set default parameters
+if nargin <11
+    absCoex=0;
+end
+if nargin <10
+    respWeight=0.5;
+end
 if nargin < 9
     modeProcess='union';
 end
@@ -70,6 +80,9 @@ addpath(lib_path);
 %% ============================================================================
 disp('Computing coexpression network:');
 tic; GeneCoReg = Coexpression(Exp); toc;
+if absCoex==1
+    GeneCoReg=abs(GeneCoReg);
+end
 
 disp('Normalizing Networks:');
 tic
@@ -93,7 +106,7 @@ end
 clear Exp;  % Clean up Exp to release memory (for low-memory machine)
 
 disp('Running PANDA algorithm:');
-AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
+AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight);
 
 %% ============================================================================
 %% Saving PANDA network output
