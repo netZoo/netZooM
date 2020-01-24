@@ -37,11 +37,8 @@ matrix:
     - octave -q --eval "pkg install io-2.4.12;pkg install nan-3.1.4;pkg install statistics-1.4.1;"
     - cd netZooM
   - os: osx
-    osx_image: xcode9.3
     before_install:
-    - brew update
-    - brew install octave > /dev/null
-    - brew install md5sha1sum
+    - HOMEBREW_NO_AUTO_UPDATE=1 brew install octave > /dev/null
     - cd ..
     - rm -rf MOxUnit; #Install Octave unit test package
     - git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
