@@ -1,15 +1,13 @@
-function tdist = Tfunction(X,Y)
+function Amat = Tfunction(X,Y)
 % Description:
-%              UComputes a modified version of the tanimoto distance as described
-%              in Glass, Kimberly, et al. "Passing messages between biological networks to refine predicted interactions." 
-%              PloS one 8.5 (2013). https://doi.org/10.1371/journal.pone.0064832
+%              Updates Amat matrix using matrices X and Y         
 %
 % Inputs:
-%               X   : 1-by-n vector
-%               Y   : m2-by-n matrix
+%               X   : adjacency matrix
+%               Y   : adjacency matrix
 %
 % Outputs:
-%               tdist: m2-by-1 vector of distacnes
+%               Amat: updated matrix from X and Y
 %
 % Authors:
 %               Kimberly Glass, cychen
@@ -19,9 +17,14 @@ function tdist = Tfunction(X,Y)
 %               MATLAB uses BLAS routines to do matrix multiplication. MATLAB parser recognizes X*X' as
 %               a symmetric matrix multiply and will call the symmetric matrix multiply routine (only 
 %               calculates about 1/2 the answer and then fills in the rest with copies, which is faster).
-
-    tdist = X * Y';
-    Bvec = sum(Y' .^ 2, 1);
-    Cvec = sum(X .^ 2, 2);
-    tdist = tdist ./ sqrt(bsxfun(@plus, Bvec, Cvec) - abs(tdist));
+    switch nargin
+        case 1
+            Amat = X * X';
+            Cvec = sum(X .^ 2, 2);
+            Amat = Amat ./ sqrt(bsxfun(@plus, Cvec', Cvec) - abs(Amat));
+        case 2
+            Amat = X * Y;
+            Bvec = sum(Y .^ 2, 1);
+            Cvec = sum(X .^ 2, 2);
+            Amat = Amat ./ sqrt(bsxfun(@plus, Bvec, Cvec) - abs(Amat));
 end

@@ -31,9 +31,9 @@ function testPandaSimple()
         %mkdir tmp;
 
         % Call Panda
-        AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
-            save_temp, alpha, save_pairs, modeProcess);
-
+        tic;AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+            save_temp, alpha, save_pairs, modeProcess);toc;
+        
         % Load the expected result
         ExpAgNet = textread('test_data/panda.test.txt');
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
