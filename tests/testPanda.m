@@ -37,7 +37,7 @@ function testPandaSimple()
         % Load the expected result
         ExpAgNet = textread('test_data/panda.test.txt');
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        ExpAgNet = reshape(ExpAgNet,[size(AgNet,2), size(AgNet,1)])';
+        ExpAgNet = reshape(ExpAgNet,[size(AgNet,2), size(AgNet,1)])';% Only in octave
 
         % Compare the outputs
         tolMat=1e-6;

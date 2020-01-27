@@ -26,18 +26,20 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight)
     step = 0;
     hamming = 1;
     while hamming > 0.001
-        R = Tfunction(TFCoop, RegNet);
-        A = Tfunction(RegNet, GeneCoReg);
-        W = respWeight*R + (1-respWeight)*A;
+        R = pdist2(TFCoop, RegNet',@Tfunction);
+        A = pdist2(GeneCoReg,RegNet,@Tfunction);
+        W = respWeight*R + (1-respWeight)*A';
         hamming = mean(abs(RegNet(:) - W(:)));
         RegNet = (1 - alpha) * RegNet + alpha * W;
 
         if hamming > 0.001
-            PPI = Tfunction(RegNet);
+            PPI = pdist(RegNet,@Tfunction);
+            PPI = squareform(PPI);
             PPI = UpdateDiagonal(PPI, NumTFs, alpha, step);
             TFCoop = (1 - alpha) * TFCoop + alpha * PPI;
 
-            CoReg2 = Tfunction(RegNet');
+            CoReg2 = pdist(RegNet',@Tfunction);
+            CoReg2 = squareform(CoReg2);
             CoReg2 = UpdateDiagonal(CoReg2, NumGenes, alpha, step);
             GeneCoReg = (1 - alpha) * GeneCoReg + alpha * CoReg2;
         end
