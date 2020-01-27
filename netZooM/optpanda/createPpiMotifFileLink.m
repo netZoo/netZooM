@@ -1,6 +1,6 @@
-function [motif_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
+function [motif_file,ppi_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
     addCorr,motif_file,absCoex,ppi_file,thresh,oldMotif,incCoverage,...
-    qpval,bridgingProteins,addChip,ctrl)
+    qpval,bridgingProteins,addChip,ctrl,ppiExp)
 % Description:
 %               Generate a new tf-gene regulation prior for optPANDA. 
 %
@@ -37,12 +37,27 @@ function [motif_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,..
 %                                  5 : 4 + second-order neighbors
 %                                  6 : 5 + third-order neighbors
 %                                  7 : 6 + fourth-order neighbors
-%               addChip     : {0,1} adds chip-seq in the TF-gene regulation prior
+%               addChip     : {0,1,2} adds chip-seq in the TF-gene regulation prior
+%                                  1 : adds chipseq data from all of remap (union of all chipseq experiments
+%                                      i.e., nonspecific to conetxt) 
+%                                  2 : same as 1 but uses 2 and -1 for
+%                                      presence/absence to differentiate from
+%                                      PWMs that use 1 and 0.
 %               ctrl        : {0,1,2,3} Dummy variable used in the optimisation process 
 %                                       to compute the performance of a null variable 
+%               ppiExp      : {0,1,2,3,4,5,6} scaling of PPI data by TF-TF
+%                              Coexpression (tfco)
+%                             1 : PPI*.|tfco| + fill missing with 0
+%                             2 : PPI*.|tfco| + fill missing with 1
+%                             3 : PPI*.|tfco| + fill missing with mean
+%                             4 : PPI*.tfco + fill missing with 0
+%                             5 : PPI*.tfco + fill missing with 1
+%                             6 : PPI*.tfco + fill missing with mean
 %
 % Outputs:
 %               motif_file  : tf-gene regulation prior for optPANDA in
+%                             .pairs format.
+%               ppi_file    : tf-tf ppi prior for optPANDA in
 %                             .pairs format.
 %
 % Authors: 
@@ -61,6 +76,14 @@ function [motif_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,..
     b      = readtable(ppi_file,'FileType','text');
     TFNames= unique(b.Var1);
     NumTFs = length(TFNames);
+    TFCoop = zeros(NumTFs);
+    TF1    = b.Var1;
+    TF2    = b.Var2;
+    weight = b.Var3;
+    [~,i]  = ismember(TF1, TFNames);
+    [~,j]  = ismember(TF2, TFNames);
+    TFCoop(sub2ind([NumTFs, NumTFs], i, j)) = weight;
+    TFCoop(sub2ind([NumTFs, NumTFs], j, i)) = weight; 
 
     if isstruct(motif_file)
         RegNet=motif_file.RegNet;
@@ -99,12 +122,46 @@ function [motif_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,..
         RegNet(itf,:)=-1;
         for i=1:length(igt)
             [a,ib,ic]  = intersect(gt{igt(i),2:end}, GeneNames);
-            RegNet(itf(i),ic)= 1;
+            RegNet(itf(i),ic)= 2;
         end
     end
     
     % compute gene-gene coexpression
     GeneCoReg = Coexpression(Exp);
+    
+    if ppiExp==1
+        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        multMotif          = zeros(NumTFs,NumTFs);
+        multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));%abs of coexp
+        TFCoop             = TFCoop.*multMotif;
+    elseif ppiExp==2
+        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        multMotif          = ones(NumTFs,NumTFs);
+        multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));
+        TFCoop             = TFCoop.*multMotif;  
+    elseif ppiExp==3
+        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        multMotif          = zeros(NumTFs,NumTFs);
+        multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));
+        multMotif(multMotif == 0) = mean2(multMotif);
+        TFCoop             = TFCoop.*multMotif; 
+    elseif ppiExp==4
+        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        multMotif          = zeros(NumTFs,NumTFs);
+        multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);%abs of coexp
+        TFCoop             = TFCoop.*multMotif;
+    elseif ppiExp==5
+        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        multMotif          = ones(NumTFs,NumTFs);
+        multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);
+        TFCoop             = TFCoop.*multMotif;  
+    elseif ppiExp==6
+        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        multMotif          = zeros(NumTFs,NumTFs);
+        multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);
+        multMotif(multMotif == 0) = mean2(multMotif);
+        TFCoop             = TFCoop.*multMotif; 
+     end
     
     if addCorr==1
         % Find TF index in gene names
@@ -173,6 +230,12 @@ function [motif_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,..
         '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
         '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
         '_PE' num2str(ctrl) '.txt'];
+    [filepath,name,ext]=fileparts(ppi_file);
+    ppi_file = [name '_' ppi_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
+        '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
+        '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
+        '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
+        '_PE' num2str(ctrl) '.txt'];
     
     % Save motif file
     TF    = repmat(TFNames, 1, length(GeneNames));
@@ -187,4 +250,16 @@ function [motif_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,..
     end
     fclose(fid);
     
+    % Save PPI file
+    TF    = repmat(TFNames, 1, length(TFNames));
+    TF2   = repmat(TFNames', length(TFNames), 1);
+    TF    = TF(:);
+    TF2   = TF2(:);
+    TFCoop= TFCoop(:);%linearizes by column
+    % Saving file
+    fid   = fopen(ppi_file, 'wt');
+    for(cnt=1:length(TF))
+        fprintf(fid, '%s\t%s\t%f\n', TF{cnt}, TF2{cnt}, TFCoop(cnt) );
+    end
+    fclose(fid);
 end

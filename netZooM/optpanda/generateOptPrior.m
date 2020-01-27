@@ -1,6 +1,6 @@
-function [motif_file,GeneNames,allTFName]=generateOptPrior(exp_file,incCoverage,bridgingProteins,oldMotif,...
+function [motif_file,GeneNames,allTFName,ppi_file]=generateOptPrior(exp_file,incCoverage,bridgingProteins,oldMotif,...
     qpval,precomputed,motif_fil,motifWeight,motifCutOff,addCorr,absCoex,thresh,...
-    addChip,ctrl)
+    addChip,ctrl,ppiExp)
 % Description:
 %               Generate a new tf-gene regulation prior for optPANDA. 
 %
@@ -36,9 +36,22 @@ function [motif_file,GeneNames,allTFName]=generateOptPrior(exp_file,incCoverage,
 %               addCorr     : {0,1} augment the TF-gene regulation prior by adding TF-gene coexpression
 %               absCoex     : {0,1} takes the absolute value of the coexpression matrix
 %               thresh      : [0,1] p-value threshold to assign binding in TF-gene regulation prior
-%               addChip     : {0,1} adds chip-seq in the TF-gene regulation prior
+%               addChip     : {0,1,2} adds chip-seq in the TF-gene regulation prior
+%                                  1 : adds chipseq data from all of remap (union of all chipseq experiments
+%                                      i.e., nonspecific to conetxt) 
+%                                  2 : same as 1 but uses 2 and -1 for
+%                                      presence/absence to differentiate from
+%                                      PWMs that use 1 and 0.
 %               ctrl        : {0,1,2,3} Dummy variable used in the optimisation process 
 %                                       to compute the performance of a null variable 
+%               ppiExp      : {0,1,2,3,4,5,6} scaling of PPI data by TF-TF
+%                              Coexpression (tfco)
+%                             1 : PPI*.|tfco| + fill missing with 0
+%                             2 : PPI*.|tfco| + fill missing with 1
+%                             3 : PPI*.|tfco| + fill missing with mean
+%                             4 : PPI*.tfco + fill missing with 0
+%                             5 : PPI*.tfco + fill missing with 1
+%                             6 : PPI*.tfco + fill missing with mean
 %                          
 % Outputs:
 %               motif_file : tf-gene regulation prior for optPANDA in
@@ -101,9 +114,9 @@ function [motif_file,GeneNames,allTFName]=generateOptPrior(exp_file,incCoverage,
     end
     if precomputed == 0
         % create motif file
-        motif_file=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
+        [motif_file,ppi_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
             addCorr,motif_file,absCoex,ppi_file,thresh,oldMotif,...
-            incCoverage,qpval,bridgingProteins,addChip,ctrl);
+            incCoverage,qpval,bridgingProteins,addChip,ctrl,ppiExp);
     elseif precomputed==1
         % provide link to motif file based on parameters
         [filepath,name,ext]=fileparts(exp_file);
@@ -112,6 +125,12 @@ function [motif_file,GeneNames,allTFName]=generateOptPrior(exp_file,incCoverage,
             '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
             '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
             '_PE' num2str(ctrl) '.txt'];
+            [filepath,name,ext]=fileparts(ppi_file);
+        ppi_file = [name '_' ppi_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
+        '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
+        '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
+        '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
+        '_PE' num2str(ctrl) '.txt'];
     end
     
 end
