@@ -68,6 +68,9 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 disp(datestr(now));
 
 % Set default parameters
+if nargin <12
+   similarityMetric='Tfunction';
+end
 if nargin <11
     absCoex=0;
 end

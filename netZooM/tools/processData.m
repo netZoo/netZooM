@@ -37,7 +37,8 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
 
         disp('Reading in motif data!');
         tic
-            [TF, gene, weight] = textread(motif_file, '%s%s%f');
+            C = textscan(motif_file, '%s%s%f');
+            TF=C{1,1};gene=C{1,2};weight=C{1,3};
             TFNames = unique(TF);
             NumTFs = length(TFNames);
             [~,i] = ismember(TF, TFNames);
@@ -51,7 +52,8 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
         tic
             TFCoop = eye(NumTFs);
             if(~isempty(ppi_file))
-                [TF1, TF2, weight] = textread(ppi_file, '%s%s%f');
+                C = textscan(ppi_file, '%s%s%f');
+                TF1=C{1,1};TF2=C{1,2};weight=C{1,3};
                 [~,i] = ismember(TF1, TFNames);
                 [~,j] = ismember(TF2, TFNames);
                 TFCoop(sub2ind([NumTFs, NumTFs], i, j)) = weight;
@@ -131,13 +133,19 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
     end
     % Read motif
     disp('Reading in motif data!');
-    [TF, gene, weightMotif] = textread(motif_file, '%s%s%f');
+    motif_file_id = fopen(motif_file);
+    C = textscan(motif_file_id, '%s%s%f');
+    fclose(motif_file_id);
+    TF=C{1,1};gene=C{1,2};weightMotif=C{1,3};
     TfMotif  = unique(TF);
     GeneMotif= unique(gene);
     % Read PPI
     disp('Reading in ppi data!');
     if(~isempty(ppi_file))
-        [TF1, TF2, weightPPI] = textread(ppi_file, '%s%s%f');
+        ppi_file_id = fopen(ppi_file);
+        C = textscan(ppi_file_id, '%s%s%f');
+        fclose(motif_file_id);
+        TF1=C{1,1};TF2=C{1,2};weightPPI=C{1,3};
     end
     TFNamesInit=unique(TF1);
     if ~isequal(TFNamesInit,unique(TF2))
