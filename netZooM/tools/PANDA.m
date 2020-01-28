@@ -63,6 +63,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
         if canUseGPU==0
             error('Please check your GPU device driver.')
         end
+        similarityMetricChar=similarityMetric;
         if ~ischar(similarityMetric)
             similarityMetricChar=func2str(similarityMetric);
         end
