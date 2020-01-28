@@ -3,6 +3,9 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
     motifCutOff,addCorr,absCoex,thresh,addChip,ctrl,ppiExp,explore)
 % Description:
 %               Generate a new tf-gene regulation prior for optPANDA. 
+%               Please refer to the LiveScript tutorial 
+%               'Accurate reconstruction of gene regulatory networks using optPANDA'
+%               for a full working example. https://github.com/netZoo/netZooM/tree/master/tutorials
 %
 % Inputs:
 %               exp_file    : path to file containing gene expression as a matrix of size (g,n)
