@@ -64,8 +64,10 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
             error('Please check your GPU device driver.')
         end
         similarityMetricChar=similarityMetric;
-        if ~ischar(similarityMetric)
+        if isa(similarityMetric,'function_handle')
             similarityMetricChar=func2str(similarityMetric);
+        elseif iscategorical(similarityMetric)
+            similarityMetricChar=char(similarityMetric(1));
         end
         if ismember(similarityMetricChar,{'TfunctionDist','spearman'})
             warning('cannot compute distance on gpu, switching to cpu.')
@@ -158,8 +160,10 @@ function mat=convertToSimilarity(mat,method)
 %               mat : n-by-m similarity matrix
 
     similarityList={'cosine','correlation','jaccard','spearman'};
-    if ~ischar(method)
+    if isa(method,'function_handle')
         method=func2str(method);
+    elseif iscategorical(method)
+        method=char(method(1));
     end
     if ismember(method,similarityList)
         mat=1-mat;
