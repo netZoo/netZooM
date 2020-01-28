@@ -1,6 +1,6 @@
 function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
     addCorr,motif_file,absCoex,ppi_file,thresh,oldMotif,incCoverage,...
-    qpval,bridgingProteins,addChip,ctrl,ppiExp)
+    qpval,bridgingProteins,addChip,ctrl,ppiExp,explore)
 % Description:
 %               Generate a new tf-gene regulation prior for optPANDA. 
 %
@@ -102,7 +102,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     end
     
     % Apply threshold for p values only
-    if oldMotif==0 & incCoverage==1 & qpval==0        
+    if oldMotif==0 && incCoverage==1 && qpval==0        
         RegNet(RegNet <= thresh & RegNet > 0)  = 1;
         RegNet(RegNet > thresh  & RegNet < 1 ) = 0;
     end
@@ -110,18 +110,18 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     % add chip-seq data
     if addChip==1
         [gt]=readGt('CHIP_SEQ_REMAP_ALL.txt');
-        [res,igt,itf]=intersect(gt{:,1},TFNames);
+        [~,igt,itf]=intersect(gt{:,1},TFNames);
         RegNet(itf,:)=0;
         for i=1:length(igt)
-            [a,ib,ic]  = intersect(gt{igt(i),2:end}, GeneNames);
+            [~,~,ic]  = intersect(gt{igt(i),2:end}, GeneNames);
             RegNet(itf(i),ic)= 1;
         end
     elseif addChip==2
         [gt]=readGt('CHIP_SEQ_REMAP_ALL.txt');
-        [res,igt,itf]=intersect(gt{:,1},TFNames);
+        [~,igt,itf]=intersect(gt{:,1},TFNames);
         RegNet(itf,:)=-1;
         for i=1:length(igt)
-            [a,ib,ic]  = intersect(gt{igt(i),2:end}, GeneNames);
+            [~,~,ic]  = intersect(gt{igt(i),2:end}, GeneNames);
             RegNet(itf(i),ic)= 2;
         end
     end
@@ -130,33 +130,33 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     GeneCoReg = Coexpression(Exp);
     
     if ppiExp==1
-        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = zeros(NumTFs,NumTFs);
         multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));%abs of coexp
         TFCoop             = TFCoop.*multMotif;
     elseif ppiExp==2
-        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = ones(NumTFs,NumTFs);
         multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));
         TFCoop             = TFCoop.*multMotif;  
     elseif ppiExp==3
-        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = zeros(NumTFs,NumTFs);
         multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));
         multMotif(multMotif == 0) = mean2(multMotif);
         TFCoop             = TFCoop.*multMotif; 
     elseif ppiExp==4
-        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = zeros(NumTFs,NumTFs);
         multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);%abs of coexp
         TFCoop             = TFCoop.*multMotif;
     elseif ppiExp==5
-        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = ones(NumTFs,NumTFs);
         multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);
         TFCoop             = TFCoop.*multMotif;  
     elseif ppiExp==6
-        [setInt,ifi,ipr]   = intersect(GeneNames, TFNames);
+        [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = zeros(NumTFs,NumTFs);
         multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);
         multMotif(multMotif == 0) = mean2(multMotif);
@@ -169,7 +169,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         % Remove diagonal to avoid bias for self loops
         GeneCoReg=GeneCoReg-diag(diag(GeneCoReg));
         for i=1:NumTFs
-            [setInt,ifi,ipr]=intersect(GeneNames, TFNames(i));
+            [setInt,ifi,~]=intersect(GeneNames, TFNames(i));
             if ~isempty(setInt)
                 addMotif(i,:)=GeneCoReg(ifi,:);
             end
@@ -183,7 +183,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         % Find TF index in gene names
         addMotif=zeros(NumTFs,NumGenes);
         for i=1:NumTFs
-            [setInt,ifi,ipr]=intersect(GeneNames, TFNames(i));
+            [setInt,ifi,~]=intersect(GeneNames, TFNames(i));
             if ~isempty(setInt)
                 addMotif(i,:)=GeneCoReg(ifi,:);
             end
@@ -199,7 +199,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         % Remove diagonal to avoid bias for self loops
         GeneCoReg=GeneCoReg-diag(diag(GeneCoReg));
         for i=1:NumTFs
-            [setInt,ifi,ipr]=intersect(GeneNames, TFNames(i));
+            [setInt,ifi,~]=intersect(GeneNames, TFNames(i));
             if ~isempty(setInt)
                 addMotif(i,:)=GeneCoReg(ifi,:);
             end
@@ -212,7 +212,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         % Find TF index in gene names
         addMotif=zeros(NumTFs,NumGenes);
         for i=1:NumTFs
-            [setInt,ifi,ipr]=intersect(GeneNames, TFNames(i));
+            [setInt,ifi,~]=intersect(GeneNames, TFNames(i));
             if ~isempty(setInt)
                 addMotif(i,:)=GeneCoReg(ifi,:);
             end
@@ -230,13 +230,13 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         motif_file='';
     elseif explore==0%save result files and give link
         % Create motif file name
-        [filepath,name,ext]=fileparts(exp_file);
+        [~,name,~]=fileparts(exp_file);
         motif_file = [name '_' motif_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
             '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
             '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
             '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
             '_PE' num2str(ctrl) '.txt'];
-        [filepath,name,ext]=fileparts(ppi_file);
+        [~,name,~]=fileparts(ppi_file);
         ppi_file = [name '_' ppi_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
             '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
             '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
@@ -251,7 +251,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         RegNet= RegNet(:);%linearizes by column
         % Saving file
         fid   = fopen(motif_file, 'wt');
-        for(cnt=1:length(TF))
+        for cnt=1:length(TF)
             fprintf(fid, '%s\t%s\t%f\n', TF{cnt}, gene{cnt}, RegNet(cnt) );
         end
         fclose(fid);
@@ -264,7 +264,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         TFCoop= TFCoop(:);%linearizes by column
         % Saving file
         fid   = fopen(ppi_file, 'wt');
-        for(cnt=1:length(TF))
+        for cnt=1:length(TF)
             fprintf(fid, '%s\t%s\t%f\n', TF{cnt}, TF2{cnt}, TFCoop(cnt) );
         end
         fclose(fid);
