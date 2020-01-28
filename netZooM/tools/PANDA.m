@@ -1,4 +1,5 @@
-function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric)
+function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
+    computing)
 % Description:
 %              PANDA infers a gene regulatory network from gene expression
 %              data, motif prior, and PPI between transcription factors
@@ -33,6 +34,8 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                           'hamming'    : 1/(1+ hamming distance). GPU enabled
 %                           'jaccard'    : Jaccard coefficient. GPU enabled
 %                           'spearman'   : sample Spearman's rank correlation
+%                           'computing'  : 'cpu'(default)
+%                                          'gpu' uses GPU to compute distances
 %
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
@@ -42,18 +45,30 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %
 % Publications:
 %               https://doi.org/10.1371/journal.pone.0064832 
-    if nargin<11
+    if nargin<5
         respWeight=0.5;
     end
-    if nargin<12
+    if nargin<6
         similarityMetric='Tfunction';
+    end
+    if nargin<7
+        computing='cpu';
+    end
+    if isequal(computing,'gpu')
+        try
+            canUseGPU = parallel.gpu.GPUDevice.isAvailable;
+        catch ME
+            canUseGPU = false;
+        end
+        if canUseGPU==0
+            error('Please check your GPU device driver.')
+        end
     end
     [NumTFs, NumGenes] = size(RegNet);
     disp('Learning Network!');
     tic;
     step = 0;
     hamming = 1;
-    computing='hello';
     if isequal(computing,'gpu')
         TFCoop   = gpuArray(TFCoop);
         RegNet   = gpuArray(RegNet);
@@ -113,6 +128,9 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
         clear R A W PPI CoReg2;  % release memory for next step
     end
     runtime = toc;
+    if isequal(computing,'gpu')
+        RegNet=gather(RegNet);
+    end
     fprintf('Running PANDA on %d Genes and %d TFs took %f seconds!\n', NumGenes, NumTFs, runtime);
 end
 

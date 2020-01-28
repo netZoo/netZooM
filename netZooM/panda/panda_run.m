@@ -1,5 +1,5 @@
 function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess,...
-    respWeight,absCoex,similarityMetric)
+    respWeight,absCoex,similarityMetric,computing)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -54,6 +54,8 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                           'hamming'    : 1/(1+ hamming distance)
 %                           'jaccard'    : Jaccard coefficient
 %                           'spearman'   : sample Spearman's rank correlation
+%                           'computing'  : 'cpu'(default)
+%                                          'gpu' uses GPU to compute distances
 %                          
 % Outputs:
 %               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
@@ -68,8 +70,10 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %               https://doi.org/10.1371/journal.pone.0064832 
 
 disp(datestr(now));
-
 % Set default parameters
+if nargin <13
+   computing='cpu';
+end
 if nargin <12
    similarityMetric='Tfunction';
 end
@@ -133,7 +137,7 @@ end
 clear Exp;  % Clean up Exp to release memory (for low-memory machine)
 
 disp('Running PANDA algorithm:');
-AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric);
+AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric, computing);
 
 %% ============================================================================
 %% Saving PANDA network output
