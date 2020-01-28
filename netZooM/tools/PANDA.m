@@ -63,7 +63,13 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
         if canUseGPU==0
             error('Please check your GPU device driver.')
         end
-        
+        if ~ischar(method)
+            method=func2str(method);
+        end
+        if ismember(method,{'TfunctionDist','spearman'})
+            warning('cannot compoute distance on gpu, switching to cpu.')
+            computing='cpu';
+        end
     end
     [NumTFs, NumGenes] = size(RegNet);
     disp('Learning Network!');
