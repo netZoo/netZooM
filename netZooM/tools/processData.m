@@ -89,6 +89,8 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     %Populate result
     %Gene expression
     [~,ig]= ismember(GeneNamesExp,GeneNames);
+    ig
+    size(ExpInit)
     Exp(find(ig),:)= ExpInit(find(ig),:);
     Exp      = Exp'; 
     %Motif
@@ -123,7 +125,7 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
         GeneNamesExp = exp_file_tbl{:,1};
         [NumGenes, NumConditions] = size(ExpInit);
         fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
-        ExpInit = ExpInit';  % transpose expression matrix from gene-by-sample to sample-by-gene
+    
     toc
     if length(unique(GeneNamesExp)) ~= length(GeneNamesExp)
         error('There are duplicate genes in the expression matrix.')

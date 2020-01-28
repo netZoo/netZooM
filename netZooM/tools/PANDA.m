@@ -53,6 +53,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     tic;
     step = 0;
     hamming = 1;
+    computing='hello';
     if isequal(computing,'gpu')
         TFCoop   = gpuArray(TFCoop);
         RegNet   = gpuArray(RegNet);
