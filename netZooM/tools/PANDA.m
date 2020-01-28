@@ -16,19 +16,22 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                                          similarity as described in doi:10.1371/journal.pone.0064832
 %                           @TfunctionDist: same as 'Tfunction' but works
 %                                          with pdist2, slower.
-%                           'euclidean'  : 1/(1+ euclidean distance) 
-%                           'squaredeuclidean': 1/(1+ squared euclidean distance) 
-%                           'seuclidean' : 1/(1+ standardized euclidean distance) 
-%                           'cityblock'  : 1/(1+ cityblock distance)
+%                           'euclidean'  : 1/(1+ euclidean distance). GPU enabled
+%                           'squaredeuclidean': 1/(1+ squared euclidean
+%                                               distance). GPU enabled
+%                           'seuclidean' : 1/(1+ standardized euclidean
+%                                          distance) . GPU enabled
+%                           'cityblock'  : 1/(1+ cityblock distance). GPU enabled
 %                           'minkowski'  : 1/(1+ minkowski distance). 
 %                                          with p=3. p=1,p=2, and p=inf are
 %                                          covered by cityblock, euclidean,
-%                                          and Chebychev respectively.
-%                           'chebychev'  : 1/(1+ chebychev distance)
-%                           'cosine'     : cosine of the included angle
-%                           'correlation': sample correlation between points
-%                           'hamming'    : 1/(1+ hamming distance)
-%                           'jaccard'    : Jaccard coefficient
+%                                          and Chebychev respectively. GPU enabled
+%                           'chebychev'  : 1/(1+ chebychev distance). GPU enabled
+%                           'cosine'     : cosine of the included angle.GPU enabled
+%                           'correlation': sample correlation between
+%                                          points. GPU enabled.
+%                           'hamming'    : 1/(1+ hamming distance). GPU enabled
+%                           'jaccard'    : Jaccard coefficient. GPU enabled
 %                           'spearman'   : sample Spearman's rank correlation
 %
 % Outputs:
@@ -50,6 +53,11 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     tic;
     step = 0;
     hamming = 1;
+    if isequal(computing,'gpu')
+        TFCoop   = gpuArray(TFCoop);
+        RegNet   = gpuArray(RegNet);
+        GeneCoReg= gpuArray(GeneCoReg);
+    end
     while hamming > 0.001
         if isequal(similarityMetric,'Tfunction')
             R = Tfunction(TFCoop, RegNet);
