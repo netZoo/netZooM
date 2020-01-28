@@ -1,4 +1,4 @@
-function [motif_file,ppi_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
+function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
     addCorr,motif_file,absCoex,ppi_file,thresh,oldMotif,incCoverage,...
     qpval,bridgingProteins,addChip,ctrl,ppiExp)
 % Description:
@@ -223,43 +223,50 @@ function [motif_file,ppi_file]=createPpiMotifFileLink(exp_file,motifWeight,motif
         RegNet = (1-motifWeight)*RegNet+motifWeight*abs(addMotif);
     end
     
-    % Create motif file name
-    [filepath,name,ext]=fileparts(exp_file);
-    motif_file = [name '_' motif_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
-        '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
-        '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
-        '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
-        '_PE' num2str(ctrl) '.txt'];
-    [filepath,name,ext]=fileparts(ppi_file);
-    ppi_file = [name '_' ppi_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
-        '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
-        '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
-        '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
-        '_PE' num2str(ctrl) '.txt'];
-    
-    % Save motif file
-    TF    = repmat(TFNames, 1, length(GeneNames));
-    gene  = repmat(GeneNames', length(TFNames), 1);
-    TF    = TF(:);
-    gene  = gene(:);
-    RegNet= RegNet(:);%linearizes by column
-    % Saving file
-    fid   = fopen(motif_file, 'wt');
-    for(cnt=1:length(TF))
-        fprintf(fid, '%s\t%s\t%f\n', TF{cnt}, gene{cnt}, RegNet(cnt) );
+    if explore==1
+        pandaData.RegNet=RegNet;pandaData.GeneCoReg=GeneCoReg;
+        pandaData.TFCoop=TFCoop;
+        ppi_file='';
+        motif_file='';
+    elseif explore==0%save result files and give link
+        % Create motif file name
+        [filepath,name,ext]=fileparts(exp_file);
+        motif_file = [name '_' motif_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
+            '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
+            '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
+            '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
+            '_PE' num2str(ctrl) '.txt'];
+        [filepath,name,ext]=fileparts(ppi_file);
+        ppi_file = [name '_' ppi_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
+            '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
+            '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
+            '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
+            '_PE' num2str(ctrl) '.txt'];
+
+        % Save motif file
+        TF    = repmat(TFNames, 1, length(GeneNames));
+        gene  = repmat(GeneNames', length(TFNames), 1);
+        TF    = TF(:);
+        gene  = gene(:);
+        RegNet= RegNet(:);%linearizes by column
+        % Saving file
+        fid   = fopen(motif_file, 'wt');
+        for(cnt=1:length(TF))
+            fprintf(fid, '%s\t%s\t%f\n', TF{cnt}, gene{cnt}, RegNet(cnt) );
+        end
+        fclose(fid);
+
+        % Save PPI file
+        TF    = repmat(TFNames, 1, length(TFNames));
+        TF2   = repmat(TFNames', length(TFNames), 1);
+        TF    = TF(:);
+        TF2   = TF2(:);
+        TFCoop= TFCoop(:);%linearizes by column
+        % Saving file
+        fid   = fopen(ppi_file, 'wt');
+        for(cnt=1:length(TF))
+            fprintf(fid, '%s\t%s\t%f\n', TF{cnt}, TF2{cnt}, TFCoop(cnt) );
+        end
+        fclose(fid);
     end
-    fclose(fid);
-    
-    % Save PPI file
-    TF    = repmat(TFNames, 1, length(TFNames));
-    TF2   = repmat(TFNames', length(TFNames), 1);
-    TF    = TF(:);
-    TF2   = TF2(:);
-    TFCoop= TFCoop(:);%linearizes by column
-    % Saving file
-    fid   = fopen(ppi_file, 'wt');
-    for(cnt=1:length(TF))
-        fprintf(fid, '%s\t%s\t%f\n', TF{cnt}, TF2{cnt}, TFCoop(cnt) );
-    end
-    fclose(fid);
 end

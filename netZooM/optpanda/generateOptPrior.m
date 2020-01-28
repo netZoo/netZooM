@@ -1,6 +1,6 @@
-function [motif_file,GeneNames,allTFName,ppi_file]=generateOptPrior(exp_file,incCoverage,bridgingProteins,oldMotif,...
+function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(exp_file,incCoverage,bridgingProteins,oldMotif,...
     qpval,precomputed,motif_fil,motifWeight,motifCutOff,addCorr,absCoex,thresh,...
-    addChip,ctrl,ppiExp)
+    addChip,ctrl,ppiExp,explore)
 % Description:
 %               Generate a new tf-gene regulation prior for optPANDA. 
 %
@@ -52,6 +52,9 @@ function [motif_file,GeneNames,allTFName,ppi_file]=generateOptPrior(exp_file,inc
 %                             4 : PPI*.tfco + fill missing with 0
 %                             5 : PPI*.tfco + fill missing with 1
 %                             6 : PPI*.tfco + fill missing with mean
+%               explore     : 0 saves the optimized motif and PPI files
+%                             1 does not save result file, meant for
+%                               exploring the solution space
 %                          
 % Outputs:
 %               motif_file : tf-gene regulation prior for optPANDA in
@@ -113,9 +116,9 @@ function [motif_file,GeneNames,allTFName,ppi_file]=generateOptPrior(exp_file,inc
     end
     if precomputed == 0
         % create motif file
-        [motif_file,ppi_file]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
+        [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
             addCorr,motif_file,absCoex,ppi_file,thresh,oldMotif,...
-            incCoverage,qpval,bridgingProteins,addChip,ctrl,ppiExp);
+            incCoverage,qpval,bridgingProteins,addChip,ctrl,ppiExp,explore);
     elseif precomputed==1
         % provide link to motif file based on parameters
         [filepath,name,ext]=fileparts(exp_file);
