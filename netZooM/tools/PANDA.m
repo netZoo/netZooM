@@ -54,6 +54,9 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     if nargin<7
         computing='cpu';
     end
+    if iscategorical(similarityMetric)
+        similarityMetric=char(similarityMetric(1));
+    end
     if isequal(computing,'gpu')
         try
             canUseGPU = parallel.gpu.GPUDevice.isAvailable;
@@ -66,8 +69,6 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
         similarityMetricChar=similarityMetric;
         if isa(similarityMetric,'function_handle')
             similarityMetricChar=func2str(similarityMetric);
-        elseif iscategorical(similarityMetric)
-            similarityMetricChar=char(similarityMetric(1));
         end
         if ismember(similarityMetricChar,{'TfunctionDist','spearman'})
             warning('cannot compute distance on gpu, switching to cpu.')
@@ -162,8 +163,6 @@ function mat=convertToSimilarity(mat,method)
     similarityList={'cosine','correlation','jaccard','spearman'};
     if isa(method,'function_handle')
         method=func2str(method);
-    elseif iscategorical(method)
-        method=char(method(1));
     end
     if ismember(method,similarityList)
         mat=1-mat;
