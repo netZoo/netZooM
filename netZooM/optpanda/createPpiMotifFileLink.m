@@ -53,6 +53,9 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
 %                             4 : PPI*.tfco + fill missing with 0
 %                             5 : PPI*.tfco + fill missing with 1
 %                             6 : PPI*.tfco + fill missing with mean
+%               explore     : 0 saves the optimized motif and PPI files
+%                             1 does not save result file, meant for
+%                               exploring the solution space
 %
 % Outputs:
 %               motif_file  : tf-gene regulation prior for optPANDA in
@@ -64,27 +67,28 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
 %               Marouen Ben Guebila 01/2020
 
     % read expression and generate coexpression network
-    disp('Creating a new motif prior!');
-    a=readtable(exp_file,'FileType','text');
-    Exp = a{:,2:end};
-    GeneNames = a{:,1};
+    disp('Creating an optimal motif and PPI priors!');
+    expTbl=readtable(exp_file,'FileType','text');
+    Exp = expTbl{:,2:end};
+    GeneNames = expTbl{:,1};
     [NumGenes, NumConditions] = size(Exp);
     fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
     Exp = Exp';  % transpose expression matrix from gene-by-sample to sample-by-gene
         
     % read ppi file to get TF names
-    b      = readtable(ppi_file,'FileType','text');
-    TFNames= unique(b.Var1);
+    ppitbl      = readtable(ppi_file,'FileType','text');
+    TFNames= unique(ppitbl.Var1);
     NumTFs = length(TFNames);
     TFCoop = zeros(NumTFs);
-    TF1    = b.Var1;
-    TF2    = b.Var2;
-    weight = b.Var3;
+    TF1    = ppitbl.Var1;
+    TF2    = ppitbl.Var2;
+    weight = ppitbl.Var3;
     [~,i]  = ismember(TF1, TFNames);
     [~,j]  = ismember(TF2, TFNames);
     TFCoop(sub2ind([NumTFs, NumTFs], i, j)) = weight;
     TFCoop(sub2ind([NumTFs, NumTFs], j, i)) = weight; 
 
+    %read precomputed results
     if isstruct(motif_file)
         RegNet=motif_file.RegNet;
         motif_file=motif_file.motif_file;
@@ -101,7 +105,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         fprintf('%d TFs and %d edges!\n', NumTFs, length(weight));
     end
     
-    % Apply threshold for p values only
+    % Apply threshold for p values only, q-values are thresholded at 0.05
     if oldMotif==0 && incCoverage==1 && qpval==0        
         RegNet(RegNet <= thresh & RegNet > 0)  = 1;
         RegNet(RegNet > thresh  & RegNet < 1 ) = 0;
@@ -129,10 +133,11 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     % compute gene-gene coexpression
     GeneCoReg = Coexpression(Exp);
     
+    % compute new ppi by scaling ppi with tf-tf coexpression
     if ppiExp==1
         [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = zeros(NumTFs,NumTFs);
-        multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));%abs of coexp
+        multMotif(ipr,ipr) = abs(GeneCoReg(ifi,ifi));
         TFCoop             = TFCoop.*multMotif;
     elseif ppiExp==2
         [~,ifi,ipr]   = intersect(GeneNames, TFNames);
@@ -148,7 +153,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     elseif ppiExp==4
         [~,ifi,ipr]   = intersect(GeneNames, TFNames);
         multMotif          = zeros(NumTFs,NumTFs);
-        multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);%abs of coexp
+        multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);
         TFCoop             = TFCoop.*multMotif;
     elseif ppiExp==5
         [~,ifi,ipr]   = intersect(GeneNames, TFNames);
@@ -161,8 +166,9 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         multMotif(ipr,ipr) = GeneCoReg(ifi,ifi);
         multMotif(multMotif == 0) = mean2(multMotif);
         TFCoop             = TFCoop.*multMotif; 
-     end
+    end
     
+    % add tf-gene coexpression to motif prior
     if addCorr==1
         % Find TF index in gene names
         addMotif=zeros(NumTFs,NumGenes);
@@ -224,11 +230,13 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     end
     
     if explore==1
+        %keep results in memory
         pandaData.RegNet=RegNet;pandaData.GeneCoReg=GeneCoReg;
         pandaData.TFCoop=TFCoop;
         ppi_file='';
         motif_file='';
     elseif explore==0%save result files and give link
+        display('Saving optimized PPI and Motif priors')
         % Create motif file name
         [~,name,~]=fileparts(exp_file);
         motif_file = [name '_' motif_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...

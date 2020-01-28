@@ -1,6 +1,6 @@
-function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(exp_file,incCoverage,bridgingProteins,oldMotif,...
-    qpval,precomputed,motif_fil,motifWeight,motifCutOff,addCorr,absCoex,thresh,...
-    addChip,ctrl,ppiExp,explore)
+function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(exp_file,...
+    incCoverage,bridgingProteins,oldMotif,qpval,precomputed,motif_fil,motifWeight,...
+    motifCutOff,addCorr,absCoex,thresh,addChip,ctrl,ppiExp,explore)
 % Description:
 %               Generate a new tf-gene regulation prior for optPANDA. 
 %
@@ -66,8 +66,8 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
 %               Marouen Ben Guebila 01/2020
 
     % fetch gene names
-    a   = readtable(exp_file,'FileType','text');
-    GeneNames = a{:,1};
+    expTbl   = readtable(exp_file,'FileType','text');
+    GeneNames = expTbl{:,1};
      
     if incCoverage==1
         switch bridgingProteins
@@ -90,7 +90,7 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
             case 7
                 ppi_file = '4ppi_complete_bind.txt';
         end
-        [TF1, TF2, weight] = textread(ppi_file, '%s%s%f');
+        [TF1, ~, ~] = textread(ppi_file, '%s%s%f');
         % read TF names
         allTFName  = unique(TF1);
         disp('Reading in motif data with extra coverage!');
@@ -106,28 +106,30 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
     else
         motif_file = 'Hugo_motifCellLine.txt';
         ppi_file   = 'ppi2015_freezeCellLine.txt';
-        [TF1, TF2, weight] = textread(ppi_file, '%s%s%f');
+        [TF1, ~, ~] = textread(ppi_file, '%s%s%f');
         allTFName  = unique(TF1);
     end
     if precomputed == 0 
+        %use precomputed optimal motif file to compute final network 
        if isstruct(motif_fil)
            motif_file=motif_fil; 
        end
     end
-    if precomputed == 0
-        % create motif file
+    if precomputed == 0 
+        % create motif file from scratch, or with precomputed optimal motif
         [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWeight,motifCutOff,...
             addCorr,motif_file,absCoex,ppi_file,thresh,oldMotif,...
             incCoverage,qpval,bridgingProteins,addChip,ctrl,ppiExp,explore);
-    elseif precomputed==1
-        % provide link to motif file based on parameters
-        [filepath,name,ext]=fileparts(exp_file);
+    elseif precomputed == 1 && explore == 0
+        % provide link to motif file based on parameters with computing
+        % network
+        [~,name,~]=fileparts(exp_file);
         motif_file = [name '_' motif_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
             '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
             '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
             '_BR' num2str(bridgingProteins) '_CHIP' num2str(addChip) ...
             '_PE' num2str(ctrl) '.txt'];
-        [filepath,name,ext]=fileparts(ppi_file);
+        [~,name,~]=fileparts(ppi_file);
         ppi_file = [name '_' ppi_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
         '_AC' num2str(addCorr) '_ABS' num2str(absCoex) '_THR' num2str(thresh)...
         '_OM' num2str(oldMotif) '_IC' num2str(incCoverage) '_QP' num2str(qpval)...
