@@ -27,4 +27,5 @@ function Amat = Tfunction(X,Y)
             Bvec = sum(Y .^ 2, 1);
             Cvec = sum(X .^ 2, 2);
             Amat = Amat ./ sqrt(bsxfun(@plus, Bvec, Cvec) - abs(Amat));
+    end
 end
