@@ -63,10 +63,10 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
         if canUseGPU==0
             error('Please check your GPU device driver.')
         end
-        if ~ischar(method)
-            method=func2str(method);
+        if ~ischar(similarityMetric)
+            similarityMetric=func2str(similarityMetric);
         end
-        if ismember(method,{'TfunctionDist','spearman'})
+        if ismember(similarityMetric,{'TfunctionDist','spearman'})
             warning('cannot compoute distance on gpu, switching to cpu.')
             computing='cpu';
         end
