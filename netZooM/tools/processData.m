@@ -21,15 +21,9 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
     if isequal(modeProcess,'legacy')
         disp('Reading in expression data!');
         tic
-            fid = fopen(exp_file, 'r');
-            headings = fgetl(fid);
-            n = length(regexp(headings, '\t'));
-            frewind(fid);
-            %Exp = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t', 'CommentStyle', '#');
-            Exp = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t'); % tiny speed-up by not checking for comments
-            fclose(fid);
-            GeneNames = Exp{1};
-            Exp = cat(2, Exp{2:end});
+            exp_file_tbl=readtable(exp_file,'FileType','text');
+            Exp = exp_file_tbl{:,2:end};
+            GeneNames = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
             fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
             Exp = Exp';  % transpose expression matrix from gene-by-sample to sample-by-gene
@@ -37,7 +31,9 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
 
         disp('Reading in motif data!');
         tic
-            C = textscan(motif_file, '%s%s%f');
+            fid = fopen(motif_file, 'r');
+            C = textscan(fid, '%s%s%f');
+            fclose(fid);
             TF=C{1,1};gene=C{1,2};weight=C{1,3};
             TFNames = unique(TF);
             NumTFs = length(TFNames);
@@ -52,7 +48,9 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
         tic
             TFCoop = eye(NumTFs);
             if(~isempty(ppi_file))
-                C = textscan(ppi_file, '%s%s%f');
+                fid = fopen(ppi_file, 'r');
+                C = textscan(fid, '%s%s%f');
+                fclose(fid);
                 TF1=C{1,1};TF2=C{1,2};weight=C{1,3};
                 [~,i] = ismember(TF1, TFNames);
                 [~,j] = ismember(TF2, TFNames);
@@ -116,17 +114,15 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
             ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
             readData(exp_file,motif_file,ppi_file)
     % Read expression
+    % Read expression
     disp('Reading in expression data!');
     tic
-        fid = fopen(exp_file, 'r');
-        headings = fgetl(fid);
-        n = length(regexp(headings, '\t'));
-        frewind(fid);
-        ExpInit = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t'); % tiny speed-up by not checking for comments
-        fclose(fid);
-        GeneNamesExp = ExpInit{1};
-        ExpInit = cat(2, ExpInit{2:end});
-        [~, NumConditions] = size(ExpInit);
+        exp_file_tbl=readtable(exp_file,'FileType','text');
+        ExpInit = exp_file_tbl{:,2:end};
+        GeneNamesExp = exp_file_tbl{:,1};
+        [NumGenes, NumConditions] = size(ExpInit);
+        fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
+        ExpInit = ExpInit';  % transpose expression matrix from gene-by-sample to sample-by-gene
     toc
     if length(unique(GeneNamesExp)) ~= length(GeneNamesExp)
         error('There are duplicate genes in the expression matrix.')

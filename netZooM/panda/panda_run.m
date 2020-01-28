@@ -24,7 +24,9 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                           1:  the final network will be saved .pairs format where each line has a TF-gene edge (Cytoscape compatible)
 %                           0:  the final network will not be saved in .pairs format
 %               modeProcess: Refers to the procedure to filter input data.
-%                           'legacy' old deprecated behavior of netZooM <= 0.5
+%                           'legacy' old deprecated behavior of netZooM <0.4.1
+%                                    aligns genes on gene expression and
+%                                    TFs on motif.
 %                           (Default)'union' fills missing genes and TFs with zero rows
 %                           'intersection' removes missing genes and TFs
 %               respWeight:  real number between 0 and 1. Weight of the responsability matrix (default: 0.5)

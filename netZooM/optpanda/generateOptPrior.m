@@ -64,7 +64,6 @@ function [motif_file,GeneNames,allTFName,ppi_file]=generateOptPrior(exp_file,inc
 
     % fetch gene names
     a   = readtable(exp_file,'FileType','text');
-    Exp = a{:,2:end};
     GeneNames = a{:,1};
      
     if incCoverage==1
