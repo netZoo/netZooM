@@ -20,8 +20,7 @@ function Amat = Tfunction(X,Y)
     switch nargin
         case 1
             Amat = X * X';
-            Cvec = sum(X .^ 2, 2);
-            Amat = Amat ./ sqrt(bsxfun(@plus, Cvec', Cvec) - abs(Amat));
+            Amat = Amat ./ sqrt(bsxfun(@plus, sum(X .^ 2, 2)', sum(X .^ 2, 2)) - abs(Amat));
         case 2
             Amat = X * Y;
             Bvec = sum(Y .^ 2, 1);
