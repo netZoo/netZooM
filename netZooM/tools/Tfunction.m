@@ -22,7 +22,7 @@ function Amat = Tfunction(X,Y)
             Amat = X * X';
             Cvec = sum(X .^ 2, 2);
             Amat = Amat ./ sqrt(bsxfun(@plus, Cvec', Cvec) - abs(Amat));
-            isymmetric(Amat)
+            issymmetric(Amat)
         case 2
             Amat = X * Y;
             Bvec = sum(Y .^ 2, 1);
