@@ -76,6 +76,6 @@ switch(dir)
       error(message('stats:squareform:BadInputMatrix'));
    end
 
-   Z = Y(tril(true(n),-1));
+   Z = tril(Y,-1);
    Z = Z(:)';                 % force to a row vector, even if empty
 end
