@@ -260,8 +260,8 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         end
         
         A = respWeight*R + (1-respWeight)*A;
-        clear R;GeneCoReg=diagsquareform(GeneCoReg);
-        stdDiag = (1-alpha)* diag(GeneCoReg);clear GeneCoReg;
+        clear R;stdDiag = (1-alpha)* diag(GeneCoReg);
+        GeneCoReg=diagsquareform(GeneCoReg);clear GeneCoReg;
 
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
