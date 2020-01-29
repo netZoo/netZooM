@@ -279,7 +279,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             TFCoop = (1 - alpha) * TFCoop + alpha * A;
 
             if isequal(similarityMetric,'Tfunction')
-                clear A;
                 A = Tfunction(RegNet');
             else
                 if ~isequal(similarityMetric,'minkowski')
@@ -290,10 +289,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 A = convertToSimilarity(A,similarityMetric);
                 %A = squareform(A);
             end
-            if isequal(similarityMetric,'Tfunction')
-                A = UpdateDiagonal(A, NumGenes, alpha, step);
-                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
-            else
+            if 1
                 stdDiag = (1-alpha)* diag(GeneCoReg);
                 GeneCoReg(1:NumGenes+1:end)=0;
                 GeneCoReg = squareform(GeneCoReg);

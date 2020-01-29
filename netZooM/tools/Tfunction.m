@@ -19,9 +19,12 @@ function Amat = Tfunction(X,Y)
 %               calculates about 1/2 the answer and then fills in the rest with copies, which is faster).
     switch nargin
         case 1
-            Cvec = bsxfun(@plus, sum(X .^ 2, 2)', sum(X .^ 2, 2));
             Amat = X * X';
-            Amat = Amat ./ sqrt(Cvec - abs(Amat));
+            Amat(1:size(Amat,1)+1:end)=0;
+            Amat = squareform(Amat);
+            Cvec = sum(X .^ 2, 2);
+            Cvec = squareform(Cvec);
+            Amat = Amat ./ sqrt(bsxfun(@plus, Cvec', Cvec) - abs(Amat));
         case 2
             Amat = X * Y;
             Bvec = sum(Y .^ 2, 1);
