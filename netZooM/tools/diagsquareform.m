@@ -1,4 +1,4 @@
-function Z = squareform(Y,dir)
+function Y = diagsquareform(Y,dir)
 %SQUAREFORM Reformat a distance matrix between upper triangular and square form.
 %   Z = SQUAREFORM(Y), if Y is a vector as created by the PDIST function,
 %   converts Y into a symmetric, square format, so that Z(i,j) denotes the
@@ -76,7 +76,7 @@ switch(dir)
       error(message('stats:squareform:BadInputMatrix'));
    end
 
-   Z = tril(Y,-1);
-   Z(Z==0)=[];
-   Z = Z(:)';                 % force to a row vector, even if empty
+   Y = tril(Y,-1);
+   Y(Y==0)=[];
+   Y = Y(:)';                 % force to a row vector, even if empty
 end
