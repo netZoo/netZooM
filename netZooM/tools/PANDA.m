@@ -210,6 +210,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
     end
+    similarityMetricChar=similarityMetric;
     if isequal(computing,'gpu')
         try
             canUseGPU = parallel.gpu.GPUDevice.isAvailable;
@@ -222,7 +223,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             g=gpuDevice();
             reset(g);
         end
-        similarityMetricChar=similarityMetric;
         if isa(similarityMetric,'function_handle')
             similarityMetricChar=func2str(similarityMetric);
         end
