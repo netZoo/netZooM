@@ -21,7 +21,7 @@ function Amat = Tfunction(X,Y)
         case 1
             Amat = X * X';Cvec = sum(X .^ 2, 2);clear X;
             Amat(1:size(Amat,1)+1:end)=0;
-            Amat = squareform(Amat);
+            Amat = squareform(Amat,'tovector');
             Cvec = bsxfun(@plus, Cvec', Cvec);
             Cvec(1:size(Cvec,1)+1:end)=0;
             Cvec = squareform(Cvec);
