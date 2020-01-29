@@ -285,16 +285,19 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 A = convertToSimilarity(A,similarityMetric);
                 %A = squareform(A);
             end
-            stdDiag = diag(GeneCoReg);
-            GeneCoReg(1:NumGenes+1:end)=0;
-            GeneCoReg = squareform(GeneCoReg);
-            GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
-            GeneCoReg = squareform(GeneCoReg);
-            GeneCoReg = UpdateDiagonal(GeneCoReg, NumGenes, alpha, step);
-            GeneCoReg(1:NumGenes+1:end) = alpha*GeneCoReg(1:NumGenes+1:end);
-            GeneCoReg(1:NumGenes+1:end) = (1-alpha)* stdDiag' + GeneCoReg(1:NumGenes+1:end);
-            %1A = UpdateDiagonal(A, NumGenes, alpha, step);
-            %2GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            if isequal(similarityMetric,'Tfunction')
+                A = UpdateDiagonal(A, NumGenes, alpha, step);
+                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            else
+                stdDiag = diag(GeneCoReg);
+                GeneCoReg(1:NumGenes+1:end)=0;
+                GeneCoReg = squareform(GeneCoReg);
+                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+                GeneCoReg = squareform(GeneCoReg);
+                GeneCoReg = UpdateDiagonal(GeneCoReg, NumGenes, alpha, step);
+                GeneCoReg(1:NumGenes+1:end) = alpha*GeneCoReg(1:NumGenes+1:end);
+                GeneCoReg(1:NumGenes+1:end) = (1-alpha)* stdDiag' + GeneCoReg(1:NumGenes+1:end);
+            end
         end
 
         disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
