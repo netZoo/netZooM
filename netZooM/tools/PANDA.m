@@ -101,7 +101,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
             A = convertToSimilarity(A',similarityMetric);
         end
         A = respWeight*R + (1-respWeight)*A;
-        clear R;wait(gpuDevice());
+        clear R;
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
 
@@ -129,10 +129,19 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
                     A = pdist(RegNet',similarityMetric,3);
                 end
                 A = convertToSimilarity(A,similarityMetric);
-                A = squareform(A);
+                %A = squareform(A);
+                GeneCoReg(1:NumGenes+1:end)=0;
+                GeneCoReg=squareform(GeneCoReg);
             end
-            A = UpdateDiagonal(A, NumGenes, alpha, step);
-            GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            if ~isequal(similarityMetric,'Tfunction')
+                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+                GeneCoReg = squareform(GeneCoReg);
+                GeneCoReg = UpdateDiagonal(GeneCoReg, NumGenes, alpha, step);
+                GeneCoReg(1:NumGenes+1:end)=(1 - alpha)*GeneCoReg(1:NumGenes+1:end);
+            else
+                A = UpdateDiagonal(A, NumGenes, alpha, step);
+                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            end
         end
 
         disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
