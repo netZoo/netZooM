@@ -20,6 +20,7 @@ function Amat = Tfunction(X,Y)
     switch nargin
         case 1
             Cvec = bsxfun(@plus, sum(X .^ 2, 2)', sum(X .^ 2, 2));
+            issymmetric(Cvec)
             Amat = X * X';
             Amat = Amat ./ sqrt(Cvec - abs(Amat));
         case 2
