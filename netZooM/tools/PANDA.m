@@ -269,7 +269,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         if hamming > 0.001
             if isequal(similarityMetric,'Tfunction')
                 A = Tfunction(RegNet);
-                A = diagsquareform(A);
             else
                 if ~isequal(similarityMetric,'minkowski')
                     A = pdist(RegNet,similarityMetric);
@@ -283,6 +282,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 
             if isequal(similarityMetric,'Tfunction')
                 A = Tfunction(RegNet');
+                A = diagsquareform(A);
             else
                 if ~isequal(similarityMetric,'minkowski')
                     A = pdist(RegNet',similarityMetric);
@@ -290,7 +290,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                     A = pdist(RegNet',similarityMetric,3);
                 end
                 A = convertToSimilarity(A,similarityMetric);
-                %A = squareform(A);
             end
             if 1
                 GeneCoReg = diagsquareform(GeneCoReg);
