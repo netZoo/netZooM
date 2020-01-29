@@ -218,6 +218,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         end
         if canUseGPU==0
             error('Please check your GPU device driver.')
+        else
+            g=gpuDevice();
+            reset(g);
         end
         similarityMetricChar=similarityMetric;
         if isa(similarityMetric,'function_handle')
