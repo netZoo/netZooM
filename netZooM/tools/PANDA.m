@@ -273,8 +273,8 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                     A = pdist(RegNet,similarityMetric,3);
                 end
                 A = convertToSimilarity(A,similarityMetric);
-                A = squareform(A);
             end
+            A = squareform(A);
             A = UpdateDiagonal(A, NumTFs, alpha, step);
             TFCoop = (1 - alpha) * TFCoop + alpha * A;
 
