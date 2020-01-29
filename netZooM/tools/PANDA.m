@@ -57,6 +57,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
     end
+    similarityMetricChar=similarityMetric;
     if isequal(computing,'gpu')
         RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
         similarityMetric,computing);
