@@ -101,24 +101,23 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
             A = convertToSimilarity(A',similarityMetric);
         end
         A = respWeight*R + (1-respWeight)*A;
-        clear R
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
 
         if hamming > 0.001
             if isequal(similarityMetric,'Tfunction')
-                A = Tfunction(RegNet);
+                R = Tfunction(RegNet);
             else
                 if ~isequal(similarityMetric,'minkowski')
-                    A = pdist(RegNet,similarityMetric);
+                    R = pdist(RegNet,similarityMetric);
                 else
-                    A = pdist(RegNet,similarityMetric,3);
+                    R = pdist(RegNet,similarityMetric,3);
                 end
-                A = convertToSimilarity(A,similarityMetric);
-                A = squareform(A);
+                R = convertToSimilarity(R,similarityMetric);
+                R = squareform(R);
             end
-            A = UpdateDiagonal(A, NumTFs, alpha, step);
-            TFCoop = (1 - alpha) * TFCoop + alpha * A;
+            R = UpdateDiagonal(R, NumTFs, alpha, step);
+            TFCoop = (1 - alpha) * TFCoop + alpha * R;
 
             if isequal(similarityMetric,'Tfunction')
                 A = Tfunction(RegNet');
@@ -137,7 +136,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 
         disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
         step = step + 1;
-        clear A;  % release memory for next step
+        %clear A R;  % release memory for next step
     end
     runtime = toc;
     if isequal(computing,'gpu')
