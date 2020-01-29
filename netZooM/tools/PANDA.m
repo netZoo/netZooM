@@ -279,6 +279,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             TFCoop = (1 - alpha) * TFCoop + alpha * A;
 
             if isequal(similarityMetric,'Tfunction')
+                clear A;
                 A = Tfunction(RegNet');
             else
                 if ~isequal(similarityMetric,'minkowski')
