@@ -63,7 +63,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
         return
     end
     [NumTFs, NumGenes] = size(RegNet);
-    disp('Learning Network!');
+    disp(['Learning Network with ' similarityMetricChar ' !']);
     tic;
     step = 0;
     hamming = 1;
@@ -229,7 +229,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         end
     end
     [NumTFs, NumGenes] = size(RegNet);
-    disp('Learning Network!');
+    disp(['Learning Network with ' similarityMetricChar ' !']);
     tic;
     step = 0;
     hamming = 1;
@@ -289,14 +289,14 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 A = UpdateDiagonal(A, NumGenes, alpha, step);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
             else
-                stdDiag = diag(GeneCoReg);
+                stdDiag = (1-alpha)* diag(GeneCoReg);
                 GeneCoReg(1:NumGenes+1:end)=0;
                 GeneCoReg = squareform(GeneCoReg);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
                 GeneCoReg = squareform(GeneCoReg);
                 GeneCoReg = UpdateDiagonal(GeneCoReg, NumGenes, alpha, step);
-                GeneCoReg(1:NumGenes+1:end) = alpha*GeneCoReg(1:NumGenes+1:end);
-                GeneCoReg(1:NumGenes+1:end) = (1-alpha)* stdDiag' + GeneCoReg(1:NumGenes+1:end);
+                GeneCoReg(1:NumGenes+1:end) = alpha * diag(GeneCoReg);
+                GeneCoReg(1:NumGenes+1:end) = stdDiag + diag(GeneCoReg);
             end
         end
 
