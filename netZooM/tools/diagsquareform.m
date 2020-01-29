@@ -77,5 +77,6 @@ switch(dir)
    end
 
    Z = tril(Y,-1);
+   Z(Z==0)=[];
    Z = Z(:)';                 % force to a row vector, even if empty
 end
