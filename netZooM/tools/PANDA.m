@@ -243,6 +243,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         GeneCoReg= gpuArray(GeneCoReg);
     end
     while hamming > 0.001
+        %GeneCoReg=squareformdiag(GeneCoReg) and set diag 
         if isequal(similarityMetric,'Tfunction')
             R = Tfunction(TFCoop, RegNet);
             A = Tfunction(RegNet, GeneCoReg);
@@ -257,8 +258,10 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             R = convertToSimilarity(R,similarityMetric);
             A = convertToSimilarity(A',similarityMetric);
         end
+        
         A = respWeight*R + (1-respWeight)*A;
-        clear R;
+        clear R;GeneCoReg=squareformdiag(GeneCoReg);
+        stdDiag = (1-alpha)* diag(GeneCoReg);clear GeneCoReg;
 
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
@@ -290,9 +293,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 %A = squareform(A);
             end
             if 1
-                stdDiag = (1-alpha)* diag(GeneCoReg);
-                GeneCoReg(1:NumGenes+1:end)=0;
-                GeneCoReg = squareform(GeneCoReg);
+                GeneCoReg = diagsquareform(GeneCoReg);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
                 clear A;
                 GeneCoReg = squareform(GeneCoReg);
