@@ -297,6 +297,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 GeneCoReg(1:NumGenes+1:end)=0;
                 GeneCoReg = squareform(GeneCoReg);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+                clear A;
                 GeneCoReg = squareform(GeneCoReg);
                 GeneCoReg = UpdateDiagonal(GeneCoReg, NumGenes, alpha, step);
                 GeneCoReg(1:NumGenes+1:end) = alpha * diag(GeneCoReg);
@@ -306,7 +307,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 
         disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
         step = step + 1;
-        clear A;  % release memory for next step
     end
     runtime = toc;
     if isequal(computing,'gpu')
