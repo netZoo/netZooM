@@ -77,7 +77,7 @@ switch(dir)
    end
 
    x=tril(true(n),-1);
-   x=x==1;
+   x=find(x==1);
    Y=Y(x);
    Y = Y(:)';                 % force to a row vector, even if empty
 end
