@@ -1,8 +1,7 @@
-function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-                    computing, precision)
+function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
+                computing,precision)
 % Description:
-%              PANDA infers a gene regulatory network from gene expression
-%              data, motif prior, and PPI between transcription factors
+%              GPU-accelerated PANDA. 
 %
 % Inputs:
 %               RegNet    : motif prior of gene-TF regulatory network
@@ -31,17 +30,15 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                           'cosine'     : cosine of the included angle.GPU enabled
 %                           'correlation': sample correlation between
 %                                          points. GPU enabled.
-%                           'hamming'    : 1/(1+ hamming distance) used for discrete 
-%                                          variables. GPU enabled
-%                           'jaccard'    : Jaccard coefficient used for discrete 
-%                                          variables. GPU enabled
+%                           'hamming'    : 1/(1+ hamming distance). GPU enabled
+%                           'jaccard'    : Jaccard coefficient. GPU enabled
 %                           'spearman'   : sample Spearman's rank correlation
 %                           'computing'  : 'cpu'(default)
 %                                          'gpu' uses GPU to compute distances
 %               distance: computing precision
 %                         double: double precision(default)
 %                         single: single precision
-% 
+%
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
 %
@@ -66,33 +63,50 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
         similarityMetric=char(similarityMetric(1));
     end
     similarityMetricChar=similarityMetric;
-    if isa(similarityMetric,'function_handle')
-        similarityMetricChar=func2str(similarityMetric);
-    end
     if isequal(computing,'gpu')
-        RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
-        similarityMetric,computing,precision);
-        return
-    end
-    if isequal(precision,'single')
-        TFCoop=single(TFCoop);
-        RegNet=single(RegNet);
-        GeneCoReg=single(GeneCoReg);
-        warning off;
+        try
+            canUseGPU = parallel.gpu.GPUDevice.isAvailable;
+        catch ME
+            canUseGPU = false;
+        end
+        if canUseGPU==0
+            error('Please check your GPU device driver.')
+        else
+            g=gpuDevice();
+            reset(g);
+        end
+        if isa(similarityMetric,'function_handle')
+            similarityMetricChar=func2str(similarityMetric);
+        end
+        if ismember(similarityMetricChar,{'TfunctionDist','spearman'})
+            warning('cannot compute distance on gpu, switching to cpu.')
+            computing='cpu';
+        end
     end
     [NumTFs, NumGenes] = size(RegNet);
     disp(['Learning Network with ' similarityMetricChar ' !']);
     tic;
     step = 0;
     hamming = 1;
+    if isequal(precision,'single')
+        TFCoop=single(TFCoop);
+        RegNet=single(RegNet);
+        GeneCoReg=single(GeneCoReg);
+        warning off;
+    end
+    if isequal(computing,'gpu')
+        TFCoop   = gpuArray(TFCoop);
+        RegNet   = gpuArray(RegNet);
+        GeneCoReg= gpuArray(GeneCoReg);
+    end
     while hamming > 0.001
         if isequal(similarityMetric,'Tfunction')
             R = Tfunction(TFCoop, RegNet);
             A = Tfunction(RegNet, GeneCoReg);
         else
             if ~isequal(similarityMetric,'minkowski')
-                R = pdist2(TFCoop, RegNet',similarityMetric);
                 A = pdist2(GeneCoReg,RegNet,similarityMetric);
+                R = pdist2(TFCoop, RegNet',similarityMetric);
             else
                 R = pdist2(TFCoop, RegNet',similarityMetric,3);
                 A = pdist2(GeneCoReg,RegNet,similarityMetric,3);
@@ -100,8 +114,10 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
             R = convertToSimilarity(R,similarityMetric);
             A = convertToSimilarity(A',similarityMetric);
         end
+        
         A = respWeight*R + (1-respWeight)*A;
-        clear R;
+        clear R;prevDiag=diag(GeneCoReg);
+        GeneCoReg=diagsquareform(GeneCoReg);
 
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
@@ -115,11 +131,12 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
                 else
                     A = pdist(RegNet,similarityMetric,3);
                 end
-                A = convertToSimilarity(A,similarityMetric);
                 A = squareform(A);
+                A = convertToSimilarity(A,similarityMetric);
             end
+            
             A = UpdateDiagonal(A, NumTFs, alpha, step);
-            TFCoop = (1 - alpha) * TFCoop + alpha * A;
+            TFCoop = (1 - alpha) * TFCoop + alpha * A;%clear A;
 
             if isequal(similarityMetric,'Tfunction')
                 A = Tfunction(RegNet');
@@ -130,16 +147,26 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
                     A = pdist(RegNet',similarityMetric,3);
                 end
                 A = convertToSimilarity(A,similarityMetric);
-                A = squareform(A);
+            end
+            if ~isequal(similarityMetric,'Tfunction')
+                A = diagsquareform(A);
             end
             A = UpdateDiagonal(A, NumGenes, alpha, step);
+            % update GeneCoReg
+            stdDiag = diag(A);
+            A = diagsquareform(A);
             GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            clear A;
+            GeneCoReg = squareform(GeneCoReg);
+            GeneCoReg(1:(NumGenes+1):end) = alpha * stdDiag + (1 - alpha) * prevDiag;
         end
 
         disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
         step = step + 1;
-        clear A;  % release memory for next step
     end
     runtime = toc;
+    if isequal(computing,'gpu')
+        RegNet=gather(RegNet);
+    end
     fprintf('Running PANDA on %d Genes and %d TFs took %f seconds!\n', NumGenes, NumTFs, runtime);
 end

@@ -95,14 +95,27 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     if isstruct(motif_file)
         if isequal(motif_file.selectedMotif,'Hugo_motifCellLine.txt')
             RegNet=motif_file.a.RegNet;
+            tmpTFNames=motif_file.a.TFNames;
+            tmpGeneNames=motif_file.a.GeneNames;
         elseif isequal(motif_file.selectedMotif,'regMatPval1e3.txt')
             RegNet=motif_file.b.RegNet;
+            tmpTFNames=motif_file.b.TFNames;
+            tmpGeneNames=motif_file.b.GeneNames;
         elseif isequal(motif_file.selectedMotif,'regMatQval005.txt')
             RegNet=motif_file.c.RegNet;
+            tmpTFNames=motif_file.c.TFNames;
+            tmpGeneNames=motif_file.c.GeneNames;
         elseif isequal(motif_file.selectedMotif,'motif_complete_reduced.txt')
             RegNet=motif_file.d.RegNet;
+            tmpTFNames=motif_file.d.TFNames;
+            tmpGeneNames=motif_file.d.GeneNames;
         end
         motif_file=motif_file.selectedMotif;
+        [~,i]   = ismember(tmpTFNames, TFNames);
+        [~,j]   = ismember(tmpGeneNames, GeneNames);
+        i       = i(i~=0);
+        j       = j(j~=0);
+        RegNet  = RegNet(i,g);
     else
         [TF, gene, weight] = textread(motif_file, '%s%s%f');
         [~,i]   = ismember(TF, TFNames);

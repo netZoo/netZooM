@@ -43,4 +43,42 @@ function testPandaSimple()
         tolMat=1e-6;
         deltaMat=max(max(abs(AgNet-ExpAgNet)));
 	    assertTrue( deltaMat < tolMat );
+        
+        % Compare distances in single and double precision
+        alpha = 0.5;
+        distances={'euclidean','seuclidean','squaredeuclidean','Tfunction','cityblock','minkowski',...
+        'chebychev','cosine','correlation',@TfunctionDist};
+        % not testing for jaccard, hamming, spearman because for discrete
+        % variables
+        for distance = distances
+            distance=distance{1};
+            tic;AgNet2 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','single');toc;
+            tic;AgNet3 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','double');toc;
+            tolMat=3e-5;
+            deltaMat=max(max(abs(AgNet2-AgNet3)));
+            assert( deltaMat < tolMat );
+        end
+        
+        % Check that gpu implementation gives the same results as CPU
+        % implementation
+        alpha = 0.5;
+        distances={'euclidean','seuclidean','squaredeuclidean','Tfunction','cityblock','minkowski',...
+        'chebychev','cosine','correlation','hamming','jaccard','spearman',@TfunctionDist};
+        for distance = distances
+            distance=distance{1};
+            tic;AgNet2 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','single');toc;
+            [Exp,RegNet,TFCoop,~,~]=processData(exp_file,motif_file,ppi_file,'union');
+            GeneCoReg = Coexpression(Exp); 
+            RegNet = NormalizeNetwork(RegNet);
+            GeneCoReg = NormalizeNetwork(GeneCoReg);
+            TFCoop = NormalizeNetwork(TFCoop);
+            AgNet3 = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5, distance, 'cpu', 'single');
+            tolMat=1e-16;
+            deltaMat=max(max(abs(AgNet2-AgNet3)));
+            assert( deltaMat < tolMat );
+        end
+        
 end
