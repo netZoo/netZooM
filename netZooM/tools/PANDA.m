@@ -259,8 +259,8 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         end
         
         A = respWeight*R + (1-respWeight)*A;
-        clear R;stdDiag = (1-alpha)* diag(GeneCoReg);
-        GeneCoReg=diagsquareform(GeneCoReg);
+        clear R;%stdDiag = (1-alpha)* diag(GeneCoReg);
+        %GeneCoReg=diagsquareform(GeneCoReg);
 
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
@@ -274,11 +274,12 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 else
                     A = pdist(RegNet,similarityMetric,3);
                 end
+                A = squareform(A);
                 A = convertToSimilarity(A,similarityMetric);
             end
-            A = squareform(A);
+            %A = squareform(A);
             A = UpdateDiagonal(A, NumTFs, alpha, step);
-            TFCoop = (1 - alpha) * TFCoop + alpha * A;clear A;
+            TFCoop = (1 - alpha) * TFCoop + alpha * A;%clear A;
 
             if isequal(similarityMetric,'Tfunction')
                 A = Tfunction(RegNet');
@@ -290,14 +291,29 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 end
                 A = convertToSimilarity(A,similarityMetric);
             end
-            if 1
-                %GeneCoReg = diagsquareform(GeneCoReg);
+            if isequal(similarityMetric,'Tfunction')
+                A = UpdateDiagonal(A, NumGenes, alpha, step);
+                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            elseif 0
+                B=A;
+                B = squareform(B);
+                B = UpdateDiagonal(B, NumGenes, alpha, step);
+                GeneCoReg2 = (1 - alpha) * GeneCoReg + alpha * B;
+            elseif 1
+                %starts here
+                A = squareform(A);
+                A = UpdateDiagonal(A, NumGenes, alpha, step);
+                stdDiag = diag(A);
+                A = diagsquareform(A);
+                prevDiag=diag(GeneCoReg);
+                GeneCoReg = diagsquareform(GeneCoReg);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
                 clear A;
                 GeneCoReg = squareform(GeneCoReg);
-                GeneCoReg = UpdateDiagonal(GeneCoReg, NumGenes, alpha, step);
-                GeneCoReg(1:NumGenes+1:end) = alpha * diag(GeneCoReg);
-                GeneCoReg(1:NumGenes+1:end) = stdDiag + diag(GeneCoReg);
+                GeneCoReg(1:(NumGenes+1):end) = alpha * stdDiag + (1 - alpha) * prevDiag;
+
+                %deltaMat1=max(max(abs(GeneCoReg2-GeneCoReg)))
+                %deltaMat2=max(max(abs(diag(GeneCoReg2)-diag(GeneCoReg))))
             end
         end
 
