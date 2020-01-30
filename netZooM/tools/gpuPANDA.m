@@ -1,7 +1,8 @@
 function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
                 computing,precision)
 % Description:
-%              GPU-accelerated PANDA. 
+%              GPU-accelerated PANDA, slightly different implmentation that is 
+%              optimized for memory.
 %
 % Inputs:
 %               RegNet    : motif prior of gene-TF regulatory network
@@ -63,6 +64,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         similarityMetric=char(similarityMetric(1));
     end
     similarityMetricChar=similarityMetric;
+    if isa(similarityMetric,'function_handle')
+        similarityMetricChar=func2str(similarityMetric);
+    end
     if isequal(computing,'gpu')
         try
             canUseGPU = parallel.gpu.GPUDevice.isAvailable;

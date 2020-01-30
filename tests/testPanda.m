@@ -69,15 +69,15 @@ function testPandaSimple()
         for distance = distances
             distance=distance{1};
             tic;AgNet2 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
-                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','single');toc;
+                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','double');toc;
             [Exp,RegNet,TFCoop,~,~]=processData(exp_file,motif_file,ppi_file,'union');
             GeneCoReg = Coexpression(Exp); 
             RegNet = NormalizeNetwork(RegNet);
             GeneCoReg = NormalizeNetwork(GeneCoReg);
             TFCoop = NormalizeNetwork(TFCoop);
-            AgNet3 = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5, distance, 'cpu', 'single');
-            tolMat=1e-16;
-            deltaMat=max(max(abs(AgNet2-AgNet3)));
+            AgNet3 = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5, distance, 'cpu', 'double');
+            tolMat=1e-14;
+            deltaMat=max(max(abs(AgNet2-AgNet3)))
             assert( deltaMat < tolMat );
         end
         
