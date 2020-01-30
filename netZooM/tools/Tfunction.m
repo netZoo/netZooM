@@ -22,7 +22,7 @@ function Amat = Tfunction(X,Y)
             Cvec = sum(X .^ 2, 2);
             Cvec = bsxfun(@plus, Cvec', Cvec);
             Cvec = diagsquareform(Cvec);
-            Amat = diagsquareform(X * X');
+            Amat = diagsquareform(X * X');clear X;
             Amat = Amat ./ sqrt(Cvec - abs(Amat));
         case 2
             Amat = X * Y;
