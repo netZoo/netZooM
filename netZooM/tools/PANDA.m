@@ -243,7 +243,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         GeneCoReg= gpuArray(GeneCoReg);
     end
     while hamming > 0.001
-        %GeneCoReg=squareformdiag(GeneCoReg) and set diag 
         if isequal(similarityMetric,'Tfunction')
             R = Tfunction(TFCoop, RegNet);
             A = Tfunction(RegNet, GeneCoReg);
