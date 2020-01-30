@@ -76,7 +76,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     end
     if isequal(computing,'gpu')
         RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
-        similarityMetric,computing,precision);
+        similarityMetric,computing,precision,verbose);
         return
     end
     if isequal(precision,'single')

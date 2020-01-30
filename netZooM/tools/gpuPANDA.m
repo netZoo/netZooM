@@ -1,5 +1,5 @@
 function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-                computing,precision)
+                computing,precision,verbose)
 % Description:
 %              GPU-accelerated PANDA, slightly different implmentation that is 
 %              optimized for memory.
@@ -39,6 +39,8 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 %               distance: computing precision
 %                         double: double precision(default)
 %                         single: single precision
+%               verbose  : 1 prints iterations (Default)
+%                          0 does not print iterations
 %
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
@@ -164,8 +166,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             GeneCoReg = squareform(GeneCoReg);
             GeneCoReg(1:(NumGenes+1):end) = alpha * stdDiag + (1 - alpha) * prevDiag;
         end
-
-        disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
+        if verbose==1
+            disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
+        end
         step = step + 1;
     end
     runtime = toc;

@@ -75,7 +75,8 @@ function testPandaSimple()
             RegNet = NormalizeNetwork(RegNet);
             GeneCoReg = NormalizeNetwork(GeneCoReg);
             TFCoop = NormalizeNetwork(TFCoop);
-            AgNet3 = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5, distance, 'cpu', 'double');
+            verbose = 0;
+            AgNet3 = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5, distance, 'cpu', 'double', verbose);
             tolMat=1e-14;
             deltaMat=max(max(abs(AgNet2-AgNet3)))
             assert( deltaMat < tolMat );
