@@ -1,5 +1,5 @@
 function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess,...
-    respWeight,absCoex,similarityMetric,computing,precision)
+               respWeight, absCoex, similarityMetric, computing, precision, verbose)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -56,9 +56,11 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                           'spearman'   : sample Spearman's rank correlation
 %                           'computing'  : 'cpu'(default)
 %                                          'gpu' uses GPU to compute distances
-%               distance: computing precision
-%                         double: double precision(default)
-%                         single: single precision
+%               precision: computing precision
+%                          double: double precision(Default)
+%                          single: single precision
+%               verbose  : 1 prints iterations (Default)
+%                          0 does not print iterations
 %                          
 % Outputs:
 %               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
@@ -74,16 +76,22 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 
 disp(datestr(now));
 % Set default parameters
-if nargin <13
+if nargin < 15
+    verbose=1;
+end
+if nargin < 14
+    precision='single';
+end
+if nargin < 13
    computing='cpu';
 end
-if nargin <12
+if nargin < 12
    similarityMetric='Tfunction';
 end
-if nargin <11
+if nargin < 11
     absCoex=0;
 end
-if nargin <10
+if nargin < 10
     respWeight=0.5;
 end
 if nargin < 9
@@ -140,7 +148,7 @@ end
 clear Exp;  % Clean up Exp to release memory (for low-memory machine)
 
 disp('Running PANDA algorithm:');
-AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric, computing, precision);
+AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric, computing, precision, verbose);
 
 %% ============================================================================
 %% Saving PANDA network output

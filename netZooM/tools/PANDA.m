@@ -1,5 +1,5 @@
 function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-                    computing, precision)
+                    computing, precision, verbose)
 % Description:
 %              PANDA infers a gene regulatory network from gene expression
 %              data, motif prior, and PPI between transcription factors
@@ -38,9 +38,11 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                           'spearman'   : sample Spearman's rank correlation
 %                           'computing'  : 'cpu'(default)
 %                                          'gpu' uses GPU to compute distances
-%               distance: computing precision
+%               precision: computing precision
 %                         double: double precision(default)
 %                         single: single precision
+%               verbose  : 1 prints iterations (Default)
+%                          0 does not print iterations
 % 
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
@@ -61,6 +63,9 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     end
     if nargin<8
         precision='double';
+    end
+    if nargin<9
+        verbose=1;
     end
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
@@ -135,8 +140,9 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
             A = UpdateDiagonal(A, NumGenes, alpha, step);
             GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
         end
-
-        disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
+        if verbose==1
+            disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
+        end
         step = step + 1;
         clear A;  % release memory for next step
     end
