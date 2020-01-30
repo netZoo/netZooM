@@ -291,7 +291,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 A = convertToSimilarity(A,similarityMetric);
             end
             if 1
-                GeneCoReg = diagsquareform(GeneCoReg);
+                %GeneCoReg = diagsquareform(GeneCoReg);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
                 clear A;
                 GeneCoReg = squareform(GeneCoReg);
