@@ -208,6 +208,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     if nargin<7
         computing='cpu';
     end
+    computing='cpu'
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
     end
@@ -259,8 +260,8 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         end
         
         A = respWeight*R + (1-respWeight)*A;
-        clear R;%stdDiag = (1-alpha)* diag(GeneCoReg);
-        %GeneCoReg=diagsquareform(GeneCoReg);
+        clear R;prevDiag=diag(GeneCoReg);
+        GeneCoReg=diagsquareform(GeneCoReg);
 
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
@@ -305,8 +306,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 A = UpdateDiagonal(A, NumGenes, alpha, step);
                 stdDiag = diag(A);
                 A = diagsquareform(A);
-                prevDiag=diag(GeneCoReg);
-                GeneCoReg = diagsquareform(GeneCoReg);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
                 clear A;
                 GeneCoReg = squareform(GeneCoReg);
