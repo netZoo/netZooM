@@ -302,7 +302,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 GeneCoReg2 = (1 - alpha) * GeneCoReg + alpha * B;
             elseif 1
                 %starts here
-                A = squareform(A);
+                A = diagsquareform(A);
                 A = UpdateDiagonal(A, NumGenes, alpha, step);
                 stdDiag = diag(A);
                 A = diagsquareform(A);
@@ -310,9 +310,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 clear A;
                 GeneCoReg = squareform(GeneCoReg);
                 GeneCoReg(1:(NumGenes+1):end) = alpha * stdDiag + (1 - alpha) * prevDiag;
-
-                %deltaMat1=max(max(abs(GeneCoReg2-GeneCoReg)))
-                %deltaMat2=max(max(abs(diag(GeneCoReg2)-diag(GeneCoReg))))
             end
         end
 
