@@ -77,5 +77,5 @@ switch(dir)
    end
 
    Y=Y.*tril(true(n),-1);
-   Y = Y(:)';                 % force to a row vector, even if empty
+   Y = Y(Y~=0)';                 % force to a row vector, even if empty
 end
