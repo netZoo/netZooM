@@ -115,6 +115,7 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
     if precomputed == 0 
         %use precomputed optimal motif file to compute final network 
        if isstruct(motif_fil)
+           motif_fil.selectedMotif=motif_file;
            motif_file=motif_fil; 
        end
     end

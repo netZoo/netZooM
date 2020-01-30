@@ -1,5 +1,5 @@
 function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-    computing)
+                    computing, precision)
 % Description:
 %              PANDA infers a gene regulatory network from gene expression
 %              data, motif prior, and PPI between transcription factors
@@ -31,12 +31,17 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                           'cosine'     : cosine of the included angle.GPU enabled
 %                           'correlation': sample correlation between
 %                                          points. GPU enabled.
-%                           'hamming'    : 1/(1+ hamming distance). GPU enabled
-%                           'jaccard'    : Jaccard coefficient. GPU enabled
+%                           'hamming'    : 1/(1+ hamming distance) used for discrete 
+%                                          variables. GPU enabled
+%                           'jaccard'    : Jaccard coefficient used for discrete 
+%                                          variables. GPU enabled
 %                           'spearman'   : sample Spearman's rank correlation
 %                           'computing'  : 'cpu'(default)
 %                                          'gpu' uses GPU to compute distances
-%
+%               distance: computing precision
+%                         double: double precision(default)
+%                         single: single precision
+% 
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
 %
@@ -54,14 +59,23 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     if nargin<7
         computing='cpu';
     end
+    if nargin<8
+        precision='double';
+    end
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
     end
     similarityMetricChar=similarityMetric;
     if isequal(computing,'gpu')
         RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
-        similarityMetric,computing);
+        similarityMetric,computing,precision);
         return
+    end
+    if isequal(precision,'single')
+        TFCoop=single(TFCoop);
+        RegNet=single(RegNet);
+        GeneCoReg=single(GeneCoReg);
+        warning off;
     end
     [NumTFs, NumGenes] = size(RegNet);
     disp(['Learning Network with ' similarityMetricChar ' !']);
@@ -154,7 +168,7 @@ function mat=convertToSimilarity(mat,method)
 end
 
 function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-    computing)
+                computing,precision)
 % Description:
 %              GPU-accelerated PANDA. 
 %
@@ -190,6 +204,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 %                           'spearman'   : sample Spearman's rank correlation
 %                           'computing'  : 'cpu'(default)
 %                                          'gpu' uses GPU to compute distances
+%               distance: computing precision
+%                         double: double precision(default)
+%                         single: single precision
 %
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
@@ -207,6 +224,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     end
     if nargin<7
         computing='cpu';
+    end
+    if nargin<8
+        precision='double';
     end
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
@@ -237,6 +257,12 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     tic;
     step = 0;
     hamming = 1;
+    if isequal(precision,'single')
+        TFCoop=single(TFCoop);
+        RegNet=single(RegNet);
+        GeneCoReg=single(GeneCoReg);
+        warning off;
+    end
     if isequal(computing,'gpu')
         TFCoop   = gpuArray(TFCoop);
         RegNet   = gpuArray(RegNet);
