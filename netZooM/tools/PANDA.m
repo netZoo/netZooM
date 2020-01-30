@@ -208,7 +208,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     if nargin<7
         computing='cpu';
     end
-    computing='cpu'
+    %computing='cpu'
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
     end
