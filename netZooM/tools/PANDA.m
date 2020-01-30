@@ -208,7 +208,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     if nargin<7
         computing='cpu';
     end
-    %computing='cpu'
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
     end
@@ -295,13 +294,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             if isequal(similarityMetric,'Tfunction')
                 A = UpdateDiagonal(A, NumGenes, alpha, step);
                 GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
-            elseif 0
-                B=A;
-                B = squareform(B);
-                B = UpdateDiagonal(B, NumGenes, alpha, step);
-                GeneCoReg2 = (1 - alpha) * GeneCoReg + alpha * B;
-            elseif 1
-                %starts here
+            else
                 A = diagsquareform(A);
                 A = UpdateDiagonal(A, NumGenes, alpha, step);
                 stdDiag = diag(A);
