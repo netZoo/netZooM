@@ -80,7 +80,7 @@ if nargin < 15
     verbose=1;
 end
 if nargin < 14
-    precision='single';
+    precision='double';
 end
 if nargin < 13
    computing='cpu';

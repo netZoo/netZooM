@@ -21,7 +21,6 @@ function normMat = NormalizeNetwork(X)
     Z1=(X-repmat(mu1, size(X,1), 1))./repmat(std1, size(X,1), 1);
     Z2=(X-repmat(mu2, 1, size(X,2)))./repmat(std2, 1, size(X,2));
     
-
     % checks and defaults for missing data
     Z0=(X-mu0)/std0;clear X;
     normMat=Z1/sqrt(2)+Z2/sqrt(2);
