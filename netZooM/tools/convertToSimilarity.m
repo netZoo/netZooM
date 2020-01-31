@@ -9,6 +9,7 @@ function mat=convertToSimilarity(mat,method)
 %                       be 1-distance.
 %                       'euclidean','seuclidean','squaredeuclidean','cityblock'
 %                       'minkowski','chebychev','hamming': will be 1./(mat+1)
+%                       Tfunction and TfunctionDist remain the same
 %
 % Outputs:
 %               mat : n-by-m similarity matrix
@@ -19,7 +20,7 @@ function mat=convertToSimilarity(mat,method)
     end
     if ismember(method,similarityList)
         mat=1-mat;
-    elseif ~isequal(method,'TfunctionDist')
+    elseif ~ismember(method,{'TfunctionDist','Tfunction'})
         mat=mat./(1+mat);
     end
 end

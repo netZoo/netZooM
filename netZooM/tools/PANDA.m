@@ -105,46 +105,45 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
             R = convertToSimilarity(R,similarityMetric);
             A = convertToSimilarity(A',similarityMetric);
         end
-        A = respWeight*R + (1-respWeight)*A;
-        clear R;
+        W = respWeight*R + (1-respWeight)*A;
 
-        hamming = mean(abs(RegNet(:) - A(:)));
-        RegNet = (1 - alpha) * RegNet + alpha * A;
+        hamming = mean(abs(RegNet(:) - W(:)));
+        RegNet = (1 - alpha) * RegNet + alpha * W;
 
         if hamming > 0.001
             if isequal(similarityMetric,'Tfunction')
-                A = Tfunction(RegNet);
+                PPI = Tfunction(RegNet);
             else
                 if ~isequal(similarityMetric,'minkowski')
-                    A = pdist(RegNet,similarityMetric);
+                    PPI = pdist(RegNet,similarityMetric);
                 else
-                    A = pdist(RegNet,similarityMetric,3);
+                    PPI = pdist(RegNet,similarityMetric,3);
                 end
-                A = convertToSimilarity(A,similarityMetric);
-                A = squareform(A);
+                PPI = convertToSimilarity(PPI,similarityMetric);
+                PPI = squareform(PPI);
             end
-            A = UpdateDiagonal(A, NumTFs, alpha, step);
-            TFCoop = (1 - alpha) * TFCoop + alpha * A;
+            PPI = UpdateDiagonal(PPI, NumTFs, alpha, step);
+            TFCoop = (1 - alpha) * TFCoop + alpha * PPI;
 
             if isequal(similarityMetric,'Tfunction')
-                A = Tfunction(RegNet');
+                CoReg2 = Tfunction(RegNet');
             else
                 if ~isequal(similarityMetric,'minkowski')
-                    A = pdist(RegNet',similarityMetric);
+                    CoReg2 = pdist(RegNet',similarityMetric);
                 else
-                    A = pdist(RegNet',similarityMetric,3);
+                    CoReg2 = pdist(RegNet',similarityMetric,3);
                 end
-                A = convertToSimilarity(A,similarityMetric);
-                A = squareform(A);
+                CoReg2 = convertToSimilarity(CoReg2,similarityMetric);
+                CoReg2 = squareform(CoReg2);
             end
-            A = UpdateDiagonal(A, NumGenes, alpha, step);
-            GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            CoReg2 = UpdateDiagonal(CoReg2, NumGenes, alpha, step);
+            GeneCoReg = (1 - alpha) * GeneCoReg + alpha * CoReg2;
         end
         if verbose==1
             disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
         end
         step = step + 1;
-        clear A;  % release memory for next step
+        clear R A W PPI CoReg2;  % release memory for next step
     end
     runtime = toc;
     fprintf('Running PANDA on %d Genes and %d TFs took %f seconds!\n', NumGenes, NumTFs, runtime);
