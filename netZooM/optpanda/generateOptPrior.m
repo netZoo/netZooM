@@ -34,6 +34,8 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
 %               qpval       : {0,1} use p-value or corrected p-value for TF-gene binding motif
 %               precomputed : {0,1} use presaved results
 %               motif_fil   : {0,1} use p-value or corrected p-value for TF-gene binding motif
+%                             or can be structure containing precomputed
+%                             motif file containing RegNet, TFNames are the row names, GeneNames are the columns names 
 %               motifWeight : [0,1] when addCorr==1. Weight of TF-Gene coexpression when added to the TF-gene regulation prior.
 %               motifCutOff : [0,1] cutoff values in the TF-Gene coexpression, when addCorr==1
 %               addCorr     : {0,1} augment the TF-gene regulation prior by adding TF-gene coexpression

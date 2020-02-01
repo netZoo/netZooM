@@ -13,7 +13,8 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
 %               motifCutOff : [0,1] cutoff values in the TF-Gene coexpression, when addCorr==1
 %               addCorr     : {0,1} augment the TF-gene regulation prior by adding TF-gene coexpression
 %               motif_file  : TF-gene regulation prior containing p-values of FIMO runs of TF PWMs. The threshold
-%                             thresh will be used to assign interactions.
+%                             thresh will be used to assign interactions. It can be a structure containing precomputed
+%                             motif file containing RegNet, TFNames are the row names, GeneNames are the columns names 
 %               absCoex     : {0,1} takes the absolute value of the coexpression matrix
 %               ppi_file    : link to file containing TF-TF PPI
 %               thresh      : [0,1] p-value threshold to assign binding in TF-gene regulation prior
@@ -94,19 +95,19 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
     %read precomputed results
     if isstruct(motif_file)
         if isequal(motif_file.selectedMotif,'Hugo_motifCellLine.txt')
-            RegNettmp    = motif_file.a.RegNet;
+            RegNettmp    = full(motif_file.a.RegNet);
             tmpTFNames   = motif_file.a.TFNames;
             tmpGeneNames = motif_file.a.GeneNames;
         elseif isequal(motif_file.selectedMotif,'regMatPval1e3.txt')
-            RegNettmp    = motif_file.b.RegNet;
+            RegNettmp    = full(motif_file.b.RegNet);
             tmpTFNames   = motif_file.b.TFNames;
             tmpGeneNames = motif_file.b.GeneNames;
         elseif isequal(motif_file.selectedMotif,'regMatQval005.txt')
-            RegNettmp    = motif_file.c.RegNet;
+            RegNettmp    = full(motif_file.c.RegNet);
             tmpTFNames   = motif_file.c.TFNames;
             tmpGeneNames = motif_file.c.GeneNames;
         elseif isequal(motif_file.selectedMotif,'motif_complete_reduced.txt')
-            RegNettmp    = motif_file.d.RegNet;
+            RegNettmp    = full(motif_file.d.RegNet);
             tmpTFNames   = motif_file.d.TFNames;
             tmpGeneNames = motif_file.d.GeneNames;
         end
