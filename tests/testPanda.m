@@ -35,12 +35,16 @@ function testPandaSimple()
             save_temp, alpha, save_pairs, modeProcess);toc;
         
         % Load the expected result
-        ExpAgNet = textread('test_data/panda.test.txt');
+        filename = 'test_data/panda.test.txt';
+        fileID   = fopen(filename);
+        ExpAgNet = textscan(fileID,'%f');
+        fclose(fileID);
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        ExpAgNet = reshape(ExpAgNet,[size(AgNet,2), size(AgNet,1)])';% Only in octave
+        ExpAgNet = ExpAgNet{1};
+        ExpAgNet = reshape(ExpAgNet,[size(AgNet,2), size(AgNet,1)])';
 
         % Compare the outputs
-        tolMat=1e-6;
+        tolMat  =1e-6;
         deltaMat=max(max(abs(AgNet-ExpAgNet)));
 	    assertTrue( deltaMat < tolMat );
         
@@ -50,9 +54,7 @@ function testPandaSimple()
         'chebychev','cosine','correlation',@TfunctionDist};
         % not testing for jaccard, hamming, spearman because for discrete
         % variables
-        figure;j=0;
         for distance = distances
-            j=j+1;
             distance=distance{1};
             tic;AgNet2 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
                     save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','single');toc;

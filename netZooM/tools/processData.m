@@ -88,9 +88,9 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     TFCoop   = zeros(NumTFs,NumTFs);
     %Populate result
     %Gene expression
-    [~,ig]= ismember(GeneNamesExp,GeneNames);
-    Exp(find(ig),:)= ExpInit(find(ig),:);
-    Exp      = Exp'; 
+    [ig,locg]= ismember(GeneNamesExp,GeneNames);
+    Exp(locg(locg~=0),:) = ExpInit(ig(ig~=0),:);
+    Exp = Exp'; 
     %Motif
     [~,i] = ismember(TF, TFNames);
     [~,j] = ismember(gene, GeneNames);
@@ -114,7 +114,6 @@ end
 function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
             ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
             readData(exp_file,motif_file,ppi_file)
-    % Read expression
     % Read expression
     disp('Reading in expression data!');
     tic
