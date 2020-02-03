@@ -152,10 +152,28 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 else
                     A = pdist(RegNet',similarityMetric,3);
                 end
+                try %sometimes MATLAB throws an out of memory error if it does have memory so we reset the gpu
+                    A = squareform(A);
+                catch ME
+                    fprintf('caught memory error, trying to fix')
+                    %save variables to disk
+                    A        = gather(A);
+                    GeneCoReg= gather(GeneCoReg);
+                    prevDiag = gather(prevDiag);
+                    TFCoop   = gather(TFCoop);
+                    RegNet   = gather(RegNet);
+                    %reset device
+                    gpuDevice(1);
+                    %load variables
+                    A         = gpuArray(A);
+                    GeneCoReg = gpuArray(GeneCoReg);
+                    prevDiag  = gpuArray(prevDiag);
+                    TFCoop    = gpuArray(TFCoop);
+                    RegNet    = gpuArray(RegNet);
+                    %continue
+                    A = squareform(A);
+                end
                 A = convertToSimilarity(A,similarityMetric);
-            end
-            if ~isequal(similarityMetric,'Tfunction')
-                A = diagsquareform(A);
             end
             A = UpdateDiagonal(A, NumGenes, alpha, step);
             % update GeneCoReg
@@ -165,6 +183,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             clear A;
             GeneCoReg = squareform(GeneCoReg);
             GeneCoReg(1:(NumGenes+1):end) = alpha * stdDiag + (1 - alpha) * prevDiag;
+            clear prevDiag; clear stdDiag;
         end
         if verbose==1
             disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);

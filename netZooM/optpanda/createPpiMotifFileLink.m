@@ -99,7 +99,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
             tmpTFNames   = motif_file.a.TFNames;
             tmpGeneNames = motif_file.a.GeneNames;
         elseif isequal(motif_file.selectedMotif,'regMatPval1e3.txt')
-            RegNettmp    = motif_file.b.RegNet;
+            RegNettmp    = full(motif_file.b.RegNet);
             tmpTFNames   = motif_file.b.TFNames;
             tmpGeneNames = motif_file.b.GeneNames;
         elseif isequal(motif_file.selectedMotif,'regMatQval005.txt')

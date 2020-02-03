@@ -66,7 +66,7 @@ switch(dir)
    else % isnumeric(Y)
       Z = zeros(m,class(Y));
       if m>1
-         Z(tril(true(m),-1)) = Y;clear Y;
+         Z(tril(true(m),-1)) = Y;
          Z = Z + Z';
       end
    end
