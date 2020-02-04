@@ -106,6 +106,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         GeneCoReg= gpuArray(GeneCoReg);
     end
     while hamming > 0.001
+        hammingexists = existsOnGPU(hamming)
         if isequal(similarityMetric,'Tfunction')
             R = Tfunction(TFCoop, RegNet);
             A = Tfunction(RegNet, GeneCoReg);
