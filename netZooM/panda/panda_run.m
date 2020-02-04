@@ -54,8 +54,8 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                           'hamming'    : 1/(1+ hamming distance)
 %                           'jaccard'    : Jaccard coefficient
 %                           'spearman'   : sample Spearman's rank correlation
-%                           'computing'  : 'cpu'(default)
-%                                          'gpu' uses GPU to compute distances
+%               computing: 'cpu'(default)
+%                          'gpu' uses GPU to compute distances
 %               precision: computing precision
 %                          double: double precision(Default)
 %                          single: single precision

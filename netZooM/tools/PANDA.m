@@ -36,11 +36,11 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                           'jaccard'    : Jaccard coefficient used for discrete 
 %                                          variables. GPU enabled
 %                           'spearman'   : sample Spearman's rank correlation
-%                           'computing'  : 'cpu'(default)
-%                                          'gpu' uses GPU to compute distances
+%               computing: 'cpu'(default)
+%                          'gpu' uses GPU to compute distances
 %               precision: computing precision
-%                         double: double precision(default)
-%                         single: single precision
+%                          double: double precision(default)
+%                          single: single precision
 %               verbose  : 1 prints iterations (Default)
 %                          0 does not print iterations
 % 

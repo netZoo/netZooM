@@ -34,11 +34,11 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 %                           'hamming'    : 1/(1+ hamming distance). GPU enabled
 %                           'jaccard'    : Jaccard coefficient. GPU enabled
 %                           'spearman'   : sample Spearman's rank correlation
-%                           'computing'  : 'cpu'(default)
-%                                          'gpu' uses GPU to compute distances
-%               distance: computing precision
-%                         double: double precision(default)
-%                         single: single precision
+%               computing: 'cpu'(default)
+%                          'gpu' uses GPU to compute distances
+%               distance : computing precision
+%                          double: double precision(default)
+%                          single: single precision
 %               verbose  : 1 prints iterations (Default)
 %                          0 does not print iterations
 %
