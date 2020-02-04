@@ -106,7 +106,6 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         GeneCoReg= gpuArray(GeneCoReg);
     end
     while hamming > 0.001
-        hammingexists = existsOnGPU(hamming)
         if isequal(similarityMetric,'Tfunction')
             R = Tfunction(TFCoop, RegNet);
             A = Tfunction(RegNet, GeneCoReg);
@@ -163,6 +162,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                     prevDiag = gather(prevDiag);
                     TFCoop   = gather(TFCoop);
                     RegNet   = gather(RegNet);
+                    hamming   = gather(hamming);
                     %reset device
                     gpuDevice(1);
                     %load variables
@@ -171,6 +171,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                     prevDiag  = gpuArray(prevDiag);
                     TFCoop    = gpuArray(TFCoop);
                     RegNet    = gpuArray(RegNet);
+                    hamming   = gpuArray(hamming);
                     %continue
                     A = squareform(A);
                 end
