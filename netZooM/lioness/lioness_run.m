@@ -113,8 +113,8 @@ if isequal(computing,'gpu')
         tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
 
         disp('Running PANDA algorithm:');
-        LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
-            similarityMetric,'gpu','single',0)
+        LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
+            'Tfunction','gpu','single',0)
         PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
         saveGPU(PredNet,ascii_out,save_dir,i)
