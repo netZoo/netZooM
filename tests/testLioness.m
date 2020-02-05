@@ -11,6 +11,7 @@ function testLionessSimple()
             %we need the nan package because it has a fast implementation of corrcoeff
             %pkg load statistics
             pkg load nan;
+            return % iscategorical is not available in octave
         end
 
         % Add path

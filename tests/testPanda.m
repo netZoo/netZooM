@@ -8,9 +8,10 @@ function testPandaSimple()
 
         % Load statistics package from Octave
         if isOctave
-                %we need the nan package because it has a fast implementation of corrcoeff
-                %pkg load statistics
-		pkg load nan;
+            %we need the nan package because it has a fast implementation of corrcoeff
+            %pkg load statistics
+            pkg load nan;
+            return % readtable is not available in octave
         end
 
         % Set Program Parameters
