@@ -6,7 +6,7 @@ function normMat = NormalizeNetwork(X)
 %               X: network adjacency matrix
 %
 % Outputs:
-%               normMat: nromalized adjacency matrix
+%               normMat: normalized adjacency matrix
 %
 % Auhtors:
 %               Kimberley Glass

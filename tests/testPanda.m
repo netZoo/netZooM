@@ -8,9 +8,10 @@ function testPandaSimple()
 
         % Load statistics package from Octave
         if isOctave
-                %we need the nan package because it has a fast implementation of corrcoeff
-                %pkg load statistics
-		pkg load nan;
+            %we need the nan package because it has a fast implementation of corrcoeff
+            %pkg load statistics
+            pkg load nan;
+            return % readtable is not available in octave
         end
 
         % Set Program Parameters
@@ -31,16 +32,59 @@ function testPandaSimple()
         %mkdir tmp;
 
         % Call Panda
-        AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
-            save_temp, alpha, save_pairs, modeProcess);
-
+        tic;AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+            save_temp, alpha, save_pairs, modeProcess);toc;
+        
         % Load the expected result
-        ExpAgNet = textread('test_data/panda.test.txt');
+        filename = 'test_data/panda.test.txt';
+        fileID   = fopen(filename);
+        ExpAgNet = textscan(fileID,'%f');
+        fclose(fileID);
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
+        ExpAgNet = ExpAgNet{1};
         ExpAgNet = reshape(ExpAgNet,[size(AgNet,2), size(AgNet,1)])';
 
         % Compare the outputs
-        tolMat=1e-6;
+        tolMat  =1e-6;
         deltaMat=max(max(abs(AgNet-ExpAgNet)));
 	    assertTrue( deltaMat < tolMat );
+        
+        % Compare distances in single and double precision
+        alpha = 0.7;
+        distances={'euclidean','seuclidean','squaredeuclidean','Tfunction','cityblock','minkowski',...
+        'chebychev','cosine','correlation',@TfunctionDist};
+        % not testing for jaccard, hamming, spearman because for discrete
+        % variables
+        for distance = distances
+            distance=distance{1};
+            tic;AgNet2 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','single');toc;
+            tic;AgNet3 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','double');toc;
+            tolMat=3e-5;
+            deltaMat=max(max(abs(AgNet2-AgNet3)));
+            assert( deltaMat < tolMat );
+        end
+        
+        % Check that gpu implementation gives the same results as CPU
+        % implementation
+        alpha = 0.7;
+        distances={'euclidean','seuclidean','squaredeuclidean','Tfunction','cityblock','minkowski',...
+        'chebychev','cosine','correlation','hamming','jaccard','spearman',@TfunctionDist};
+        for distance = distances
+            distance=distance{1};
+            tic;AgNet2 = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+                    save_temp, alpha, save_pairs, modeProcess,0.5,0,distance,'cpu','double');toc;
+            [Exp,RegNet,TFCoop,~,~]=processData(exp_file,motif_file,ppi_file,'union');
+            GeneCoReg = Coexpression(Exp); 
+            RegNet    = NormalizeNetwork(RegNet);
+            GeneCoReg = NormalizeNetwork(GeneCoReg);
+            TFCoop  = NormalizeNetwork(TFCoop);
+            verbose = 0;
+            AgNet3  = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5, distance, 'cpu', 'double', verbose);
+            tolMat  = 1e-14;
+            deltaMat= max(max(abs(AgNet2-AgNet3)))
+            assert( deltaMat < tolMat );
+        end
+        
 end
