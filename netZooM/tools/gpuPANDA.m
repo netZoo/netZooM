@@ -155,7 +155,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 try %sometimes MATLAB throws an out of memory error if it does have memory so we reset the gpu
                     A = squareform(A);
                 catch ME
-                    fprintf('caught memory error, trying to fix')
+                    fprintf('caught memory error, trying to fix ... \n')
                     %save variables to disk
                     A        = gather(A);
                     GeneCoReg= gather(GeneCoReg);
