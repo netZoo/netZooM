@@ -60,6 +60,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
 %               explore     : 0 saves the optimized motif and PPI files
 %                             1 does not save result file, meant for
 %                               exploring the solution space
+%                             2 1+reports validation results
 %
 % Outputs:
 %               motif_file  : tf-gene regulation prior for optPANDA in
@@ -255,7 +256,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         RegNet = (1-motifWeight)*RegNet+motifWeight*abs(addMotif);
     end
     
-    if explore==1
+    if or(explore==1,explore==2)
         %keep results in memory
         pandaData.RegNet=RegNet;pandaData.GeneCoReg=GeneCoReg;
         pandaData.TFCoop=TFCoop;

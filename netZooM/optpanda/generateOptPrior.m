@@ -60,6 +60,7 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
 %               explore     : 0 saves the optimized motif and PPI files
 %                             1 does not save result file, meant for
 %                               exploring the solution space
+%                             2 1+reports validation results
 %                          
 % Outputs:
 %               motif_file : tf-gene regulation prior for optPANDA in
