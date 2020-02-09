@@ -263,6 +263,7 @@ function [motif_file,ppi_file,pandaData]=createPpiMotifFileLink(exp_file,motifWe
         motif_file='';
     elseif explore==0%save result files and give link
         display('Saving optimized PPI and Motif priors')
+        pandaData='';
         % Create motif file name
         [~,name,~]=fileparts(exp_file);
         motif_file = [name '_' motif_file(1:end-4) '_MW' num2str(motifWeight) '_MC' num2str(motifCutOff)...
