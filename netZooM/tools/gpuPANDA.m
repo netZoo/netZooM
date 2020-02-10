@@ -65,6 +65,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         precision='double';
     end
     if nargin<9
+        verbose=1;
+    end
+    if nargin<10
         saveMemory=1;
     end
     if iscategorical(similarityMetric)
