@@ -1,5 +1,5 @@
 function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-                    computing, precision, verbose)
+                    computing, precision, verbose, saveMemory)
 % Description:
 %              PANDA infers a gene regulatory network from gene expression
 %              data, motif prior, and PPI between transcription factors
@@ -43,6 +43,8 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                          single: single precision
 %               verbose  : 1 prints iterations (Default)
 %                          0 does not print iterations
+%               saveMemory: 1 saves memory on device but slower (Default)
+%                           0 faster computation but more memory required
 % 
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
@@ -76,7 +78,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     end
     if isequal(computing,'gpu')
         RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
-        similarityMetric,computing,precision,verbose);
+        similarityMetric,computing,precision,verbose,saveMemory);
         return
     end
     if isequal(precision,'single')
