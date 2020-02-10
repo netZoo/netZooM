@@ -69,6 +69,9 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
     if nargin<9
         verbose=1;
     end
+    if nargin<10
+        saveMemory=1;
+    end
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
     end
