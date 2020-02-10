@@ -1,5 +1,5 @@
 function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-                computing,precision,verbose)
+                computing,precision,verbose,saveMemory)
 % Description:
 %              GPU-accelerated PANDA, slightly different implmentation that is 
 %              optimized for memory.
@@ -34,13 +34,15 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 %                           'hamming'    : 1/(1+ hamming distance). GPU enabled
 %                           'jaccard'    : Jaccard coefficient. GPU enabled
 %                           'spearman'   : sample Spearman's rank correlation
-%               computing: 'cpu'(default)
-%                          'gpu' uses GPU to compute distances
-%               distance : computing precision
-%                          double: double precision(default)
-%                          single: single precision
-%               verbose  : 1 prints iterations (Default)
-%                          0 does not print iterations
+%               computing : 'cpu'(default)
+%                           'gpu' uses GPU to compute distances
+%               distance  : computing precision
+%                           double: double precision(Default)
+%                           single: single precision
+%               verbose   : 1 prints iterations (Default)
+%                           0 does not print iterations
+%               saveMemory: 1 saves memory on device but slower (Default)
+%                           0 faster computation but more memory required
 %
 % Outputs:
 %               RegNet   : inferred gene-TF regulatory network
@@ -61,6 +63,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     end
     if nargin<8
         precision='double';
+    end
+    if nargin<9
+        saveMemory=1;
     end
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
@@ -122,8 +127,10 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         end
         
         A = respWeight*R + (1-respWeight)*A;
-        clear R;prevDiag=diag(GeneCoReg);
-        GeneCoReg=diagsquareform(GeneCoReg);
+        if saveMemory==1
+            clear R;prevDiag=diag(GeneCoReg);
+            GeneCoReg=diagsquareform(GeneCoReg);
+        end
 
         hamming = mean(abs(RegNet(:) - A(:)));
         RegNet = (1 - alpha) * RegNet + alpha * A;
@@ -178,14 +185,18 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
                 A = convertToSimilarity(A,similarityMetric);
             end
             A = UpdateDiagonal(A, NumGenes, alpha, step);
-            % update GeneCoReg
-            stdDiag = diag(A);
-            A = diagsquareform(A);
-            GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
-            clear A;
-            GeneCoReg = squareform(GeneCoReg);
-            GeneCoReg(1:(NumGenes+1):end) = alpha * stdDiag + (1 - alpha) * prevDiag;
-            clear prevDiag; clear stdDiag;
+            if saveMemory==1
+                % update GeneCoReg
+                stdDiag = diag(A);
+                A = diagsquareform(A);
+                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+                clear A;
+                GeneCoReg = squareform(GeneCoReg);
+                GeneCoReg(1:(NumGenes+1):end) = alpha * stdDiag + (1 - alpha) * prevDiag;
+                clear prevDiag; clear stdDiag;
+            else
+                GeneCoReg = (1 - alpha) * GeneCoReg + alpha * A;
+            end
         end
         if verbose==1
             disp(['Step#', num2str(step), ', hamming=', num2str(hamming)]);
