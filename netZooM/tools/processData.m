@@ -18,18 +18,13 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
 %               GeneNames : gene names
 %
 % Author:       Marouen Ben Guebila 12/2019
+
     if isequal(modeProcess,'legacy')
         disp('Reading in expression data!');
         tic
-            fid = fopen(exp_file, 'r');
-            headings = fgetl(fid);
-            n = length(regexp(headings, '\t'));
-            frewind(fid);
-            %Exp = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t', 'CommentStyle', '#');
-            Exp = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t'); % tiny speed-up by not checking for comments
-            fclose(fid);
-            GeneNames = Exp{1};
-            Exp = cat(2, Exp{2:end});
+            exp_file_tbl=readtable(exp_file,'FileType','text');
+            Exp = exp_file_tbl{:,2:end};
+            GeneNames = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
             fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
             Exp = Exp';  % transpose expression matrix from gene-by-sample to sample-by-gene
@@ -37,7 +32,10 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
 
         disp('Reading in motif data!');
         tic
-            [TF, gene, weight] = textread(motif_file, '%s%s%f');
+            fid = fopen(motif_file, 'r');
+            C = textscan(fid, '%s%s%f');
+            fclose(fid);
+            TF=C{1,1};gene=C{1,2};weight=C{1,3};
             TFNames = unique(TF);
             NumTFs = length(TFNames);
             [~,i] = ismember(TF, TFNames);
@@ -51,7 +49,10 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
         tic
             TFCoop = eye(NumTFs);
             if(~isempty(ppi_file))
-                [TF1, TF2, weight] = textread(ppi_file, '%s%s%f');
+                fid = fopen(ppi_file, 'r');
+                C = textscan(fid, '%s%s%f');
+                fclose(fid);
+                TF1=C{1,1};TF2=C{1,2};weight=C{1,3};
                 [~,i] = ismember(TF1, TFNames);
                 [~,j] = ismember(TF2, TFNames);
                 TFCoop(sub2ind([NumTFs, NumTFs], i, j)) = weight;
@@ -87,9 +88,9 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     TFCoop   = zeros(NumTFs,NumTFs);
     %Populate result
     %Gene expression
-    [~,ig]= ismember(GeneNamesExp,GeneNames);
-    Exp(find(ig),:)= ExpInit(find(ig),:);
-    Exp      = Exp'; 
+    [ig,locg]= ismember(GeneNamesExp,GeneNames);
+    Exp(locg(locg~=0),:) = ExpInit(ig(ig~=0),:);
+    Exp = Exp'; 
     %Motif
     [~,i] = ismember(TF, TFNames);
     [~,j] = ismember(gene, GeneNames);
@@ -116,28 +117,30 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
     % Read expression
     disp('Reading in expression data!');
     tic
-        fid = fopen(exp_file, 'r');
-        headings = fgetl(fid);
-        n = length(regexp(headings, '\t'));
-        frewind(fid);
-        ExpInit = textscan(fid, ['%s', repmat('%f', 1, n)], 'delimiter', '\t'); % tiny speed-up by not checking for comments
-        fclose(fid);
-        GeneNamesExp = ExpInit{1};
-        ExpInit = cat(2, ExpInit{2:end});
-        [~, NumConditions] = size(ExpInit);
+        exp_file_tbl=readtable(exp_file,'FileType','text');
+        ExpInit = exp_file_tbl{:,2:end};
+        GeneNamesExp = exp_file_tbl{:,1};
+        [NumGenes, NumConditions] = size(ExpInit);
+        fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
     toc
     if length(unique(GeneNamesExp)) ~= length(GeneNamesExp)
         error('There are duplicate genes in the expression matrix.')
     end
     % Read motif
     disp('Reading in motif data!');
-    [TF, gene, weightMotif] = textread(motif_file, '%s%s%f');
+    motif_file_id = fopen(motif_file);
+    C = textscan(motif_file_id, '%s%s%f');
+    fclose(motif_file_id);
+    TF=C{1,1};gene=C{1,2};weightMotif=C{1,3};
     TfMotif  = unique(TF);
     GeneMotif= unique(gene);
     % Read PPI
     disp('Reading in ppi data!');
     if(~isempty(ppi_file))
-        [TF1, TF2, weightPPI] = textread(ppi_file, '%s%s%f');
+        ppi_file_id = fopen(ppi_file);
+        C = textscan(ppi_file_id, '%s%s%f');
+        fclose(motif_file_id);
+        TF1=C{1,1};TF2=C{1,2};weightPPI=C{1,3};
     end
     TFNamesInit=unique(TF1);
     if ~isequal(TFNamesInit,unique(TF2))

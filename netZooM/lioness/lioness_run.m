@@ -1,4 +1,5 @@
-function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha, ascii_out, lib_path)
+function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
+    START, END, alpha, ascii_out, lib_path, computing)
 % Description:
 %             Using LIONESS to infer single-sample gene regulatory networks.
 %             1. Reading in PANDA network and preprocessed middle data
@@ -20,6 +21,8 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START
 %               ascii_out : 1 : save LIONESS networks in .txt format
 %                           0 : save LIONESS networks in .mat -v6 format
 %               lib_path  : path to library
+%               computing: 'cpu'(default)
+%                          'gpu' uses GPU to compute distances
 % 
 % Outputs:
 %               PredNet  : Predicted single sample network as a matrix of size (t,g)
@@ -49,6 +52,9 @@ fprintf('Alpha: %.2f\n', alpha);
 fprintf('ASCII output: %d\n', ascii_out);
 addpath(lib_path);
 
+if nargin<11
+    computing='cpu';
+end
 %% ============================================================================
 %% Read in Data
 %% ============================================================================
@@ -93,20 +99,60 @@ else
     indexes = START:END;
 end
 
-for i = indexes
-    fprintf('Running LIONESS for sample %d:\n', i);
-    idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
+if isequal(computing,'gpu')
+    parpool(gpuDeviceCount); 
+    parfor i = indexes
+        ExpGPU = Exp;
+        fprintf('Running LIONESS for sample %d:\n', i);
+        idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
 
-    disp('Computing coexpresison network:');
-    tic; GeneCoReg = Coexpression(Exp(idx,:)); toc;
+        disp('Computing coexpresison network:');
+        tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
 
-    disp('Normalizing Networks:');
-    tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+        disp('Normalizing Networks:');
+        tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
 
-    disp('Running PANDA algorithm:');
-    LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
-    PredNet = NumConditions * (AgNet - LocNet) + LocNet;
+        disp('Running PANDA algorithm:');
+        LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
+            'Tfunction','gpu','single',0)
+        PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
+        saveGPU(PredNet,ascii_out,save_dir,i)
+    end
+else
+    for i = indexes
+        fprintf('Running LIONESS for sample %d:\n', i);
+        idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
+
+        disp('Computing coexpresison network:');
+        tic; GeneCoReg = Coexpression(Exp(idx,:)); toc;
+
+        disp('Normalizing Networks:');
+        tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+
+        disp('Running PANDA algorithm:');
+        LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
+        PredNet = NumConditions * (AgNet - LocNet) + LocNet;
+
+        disp('Saving LIONESS network:');
+        if ascii_out == 1
+            f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
+            tic; save(f, 'PredNet', '-ascii'); toc;
+        else
+            f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
+            tic; save(f, 'PredNet', '-v6'); toc;
+        end
+        fprintf('Network saved to %s\n', f);
+
+        clear idx GeneCoReg LocNet PredNet f; % clean up for next run
+    end
+end
+
+disp('All done!');
+disp(datestr(now));
+end
+
+function saveGPU(PredNet,ascii_out,save_dir,i)
     disp('Saving LIONESS network:');
     if ascii_out == 1
         f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
@@ -116,10 +162,4 @@ for i = indexes
         tic; save(f, 'PredNet', '-v6'); toc;
     end
     fprintf('Network saved to %s\n', f);
-
-    clear idx GeneCoReg LocNet PredNet f; % clean up for next run
-end
-
-disp('All done!');
-disp(datestr(now));
 end

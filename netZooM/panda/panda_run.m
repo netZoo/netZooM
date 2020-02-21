@@ -1,5 +1,5 @@
 function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess,...
-    respWeight,absCoex)
+               respWeight, absCoex, similarityMetric, computing, precision, verbose)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -24,12 +24,43 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                           1:  the final network will be saved .pairs format where each line has a TF-gene edge (Cytoscape compatible)
 %                           0:  the final network will not be saved in .pairs format
 %               modeProcess: Refers to the procedure to filter input data.
-%                           'legacy' old deprecated behavior of netZooM <= 0.5
+%                           'legacy' old deprecated behavior of netZooM <0.4.1
+%                                    aligns genes on gene expression and
+%                                    TFs on motif.
 %                           (Default)'union' fills missing genes and TFs with zero rows
 %                           'intersection' removes missing genes and TFs
 %               respWeight:  real number between 0 and 1. Weight of the responsability matrix (default: 0.5)
 %               absCoex   :  0: take the signed correlation matrix (Default)
 %                            1: take the absolute value of the coexpression matrix
+%               similarityMetric: string containing the similarity metric that PANDA uses to 
+%                           find agreement between networks. Similarity
+%                           scores are kept as is, and distance scores were
+%                           converted to similarities through s=1/(1+d)
+%                           'Tfunction'   : (Default) Modified tanimoto
+%                                          similarity as described in doi:10.1371/journal.pone.0064832
+%                           @TfunctionDist: same as 'Tfunction' but works
+%                                          with pdist2, slower.
+%                           'euclidean'  : 1/(1+ euclidean distance) 
+%                           'squaredeuclidean': 1/(1+ squared euclidean distance) 
+%                           'seuclidean' : 1/(1+ standardized euclidean distance) 
+%                           'cityblock'  : 1/(1+ cityblock distance)
+%                           'minkowski'  : 1/(1+ minkowski distance). 
+%                                          with p=3. p=1,p=2, and p=inf are
+%                                          covered by cityblock, euclidean,
+%                                          and Chebychev respectively.
+%                           'chebychev'  : 1/(1+ chebychev distance)
+%                           'cosine'     : cosine of the included angle
+%                           'correlation': sample correlation between points
+%                           'hamming'    : 1/(1+ hamming distance)
+%                           'jaccard'    : Jaccard coefficient
+%                           'spearman'   : sample Spearman's rank correlation
+%               computing: 'cpu'(default)
+%                          'gpu' uses GPU to compute distances
+%               precision: computing precision
+%                          double: double precision(Default)
+%                          single: single precision
+%               verbose  : 1 prints iterations (Default)
+%                          0 does not print iterations
 %                          
 % Outputs:
 %               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
@@ -44,12 +75,23 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %               https://doi.org/10.1371/journal.pone.0064832 
 
 disp(datestr(now));
-
 % Set default parameters
-if nargin <11
+if nargin < 15
+    verbose=1;
+end
+if nargin < 14
+    precision='double';
+end
+if nargin < 13
+   computing='cpu';
+end
+if nargin < 12
+   similarityMetric='Tfunction';
+end
+if nargin < 11
     absCoex=0;
 end
-if nargin <10
+if nargin < 10
     respWeight=0.5;
 end
 if nargin < 9
@@ -106,7 +148,7 @@ end
 clear Exp;  % Clean up Exp to release memory (for low-memory machine)
 
 disp('Running PANDA algorithm:');
-AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight);
+AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric, computing, precision, verbose);
 
 %% ============================================================================
 %% Saving PANDA network output
