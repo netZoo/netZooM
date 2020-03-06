@@ -1,5 +1,5 @@
 function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess,...
-               respWeight, absCoex, similarityMetric, computing, precision, verbose)
+               respWeight, absCoex, similarityMetric, computing, precision, verbose, saveGPUmemory)
 % Description:
 %               Using PANDA to infer gene regulatory network. 
 %               1. Reading in input data (expression data, motif prior, TF PPI data)
@@ -27,16 +27,16 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                           'legacy' old deprecated behavior of netZooM <0.4.1
 %                                    aligns genes on gene expression and
 %                                    TFs on motif.
-%                           (Default)'union' fills missing genes and TFs with zero rows
+%                           (default)'union' fills missing genes and TFs with zero rows
 %                           'intersection' removes missing genes and TFs
 %               respWeight:  real number between 0 and 1. Weight of the responsability matrix (default: 0.5)
-%               absCoex   :  0: take the signed correlation matrix (Default)
+%               absCoex   :  0: take the signed correlation matrix (default)
 %                            1: take the absolute value of the coexpression matrix
 %               similarityMetric: string containing the similarity metric that PANDA uses to 
 %                           find agreement between networks. Similarity
 %                           scores are kept as is, and distance scores were
 %                           converted to similarities through s=1/(1+d)
-%                           'Tfunction'   : (Default) Modified tanimoto
+%                           'Tfunction'   : (default) Modified tanimoto
 %                                          similarity as described in doi:10.1371/journal.pone.0064832
 %                           @TfunctionDist: same as 'Tfunction' but works
 %                                          with pdist2, slower.
@@ -57,10 +57,13 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %               computing: 'cpu'(default)
 %                          'gpu' uses GPU to compute distances
 %               precision: computing precision
-%                          double: double precision(Default)
+%                          double: double precision(default)
 %                          single: single precision
-%               verbose  : 1 prints iterations (Default)
+%               verbose  : 1 prints iterations (default)
 %                          0 does not print iterations
+%               saveGPUmemory: invoked only when computing='gpu'
+%                              0 uses the standard implementation (default) 
+%                              1 saves memory on the GPU (slower)
 %                          
 % Outputs:
 %               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
@@ -76,6 +79,9 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 
 disp(datestr(now));
 % Set default parameters
+if nargin <16
+   saveGPUmemory=0; 
+end
 if nargin < 15
     verbose=1;
 end
@@ -148,7 +154,8 @@ end
 clear Exp;  % Clean up Exp to release memory (for low-memory machine)
 
 disp('Running PANDA algorithm:');
-AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric, computing, precision, verbose);
+AgNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
+    computing, precision, verbose, saveGPUmemory);
 
 %% ============================================================================
 %% Saving PANDA network output

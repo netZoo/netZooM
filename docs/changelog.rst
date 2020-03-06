@@ -2,6 +2,24 @@
 Changelog
 ==========
 
+0.4.3 (2019-03-01)
+------------------
+
+- gpuPANDA and gpuLIONESS
+- gpuPANDA and gpuLIONESS tutorials 
+
+0.4.2 (2019-01-09)
+------------------
+
+- optPANDA 
+- optPANDA tutorial
+
+0.4.1 (2019-01-01)
+------------------
+
+- Cross-plateform haramonization of PANDA behavior.
+- Data processing was set to 'Union' by default.
+
 0.4.0 (2019-11-19)
 ------------------
 
