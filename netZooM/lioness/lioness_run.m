@@ -1,5 +1,5 @@
 function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
-    START, END, alpha, ascii_out, lib_path, computing)
+    START, END, alpha, ascii_out, lib_path, computing, saveGPUmemory, verbose)
 % Description:
 %             Using LIONESS to infer single-sample gene regulatory networks.
 %             1. Reading in PANDA network and preprocessed middle data
@@ -23,6 +23,11 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %               lib_path  : path to library
 %               computing: 'cpu'(default)
 %                          'gpu' uses GPU to compute distances
+%               saveGPUmemory: invoked only when computing='gpu'
+%                              0 uses the standard implementation (default) 
+%                              1 saves memory on the GPU (slower)
+%               verbose  : 1 prints iterations (default)
+%                          0 does not print iterations
 % 
 % Outputs:
 %               PredNet  : Predicted single sample network as a matrix of size (t,g)
@@ -51,7 +56,12 @@ fprintf('Sample index: %d - %d\n', START, END);
 fprintf('Alpha: %.2f\n', alpha);
 fprintf('ASCII output: %d\n', ascii_out);
 addpath(lib_path);
-
+if nargin <13
+   verbose=0; 
+end
+if nargin <12
+   saveGPUmemory=0; 
+end
 if nargin<11
     computing='cpu';
 end
@@ -114,7 +124,7 @@ if isequal(computing,'gpu')
 
         disp('Running PANDA algorithm:');
         LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
-            'Tfunction','gpu','single',0)
+            'Tfunction','gpu','single',verbose, saveGPUmemory)
         PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
         saveGPU(PredNet,ascii_out,save_dir,i)
