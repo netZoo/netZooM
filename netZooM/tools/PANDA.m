@@ -13,7 +13,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %                           find agreement between networks. Similarity
 %                           scores are kept as is, and distance scores were
 %                           converted to similarities through s=1/(1+d)
-%                           'Tfunction'   : (Default) Modified tanimoto
+%                           'Tfunction'   : (default) Modified tanimoto
 %                                          similarity as described in doi:10.1371/journal.pone.0064832
 %                           @TfunctionDist: same as 'Tfunction' but works
 %                                          with pdist2, slower.
@@ -41,9 +41,9 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 %               precision: computing precision
 %                          double: double precision(default)
 %                          single: single precision
-%               verbose  : 1 prints iterations (Default)
+%               verbose  : 1 prints iterations (default)
 %                          0 does not print iterations
-%               saveMemory: 1 saves memory on device but slower (Default)
+%               saveMemory: 1 saves memory on device but slower (default)
 %                           0 faster computation but more memory required
 % 
 % Outputs:
