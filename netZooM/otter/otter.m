@@ -11,7 +11,7 @@ function W = otter(W,P,C,lambda,gamma,Imax,eta)
 %                       matrix of size (t,g), g=number of genes, t=number of TFs
 %               P     : TF-TF protein interaction network as a matrix of size (t,t)
 %               C     : gene coexpression as a matrix of size (g,g) 
-%               lambda: 
+%               lambda: it should be in [0,1].
 %               gamma : penalization term
 %               Imax  : number of iterations of the algorithm
 %               eta   : 

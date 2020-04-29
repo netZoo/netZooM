@@ -25,9 +25,9 @@ function testOtterSimple()
             csvwrite('p.csv',TFCoop);
             csvwrite('w.csv',RegNet);
         elseif generatePriors==0
-            C=csvread('c.csv');
-            P=csvread('p.csv');
-            W=csvread('w.csv');
+            C=csvread('test_data/otter/c.csv');
+            P=csvread('test_data/otter/p.csv');
+            W=csvread('test_data/otter/w.csv');
         end
 
         % Add path
