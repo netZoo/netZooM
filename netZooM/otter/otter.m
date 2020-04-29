@@ -4,18 +4,20 @@ function W = otter(W,P,C,lambda,gamma,Imax,eta)
 %               motif (W), TF PPI (P), and gene coexpression (C) through 
 %               minimzing the following objective:
 %                                  min f(W) 
-%               with f(W) = (1-lambda)/4*||WW' - P||^2 + (lambda/4)*||W'W - C||^2 + (gamma/2)*||W||^2
+%               with f(W) = (1-lambda)*||WW' - P||^2 + lambda*||W'W - C||^2 + (gamma/2)*||W||^2
 %
 % Inputs:
 %               W     : TF-gene regulatory network based on TF motifs as a
 %                       matrix of size (t,g), g=number of genes, t=number of TFs
 %               P     : TF-TF protein interaction network as a matrix of size (t,t)
 %               C     : gene coexpression as a matrix of size (g,g) 
-%               lambda: it should be in [0,1].
-%               gamma : penalization term
+%               lambda: tuning parameter in [0,1] (higher gives more weight to C)
+%               gamma : regularization parameter
 %               Imax  : number of iterations of the algorithm
-%               eta   : 
-%                       
+%               eta   : learning rate
+%               bexp  : exponent influencing learning rate (higher means smaller)
+%
+%
 % Outputs:
 %               W  : Predicted TF-gene complete regulatory network as an adjacency matrix of size (t,g).
 %
@@ -45,13 +47,13 @@ P = P/trace(P) + 0.0013;
 W = P*W;
 W = W/sqrt(trace(W*W'));
 
-[nTF, nGenes] = size(W);
-m = zeros(nTF, nGenes);
+[t, g] = size(W);
+m = zeros(t, g);
 v = m;
 b1t = b1;
 b2t = b2;
 %To save computations:
-P = -P*(1-lambda) + gamma*eye(nTF);
+P = -P*(1-lambda) + gamma*eye(t);
 C = -C*lambda;
 %ADAM gradient descent                  
 for i = 1:Imax
