@@ -25,9 +25,9 @@ function testOtterSimple()
             csvwrite('p.csv',TFCoop);
             csvwrite('w.csv',RegNet);
         elseif generatePriors==0
-            C=csvread('test_data/otter/c.csv');
-            P=csvread('test_data/otter/p.csv');
-            W=csvread('test_data/otter/w.csv');
+            C=csvread('tests/test_data/otter/c.csv');
+            P=csvread('tests/test_data/otter/p.csv');
+            W=csvread('tests/test_data/otter/w.csv');
         end
 
         % Add path
@@ -37,7 +37,7 @@ function testOtterSimple()
         tic;W = otter(W,P,C);toc;
         
         % Load the expected result
-        filename = 'test_data/otter/test_otter.csv';
+        filename = 'tests/test_data/otter/test_otter.csv';
         W_test = csvread(filename);
 
         % Compare the outputs
