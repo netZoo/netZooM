@@ -34,7 +34,10 @@ function testOtterSimple()
         addpath(genpath(fullfile(pwd,'tests')));
 
         % Call Otter
-        tic;W = otter(W,P,C);toc;
+        Imax=1;
+        lambda = 0.0035;
+        gamma = 0.335;
+        tic;W = otter(W,P,C,lambda,gamma,Imax);toc;
         
         % Load the expected result
         filename = 'tests/test_data/otter/test_otter.csv';
