@@ -34,7 +34,7 @@ function testOtterSimple()
         addpath(genpath(fullfile(pwd,'tests')));
 
         % Call Otter
-        Imax=10;
+        Imax=1;
         lambda = 0.0035;
         gamma = 0.335;
         tic;W = otter(W,P,C,lambda,gamma,Imax);toc;
