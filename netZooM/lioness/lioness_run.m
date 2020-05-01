@@ -112,12 +112,13 @@ end
 if isequal(computing,'gpu')
     parpool(gpuDeviceCount); 
     parfor i = indexes
-        ExpGPU = Exp;
+        ExpGPU = gpuArray(Exp);
         fprintf('Running LIONESS for sample %d:\n', i);
         idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
 
-        disp('Computing coexpresison network:');
+        disp('Computing coexpression network:');
         tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
+        GeneCoReg = gather(GeneCoReg);
 
         disp('Normalizing Networks:');
         tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
@@ -134,7 +135,7 @@ else
         fprintf('Running LIONESS for sample %d:\n', i);
         idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
 
-        disp('Computing coexpresison network:');
+        disp('Computing coexpression network:');
         tic; GeneCoReg = Coexpression(Exp(idx,:)); toc;
 
         disp('Normalizing Networks:');
