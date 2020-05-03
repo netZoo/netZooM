@@ -66,7 +66,7 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                              1 saves memory on the GPU (slower)
 %                          
 % Outputs:
-%               AgNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
+%               AgNet     : Predicted TF-gene complete regulatory network using PANDA as a matrix of size (t,g).
 %
 % Authors: 
 %               cychen, marieke, kglass

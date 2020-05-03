@@ -209,6 +209,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     runtime = toc;
     if isequal(computing,'gpu')
         RegNet=gather(RegNet);
+        gpuDevice(1);%Clear GPU device memory 
     end
     fprintf('Running PANDA on %d Genes and %d TFs took %f seconds!\n', NumGenes, NumTFs, runtime);
 end
