@@ -1,11 +1,11 @@
-[![TRAVIS](https://travis-ci.org/netZoo/netZooM.svg?branch=master)](https://travis-ci.org/netZoo/netZooM/)
+[![TRAVIS](https://travis-ci.com/netZoo/netZooM.svg?branch=master)](https://travis-ci.com/netZoo/netZooM/)
 [![codecov](https://codecov.io/gh/netZoo/netZooM/branch/devel/graph/badge.svg)](https://codecov.io/gh/netZoo/netZooM)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Documentation Status](https://readthedocs.org/projects/netzoom/badge/?version=latest)](https://netzoom.readthedocs.io/en/latest/?badge=latest)
  
-Linux[![LINUX](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/linux)](https://travis-ci.org/netZoo/netZooM)
+Linux[![LINUX](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/linux)](https://travis-ci.com/netZoo/netZooM)
 
-Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/macos)](https://travis-ci.org/netZoo/netZooM)
+Macos[![MAC](https://travis-ci-job-status.herokuapp.com/badge/netZoo/netZooM/master/macos)](https://travis-ci.com/netZoo/netZooM)
 
 ## Description
 netZooM is a MATLAB package of network methods.
