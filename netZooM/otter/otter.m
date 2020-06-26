@@ -40,9 +40,9 @@ eps = 0.00000001;
 %initial transformation
 C = C/trace(C);
 P = P+2.2;
-P = P/trace(P);
 W = P*W;
 W = W/trace(W*W');
+P = P/trace(P);
 
 [t, g] = size(W);
 m = zeros(t, g);
