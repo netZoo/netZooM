@@ -20,10 +20,6 @@ function W = otter(W,P,C,lambda,gamma,Imax,eta)
 %
 % Outputs:
 %               W  : Predicted TF-gene complete regulatory network as an adjacency matrix of size (t,g).
-%
-% Authors: 
-%               Rebekka Burkholz 4/2020
-
 %global parameters
 if nargin<4
     lambda = 0.0035;
@@ -32,7 +28,7 @@ if nargin<5
     gamma = 0.335;
 end
 if nargin<6
-    Imax = 300;
+    Imax = 32;
 end
 if nargin<7
     eta = 0.00001;
@@ -43,9 +39,10 @@ b2 = 0.999;
 eps = 0.00000001;
 %initial transformation
 C = C/trace(C);
-P = P/trace(P) + 0.0013;
+P = P+2.2;
+P = P/trace(P);
 W = P*W;
-W = W/sqrt(trace(W*W'));
+W = W/trace(W*W');
 
 [t, g] = size(W);
 m = zeros(t, g);
@@ -65,7 +62,7 @@ for i = 1:Imax
     b2t = b2t*b2;
     alpha = sqrt(1-b2t)/(1-b1t)*eta;
     epst = eps*sqrt((1-b2t));
-    %update of gene ragulatory matrix
+    %update of gene regulatory matrix
     W = W - alpha*(m./(epst+sqrt(v)));
 end
 end
