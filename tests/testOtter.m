@@ -44,10 +44,8 @@ function testOtterSimple()
         W_test = csvread(filename);
 
         % Compare the outputs
-        tolMat  =1.0;
-        deltaMat=max(max(W./W_test));
-	    assertTrue( abs(deltaMat - tolMat) < 1e-4 );
-        deltaMat=min(min(W./W_test));
-	    assertTrue( abs(deltaMat - tolMat) < 1e-4 );
+        tolMat  =1e-10;
+        deltaMat=max(max(abs(W_test - W)));
+	    assertTrue( deltaMat < tolMat );
         
 end
