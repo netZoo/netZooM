@@ -1,39 +1,35 @@
 function [ROC,gtNet,AgNet,PR,commonTFs]=validateNetwork(AgNet,gt,gtTFNames,TFNames,GeneNames)
 % Description:
-%               validates a TF-gene bipartite regulation network against
-%               ground truth network. 
-%
+%             validates a TF-gene bipartite regulation network against
+%             ground truth network. 
 % Inputs:
-%               AgNet     : TF-by-gene matrix representing predicted regulation
-%                           network
-%               gt        : ground truth experimental network. Tf-by-gene
-%                           matrix
-%               gtTFNames : ground truth TF names corresponding to
-%                           the order of rows of gt
-%               TFNames   : TF names of predicted network corresponding to
-%                           the order of rows of AgNet
-%               GeneNames : ground truth gene names corresponding to
-%                           the order of column of gt
-%                          
+%             AgNet     : TF-by-gene matrix representing predicted regulation
+%                         network
+%             gt        : ground truth experimental network. Tf-by-gene
+%                         matrix
+%             gtTFNames : ground truth TF names corresponding to
+%                         the order of rows of gt
+%             TFNames   : TF names of predicted network corresponding to
+%                         the order of rows of AgNet
+%             GeneNames : ground truth gene names corresponding to
+%                         the order of column of gt             
 % Outputs:
-%               ROC   : structure containing data of ROC curve
-%                       ROC.T: thresholds
-%                       ROC.X: false negative rate
-%                       ROC.Y: true positive rate
-%                       ROC.AUC: Area under the ROC curve
-%               gtNet : ground truth network with commonTFs
-%               AgNet : predicted network with commonTFs
-%               PR    : structure containing data of PR curve
-%                       PR.T: thresholds
-%                       PR.X: recall
-%                       PR.Y: precision
-%                       PR.AUC: Area under the PR curve
-%               commonTFs : TFs that intersect both gtNet and AgNet
-%
-% Authors: 
-%               Marouen Ben Guebila 01/2020
+%             ROC   : structure containing data of ROC curve
+%                     ROC.T: thresholds
+%                     ROC.X: false negative rate
+%                     ROC.Y: true positive rate
+%                     ROC.AUC: Area under the ROC curve
+%             gtNet : ground truth network with commonTFs
+%             AgNet : predicted network with commonTFs
+%             PR    : structure containing data of PR curve
+%                     PR.T: thresholds
+%                     PR.X: recall
+%                     PR.Y: precision
+%                     PR.AUC: Area under the PR curve
+%             commonTFs : TFs that intersect both gtNet and AgNet
+% Author(s):
+%             Marouen Ben Guebila 01/2020
     
-
     % build ground truth network
     gtf         = gt;
 
@@ -67,4 +63,5 @@ function [ROC,gtNet,AgNet,PR,commonTFs]=validateNetwork(AgNet,gt,gtTFNames,TFNam
     PR.Y  =Y;
     PR.T  =T;
     PR.AUC=AUC;
+    
 end

@@ -1,15 +1,12 @@
 function normMat = NormalizeNetwork(X)
 % Description:
-%              Normalize an input network (matrix) X
-%
+%             Normalize an input network (matrix) X
 % Inputs:
-%               X: network adjacency matrix
-%
+%             X: network adjacency matrix
 % Outputs:
-%               normMat: normalized adjacency matrix
-%
-% Auhtors:
-%               Kimberley Glass
+%             normMat: normalized adjacency matrix
+% Author(s):
+%             Kimberley Glass
 
     %compute means and stds
     mu2 = mean(X,2);
@@ -31,4 +28,5 @@ function normMat = NormalizeNetwork(X)
     normMat(f2,:)=(Z1+Z0(f2,:))/sqrt(2);clear Z1;
     linInd=(find(f1)-1)*size(normMat,1)+find(f2);
     normMat(linInd)=2*Z0(linInd)/sqrt(2);
+    
 end

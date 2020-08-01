@@ -2,25 +2,34 @@
 Changelog
 ==========
 
-0.4.3 (2019-03-01)
+0.5.1 (2020-06-27)
+------------------
+- Major fix for OTTER behavior across platforms.
+
+0.5.0 (2020-05-02)
+------------------
+- new tool: OTTER
+- (Cross-platform) Unit test for OTTER
+
+0.4.3 (2020-03-06)
 ------------------
 
 - gpuPANDA and gpuLIONESS
 - gpuPANDA and gpuLIONESS tutorials 
 
-0.4.2 (2019-01-09)
+0.4.2 (2020-02-21)
 ------------------
 
 - optPANDA 
 - optPANDA tutorial
 
-0.4.1 (2019-01-01)
+0.4.1 (2020-01-18)
 ------------------
 
 - Cross-plateform haramonization of PANDA behavior.
 - Data processing was set to 'Union' by default.
 
-0.4.0 (2019-11-19)
+0.4.0 (2019-12-10)
 ------------------
 
 - SPIDER
