@@ -1,23 +1,34 @@
 function RegNet=RunPUMA(outtag,alpha,motif_file,exp_file,ppi_file,mir_file)
 % Description:
-%               PUMA can reconstruct gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels. 
-%
+%             PUMA can reconstruct gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels.
+%             The script must be run with a regulatory prior (variable `motif_file` in the RunPUMA script) and expression data (variable `exp_file`). 
+%             Protein-protein interaction data (variable `ppi_file`) and a list of microRNAs (variable `mir_file`) are optional parameters. 
+%             If no `mir_file` is listed, the script will run the message passing algorithm described in PANDA to estimate regulatory edges, assuming that all regulators are transcription factors. 
+%             If a `mir_file` is listed, the script will run PUMA to estimate regulatory edges. In particular, regulators listed in that file will be treated as regulators that cannot form complexes with other regulators, 
+%             such as microRNAs, while regulators not listed will be treated as regulators that can form complexes, such as transcription factors.
+%             Some important notes on this tool:
+%             - The target genes in the regulatory prior (`motif_file`) should match the target genes in the expression data (`exp_file`).
+%             - The regulators in `mir_list` should match symbols in the regulatory prior (`motif_file`).
+%             - Self-interactions in the protein-protein interaction data will be set to 1. The algorithm converges around these edges. Protein-protein interaction "prior" edges therefore should have weights between 0-1.
+%             - In the protein-protein interaction prior, edges between microRNAs from the `mir_file` (see `RunPUMA.m` script) and other regulators can have values, 
+%             but these will automatically be set to 0, as the algorithm assumes that any regulator listed in `mir_file` will not be able to form edges with other regulators.
+%             Example files can be found in the folder tests/test_data/PUMA_ToyData. 
+%             Some useful scripts can be found in the folder tools:
+%             - bash scripts `RunPUMA.sh` and `RunPUMALIONESS.sh` can be used to remotely run `RunPUMA.m` and `RunPUMALIONESS.m`, respectively.
+%             - `getCompleteEdgelist.R` is an R script that can convert an unweighted regulatory prior in a complete edgelist. This can be useful when preparing the regulatory prior and expression data.
 % Inputs:
-%               exp_file  : path to file containing gene expression as a matrix of size (g,g)
-%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
-%               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
-%               outtag    : path to save output PUMA network in .pairs format.
-%               mir_file  : path to file containing microRNA file
-%               alpha     : learning parameter for the PUMA algorithm
-% 
+%             exp_file  : path to file containing gene expression as a matrix of size (g,g)
+%             motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
+%             ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
+%             outtag    : path to save output PUMA network in .pairs format.
+%             mir_file  : path to file containing microRNA file
+%             alpha     : learning parameter for the PUMA algorithm
 % Outputs:
-%               RegNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
-%
-% Authors: 
-%               Marieke Kuijjer
-% 
+%             RegNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
+% Author(s):
+%             Marieke Kuijjer
 % Publications:
-%               https://www.ncbi.nlm.nih.gov/pubmed/28506242
+%             https://www.ncbi.nlm.nih.gov/pubmed/28506242
 
     %% Read in Data %%
     disp('Reading in data!')
@@ -105,4 +116,5 @@ function RegNet=RunPUMA(outtag,alpha,motif_file,exp_file,ppi_file,mir_file)
         fprintf(fid, '%s\t%s\t%f\t%f\n', TF{cnt}, gene{cnt}, RegNet(cnt), AgNet(cnt));
     end
     fclose(fid);
+    
 end

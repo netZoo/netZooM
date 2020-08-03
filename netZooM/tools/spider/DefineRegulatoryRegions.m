@@ -1,18 +1,15 @@
-function AnnoData=DefineRegulatoryRegions(annofile, ranges, outname, chrinfo);
+function AnnoData=DefineRegulatoryRegions(annofile, ranges, outname, chrinfo)
 % Description:
-%               Using gene annotation and gene coordinates, define the window of user-defined ranges around TSS
-%
-% 	Inputs:
-%               bedtoolspath : path of the bedtools (can be installed from : "https://bedtools.readthedocs.io/en/latest/content/installation.html")
-%               annofile     : file with gene annotations e.g., './ReferenceData/refseq_hg19_05292018'
-%               chrinfo      : file with chromosome information e.g.,  '/InputData/ReferenceData/GenomeWideRanges.bed'
-%               ranges       : user-defined input for ranges around TSS for constructing proximal or distal SPIDER networks
-%   	
-%   Output:
-%               AnnoData     : path to save bedfile of regulatory regions used asinput to build SPIDER prior network. 
-%
-%   Authors: 
-%               Abhijeet Sonawane, Kimberly Glass
+%             Using gene annotation and gene coordinates, define the window of user-defined ranges around TSS
+% Inputs:
+%             bedtoolspath : path of the bedtools (can be installed from : "https://bedtools.readthedocs.io/en/latest/content/installation.html")
+%             annofile     : file with gene annotations e.g., './ReferenceData/refseq_hg19_05292018'
+%             chrinfo      : file with chromosome information e.g.,  '/InputData/ReferenceData/GenomeWideRanges.bed'
+%             ranges       : user-defined input for ranges around TSS for constructing proximal or distal SPIDER networks
+% Output:
+%             AnnoData     : path to save bedfile of regulatory regions used asinput to build SPIDER prior network. 
+% Author(s):
+%             Abhijeet Sonawane, Kimberly Glass
 
     % currently built in, could be modified
     % annofile='./ReferenceData/refseq_hg19_05292018'; % file with gene annotations
@@ -128,4 +125,5 @@ function AnnoData=DefineRegulatoryRegions(annofile, ranges, outname, chrinfo);
         fprintf(fid, '%s\t%u\t%u\t%s\n', AnnoData{1}{cnt}, AnnoData{2}(cnt), AnnoData{3}(cnt), AnnoData{4}{cnt});
     end
     fclose(fid);
+    
 end

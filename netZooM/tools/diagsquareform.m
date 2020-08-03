@@ -1,4 +1,6 @@
 function Z = diagsquareform(Y,dir)
+% This is a modified MATLAB function squareform that works on diagonal
+% matrices, called in gpuPANDA.
 %SQUAREFORM Reformat a distance matrix between upper triangular and square form.
 %   Z = SQUAREFORM(Y), if Y is a vector as created by the PDIST function,
 %   converts Y into a symmetric, square format, so that Z(i,j) denotes the
