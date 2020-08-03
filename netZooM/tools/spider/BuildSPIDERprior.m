@@ -1,20 +1,16 @@
-function [Adj, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
+function [Adj, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath)
 % Description:
-%               1. Create input prior network by interating DNase-seq information with motif data (motif prior)
-%
+%             1. Create input prior network by interating DNase-seq information with motif data (motif prior)
 % Inputs:
-%               motifhitfile : path to file containing epigenetically informed motif information, can be created using CreateEpigeneticMotif.m
-%               regfile      : path to file containing regulatory regions for genes, can be created with DefineRegulatoryRegions.m
-%		        bedtoolspath : path of the bedtools (can be installed from : "https://bedtools.readthedocs.io/en/latest/content/installation.html")
-%
-% 
+%             motifhitfile : path to file containing epigenetically informed motif information, can be created using CreateEpigeneticMotif.m
+%             regfile      : path to file containing regulatory regions for genes, can be created with DefineRegulatoryRegions.m
+%		      bedtoolspath : path of the bedtools (can be installed from : "https://bedtools.readthedocs.io/en/latest/content/installation.html")
 % Outputs:
-%               Adj          : path to epigenetically-filtered motif prior regulatory network for given cell line (DNase-seq data), can be created using BuildSPIDERprior.m
-%               TFNames      : names of TFs in the prior network obtained from BuildSPIDERprior.m, 
-%               GeneNames    : names of Genes in the prior network obtained from BuildSPIDERprior.m
-%
-% Authors: 
-%               Abhijeet Sonawane, Kimberly Glass
+%             Adj          : path to epigenetically-filtered motif prior regulatory network for given cell line (DNase-seq data), can be created using BuildSPIDERprior.m
+%             TFNames      : names of TFs in the prior network obtained from BuildSPIDERprior.m, 
+%             GeneNames    : names of Genes in the prior network obtained from BuildSPIDERprior.m
+% Author(s):
+%             Abhijeet Sonawane, Kimberly Glass
 
     % create random output file tags to save temporary files
     rval=round(rand(1)*1000000);
@@ -55,4 +51,5 @@ function [Adj, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedto
     % clean-up
     system(['rm -f ', rtag1]);
     system(['rm -f ', rtag2]);
+    
 end

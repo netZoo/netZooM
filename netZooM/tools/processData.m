@@ -1,23 +1,22 @@
 function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,ppi_file,modeProcess)
 % Description:
-%               processData process the input data before running PANDA in
-%               three different modes.
-%
+%             processData process the input data before running PANDA in
+%             three different modes.
 % Inputs:
-%               exp_file  : path to file containing gene expression as a matrix of size (g,g)
-%               motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
-%               ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
-%               modeProcess: 'legacy' old deprecated behavior of netZooM <= 0.5
-%                            (Default)'union' fills missing genes and TFs with zero rows
-%                            'intersection' removes missing genes and TFs
+%             exp_file  : path to file containing gene expression as a matrix of size (g,g)
+%             motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
+%             ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
+%             modeProcess: 'legacy' old deprecated behavior of netZooM <= 0.5
+%                          (Default)'union' fills missing genes and TFs with zero rows
+%                          'intersection' removes missing genes and TFs
 % Outputs:   
-%               Exp       : aligned expression matrix
-%               RegNet    : aligned motif prior matrix
-%               TFCoop    : aligned PPI matrix
-%               TFNames   : transcirption factor names
-%               GeneNames : gene names
-%
-% Author:       Marouen Ben Guebila 12/2019
+%             Exp       : aligned expression matrix
+%             RegNet    : aligned motif prior matrix
+%             TFCoop    : aligned PPI matrix
+%             TFNames   : transcirption factor names
+%             GeneNames : gene names
+% Author(s):    
+%             Marouen Ben Guebila 12/2019
 
     if isequal(modeProcess,'legacy')
         disp('Reading in expression data!');
@@ -81,6 +80,27 @@ end
 
 function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     GeneNamesExp,ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2)
+% Description:
+%             populateData fills dataframes with data from the input files
+% Inputs:
+%             GeneNames    : list of gene names
+%             TFNames      : list of TF names
+%             NumConditions: number of gene expression samples
+%             GeneNamesExp : Gene names from gene expression data
+%             ExpInit      : Gene expression matrix
+%             TF           : list of TF edges in motif (source)
+%             gene         : list of gene edges in motif (target)
+%             weightMotif  : edge weight in the motif network
+%             weightPPI    : edge weight in the PPI network
+%             TF1          : list of TF edges in PPI (source)
+%             TF2          : list of TF edges in PPI (target)
+% Ouputs:
+%             Exp   :
+%             RegNet:
+%             TFCoop:
+% Author:     
+%             Marouen Ben Guebila 12/2019
+
     NumTFs=length(TFNames);NumGenes=length(GeneNames);
     %Initialize result
     RegNet   = zeros(NumTFs,NumGenes);
@@ -108,12 +128,35 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     j      = j(indCommPPI);
     weightPPI = weightPPI(indCommPPI);
     TFCoop(sub2ind([NumTFs, NumTFs], i, j)) = weightPPI;
-    TFCoop(sub2ind([NumTFs, NumTFs], j, i)) = weightPPI;    
+    TFCoop(sub2ind([NumTFs, NumTFs], j, i)) = weightPPI; 
+    
 end
 
 function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
             ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
             readData(exp_file,motif_file,ppi_file)
+% Description:
+%             readData reads the input files for PANDA.
+% Inputs:
+%             exp_file  : file for gene expression
+%             motif_file: file for motif data
+%             ppi_file  : file for TF PPI data
+% Ouputs:
+%             GeneMotif    : Gene names from gene motif data
+%             GeneNamesExp : Gene names from gene expression data
+%             TfMotif      : TF names from gene motif data
+%             TFNamesInit  : TF names from gene PPI data
+%             NumConditions: Number of gene expression data
+%             ExpInit      : Gene expression matrix
+%             TF           : list of TF edges in motif (source)
+%             gene         : list of gene edges in motif (target)
+%             weightMotif  : edge weight in the motif network
+%             weightPPI    : edge weight in the PPI network
+%             TF1          : list of TF edges in PPI (source)
+%             TF2          : list of TF edges in PPI (target)
+% Author:     
+%             Marouen Ben Guebila 12/2019
+
     % Read expression
     disp('Reading in expression data!');
     tic
@@ -145,5 +188,6 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
     TFNamesInit=unique(TF1);
     if ~isequal(TFNamesInit,unique(TF2))
         error('PPI data has missing information.')
-    end   
+    end
+    
 end

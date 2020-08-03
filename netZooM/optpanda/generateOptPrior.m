@@ -2,74 +2,72 @@ function [motif_file,GeneNames,allTFName,ppi_file,pandaData]=generateOptPrior(ex
     incCoverage,bridgingProteins,oldMotif,qpval,precomputed,motif_fil,motifWeight,...
     motifCutOff,addCorr,absCoex,thresh,addChip,ctrl,ppiExp,explore)
 % Description:
-%               Generate a new tf-gene regulation prior for optPANDA. 
-%               Please refer to the LiveScript tutorial 
-%               'Accurate reconstruction of gene regulatory networks using optPANDA'
-%               for a full working example. https://github.com/netZoo/netZooM/tree/master/tutorials
+%             Generate a new tf-gene regulation prior for optPANDA. 
+%             Please refer to the LiveScript tutorial 
+%             'Accurate reconstruction of gene regulatory networks using optPANDA'
+%             for a full working example. https://github.com/netZoo/netZooM/tree/master/tutorials
 %
 % Inputs:
-%               exp_file    : path to file containing gene expression as a matrix of size (g,n)
-%               incCoverage : {0,1} increases TF coverage by adding rows of zeros in TF-gene 
-%                                   regulation prior if a TF has an entry in the PPI matrix
-%               bridgingProteins : computation of higher order PPI interaction network through linking 
-%                                  TFs if they sahre a non-TF neighbor.
-%                                  PPIs were taken from STRINGdb v 11.0
-%                                  0 : PPI with all STRINGdb links (binding, catalysis, etc ...)
-%                                  1 : 0 + addition of edge if two TFs
-%                                      share a neighbor. This will account for
-%                                      first order neighbors or bridging
-%                                      proteins in TF complexes.
-%                                  2 : 1 + addition of edge it two TFs
-%                                      share neighors who share neighbors i.e.,
-%                                      second order bridging proteins
-%                                  3 : PPI with only edges that account for
-%                                      binding interactions
-%                                  4 : 3 + first-order neighbors
-%                                  5 : 4 + second-order neighbors
-%                                  6 : 5 + third-order neighbors
-%                                  7 : 6 + fourth-order neighbors
-%               oldMotif    : {0,1} Use a TF-gene regulation prior that
-%                                   was generated previously in Lopez-Ramos
-%                                   et al. https://doi.org/10.1186/s12864-017-4111-x
-%               qpval       : {0,1} use p-value or corrected p-value for TF-gene binding motif
-%               precomputed : {0,1} use presaved results
-%               motif_fil   : {0,1} use p-value or corrected p-value for TF-gene binding motif
-%                             or can be structure containing precomputed
-%                             motif file containing RegNet, TFNames are the row names, GeneNames are the columns names 
-%               motifWeight : [0,1] when addCorr==1. Weight of TF-Gene coexpression when added to the TF-gene regulation prior.
-%               motifCutOff : [0,1] cutoff values in the TF-Gene coexpression, when addCorr==1
-%               addCorr     : {0,1} augment the TF-gene regulation prior by adding TF-gene coexpression
-%               absCoex     : {0,1} takes the absolute value of the coexpression matrix
-%               thresh      : [0,1] p-value threshold to assign binding in TF-gene regulation prior
-%               addChip     : {0,1,2} adds chip-seq in the TF-gene regulation prior
-%                                  1 : adds chipseq data from all of remap (union of all chipseq experiments
-%                                      i.e., nonspecific to conetxt) 
-%                                  2 : same as 1 but uses 2 and -1 for
-%                                      presence/absence to differentiate from
-%                                      PWMs that use 1 and 0.
-%               ctrl        : {0,1,2,3} Dummy variable used in the optimisation process 
-%                                       to compute the performance of a null variable 
-%               ppiExp      : {0,1,2,3,4,5,6} scaling of PPI data by TF-TF
-%                              Coexpression (tfco)
-%                             1 : PPI*.|tfco| + fill missing with 0
-%                             2 : PPI*.|tfco| + fill missing with 1
-%                             3 : PPI*.|tfco| + fill missing with mean
-%                             4 : PPI*.tfco + fill missing with 0
-%                             5 : PPI*.tfco + fill missing with 1
-%                             6 : PPI*.tfco + fill missing with mean
-%               explore     : 0 saves the optimized motif and PPI files
-%                             1 does not save result file, meant for
-%                               exploring the solution space
-%                             2 1+reports validation results
-%                          
+%             exp_file    : path to file containing gene expression as a matrix of size (g,n)
+%             incCoverage : {0,1} increases TF coverage by adding rows of zeros in TF-gene 
+%                                 regulation prior if a TF has an entry in the PPI matrix
+%             bridgingProteins : computation of higher order PPI interaction network through linking 
+%                                TFs if they sahre a non-TF neighbor.
+%                                PPIs were taken from STRINGdb v 11.0
+%                                0 : PPI with all STRINGdb links (binding, catalysis, etc ...)
+%                                1 : 0 + addition of edge if two TFs
+%                                    share a neighbor. This will account for
+%                                    first order neighbors or bridging
+%                                    proteins in TF complexes.
+%                                2 : 1 + addition of edge it two TFs
+%                                    share neighors who share neighbors i.e.,
+%                                    second order bridging proteins
+%                                3 : PPI with only edges that account for
+%                                    binding interactions
+%                                4 : 3 + first-order neighbors
+%                                5 : 4 + second-order neighbors
+%                                6 : 5 + third-order neighbors
+%                                7 : 6 + fourth-order neighbors
+%             oldMotif    : {0,1} Use a TF-gene regulation prior that
+%                                 was generated previously in Lopez-Ramos
+%                                 et al. https://doi.org/10.1186/s12864-017-4111-x
+%             qpval       : {0,1} use p-value or corrected p-value for TF-gene binding motif
+%             precomputed : {0,1} use presaved results
+%             motif_fil   : {0,1} use p-value or corrected p-value for TF-gene binding motif
+%                           or can be structure containing precomputed
+%                           motif file containing RegNet, TFNames are the row names, GeneNames are the columns names 
+%             motifWeight : [0,1] when addCorr==1. Weight of TF-Gene coexpression when added to the TF-gene regulation prior.
+%             motifCutOff : [0,1] cutoff values in the TF-Gene coexpression, when addCorr==1
+%             addCorr     : {0,1} augment the TF-gene regulation prior by adding TF-gene coexpression
+%             absCoex     : {0,1} takes the absolute value of the coexpression matrix
+%             thresh      : [0,1] p-value threshold to assign binding in TF-gene regulation prior
+%             addChip     : {0,1,2} adds chip-seq in the TF-gene regulation prior
+%                                1 : adds chipseq data from all of remap (union of all chipseq experiments
+%                                    i.e., nonspecific to conetxt) 
+%                                2 : same as 1 but uses 2 and -1 for
+%                                    presence/absence to differentiate from
+%                                    PWMs that use 1 and 0.
+%             ctrl        : {0,1,2,3} Dummy variable used in the optimisation process 
+%                                     to compute the performance of a null variable 
+%             ppiExp      : {0,1,2,3,4,5,6} scaling of PPI data by TF-TF
+%                            Coexpression (tfco)
+%                           1 : PPI*.|tfco| + fill missing with 0
+%                           2 : PPI*.|tfco| + fill missing with 1
+%                           3 : PPI*.|tfco| + fill missing with mean
+%                           4 : PPI*.tfco + fill missing with 0
+%                           5 : PPI*.tfco + fill missing with 1
+%                           6 : PPI*.tfco + fill missing with mean
+%             explore     : 0 saves the optimized motif and PPI files
+%                           1 does not save result file, meant for
+%                             exploring the solution space
+%                           2 1+reports validation results           
 % Outputs:
-%               motif_file : tf-gene regulation prior for optPANDA in
-%                            .pairs format.
-%               GeneNames  : list of genes in motif_file
-%               allTFName  : list of TF names in motif_file
-%
-% Authors: 
-%               Marouen Ben Guebila 01/2020
+%             motif_file : tf-gene regulation prior for optPANDA in
+%                          .pairs format.
+%             GeneNames  : list of genes in motif_file
+%             allTFName  : list of TF names in motif_file
+% Author(s):
+%             Marouen Ben Guebila 01/2020
 
     % fetch gene names
     expTbl   = readtable(exp_file,'FileType','text');
