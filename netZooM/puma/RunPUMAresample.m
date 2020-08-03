@@ -1,6 +1,7 @@
 function PredNet=RunPUMAresample(outtag, alpha, motif_file, exp_file, ppi_file, mir_file, perc, nrboots)
 % Description:
-%             PUMALIONESSsubset can reconstruct bootstrapped gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels.
+%             RunPUMAresample runs PUMA as described in the PUMA function, but resamples the data multiple times (variable `nrboots`) by removing a certain percentage (variable `perc`) of samples to obtain a collection of networks.
+%             Example files can be found in the folder tests/test_data/PUMA_ToyData.
 % Inputs:
 %             exp_file  : path to file containing gene expression as a matrix of size (g,g)
 %             motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)

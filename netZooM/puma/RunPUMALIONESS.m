@@ -1,6 +1,12 @@
 function RegNet=RunPUMALIONESS(outtag,alpha,motif_file,exp_file,ppi_file,mir_file)
 % Description:
 %             PUMALIONESS can reconstruct single-sample gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels.
+%             LIONESS, or Linear Interpolation to Obtain Network Estimates for Single Samples, can be used to estimate single-sample networks using aggregate networks made with any network reconstruction algorithm (Kuijjer et al. 2019. iScience, https://doi.org/10.1016/j.isci.2019.03.021).
+%             For instructions to run this script, see instructions under the RunPUMA.m function.
+%             Example files can be found in the folder tests/test_data/PUMA_ToyData.
+%             Some useful scripts can be found in the folder tools:
+%             - bash scripts `RunPUMA.sh` and `RunPUMALIONESS.sh` can be used to remotely run `RunPUMA.m` and `RunPUMALIONESS.m`, respectively.
+%             - `getCompleteEdgelist.R` is an R script that can convert an unweighted regulatory prior in a complete edgelist. This can be useful when preparing the regulatory prior and expression data.
 % Inputs:
 %             exp_file  : path to file containing gene expression as a matrix of size (g,g)
 %             motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)

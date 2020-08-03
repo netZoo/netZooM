@@ -7,6 +7,10 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %             3. Normalizing coexpression network
 %             4. Running PANDA algorithm
 %             5. Writing out LIONESS networks
+%             lioness_run can be called directly, otherwise for batch calls
+%             1. Run PANDA first to get preprocessed middle files and aggregated PANDA network.
+%             2. Set up LIONESS run-time parameters by editing `lioness_config.m`.
+%             3. Run LIONESS main program via `lioness_run.sh`.
 % Inputs:
 %             exp_file  : path to file containing gene expression as a matrix of size (g,g)
 %             motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)

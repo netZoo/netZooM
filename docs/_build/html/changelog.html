@@ -243,9 +243,26 @@
 </div>
 <div class="section" id="id9">
 <h2>0.1.0 (2019-5-28)<a class="headerlink" href="#id9" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li>Changelog added to the doc</li>
-<li>PANDA</li>
+<ul>
+<li><p class="first">Changelog added to the doc</p>
+</li>
+<li><p class="first">PANDA’s CY Chen implementation that is different from the original implementation on the following points</p>
+<p>We reach a 20-25% reduction in computation time and memory usage in comparison to its early version. The following optimazation has been implemented in this version:</p>
+<p>Network Normalization:</p>
+<p>Use MATLAB built-in zscore function instead of calculation from scratch. -&gt; 30% speed-up.</p>
+<p>T-function:</p>
+<p>Use bsxfun instead of repmat, use symmetric matrix multiplication, and reuse summed-square vector. -&gt; 25% speed-up.</p>
+<p>PANDA Function:</p>
+<p>Move out network normalization from PANDA function to main program to remove unnecessary repeated normalization in each following LIONESS iteration: both PPI network and motif network need to be normalized only once. -&gt; 1-10 sec reduced for each LIONESS iteration depending on the network sizes.</p>
+<p>Save W matrix (R+A) so that we don’t have to compute it twice. -&gt; ~0.5% overall speed-up.</p>
+<p>Check hamming inside the while-loop to reduce the last unnecessary updates on TFcoop and GeneCoReg networks. -&gt; ~2% overall speed-up.</p>
+<p>I/O:</p>
+<p>Use MATLAB binary files (mat-file) instead of text files for I/O which boost the performance (&gt;10x faster).</p>
+<p>Reusing the processed middle files:</p>
+<p>Save the input expression matrix (transposed), normalized motif/PPI networks, and the aggregated PANDA network to binary files (mat-file) for later use in each LIONESS run: expression matrix can only be saved to v7.3 mat file (compressed Matlab HDF5 format) when its size is over 2GB; normalized motif/PPI networks and output PANDA network can be saved as v6 uncompressed mat files for best I/O efficiency.</p>
+<p>Computing gene-gene coexpression matrix:</p>
+<p>Move out this part as an independent function so that no need to transpose the input matrix each time in LIONESS iteration. Consequently, we save a copy of expression matrix in the memory and also one matrix transpose operation overhead for each single-sample LIONESS run.</p>
+</li>
 </ul>
 </div>
 </div>

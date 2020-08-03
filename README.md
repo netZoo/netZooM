@@ -18,7 +18,7 @@ netZooM is a MATLAB package of network methods.
 Then add the netZoo to your MATLAB path `addpath(genpath('path/to/netZooM'))`
 
 ## User guide
-Please refer to the [user guide](UserGuide.md) and the [documentation](https://netzoom.readthedocs.io/en/latest/) website for installation instructions and usage.
+Please refer to the [documentation](https://netzoom.readthedocs.io/en/latest/) website for installation instructions and usage.
 
 ## License
 The software is free and is licensed under the GNU General License v3.0, see the file [LICENSE](LICENSE) for details.

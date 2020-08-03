@@ -7,10 +7,16 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %             3. Normalizing networks
 %             4. Running PANDA algorithm
 %             5. Writing out PANDA network (optional)
+%             panda_run can be called directly, otherwise for batch calls
+%             1. Set up PANDA run-time parameters by editing `panda_config.m`.
+%             2. Run PANDA main program via `panda_run.sh`.
 % Inputs:
-%             exp_file  : path to file containing gene expression as a matrix of size (g,n)
+%             exp_file  : path to file containing gene expression as a
+%                         matrix of size (g,n). An example file of 50 samples by 1000 genes is available at tests/test_data/expression.txt
 %             motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
+%                         An example file is available at tests/test_data/motifTest.txt
 %             ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
+%                         An example file is available at tests/test_data/ppi.txt
 %             panda_out : path to save output PANDA network
 %                         '*.txt': the final network will be saved in .txt format
 %                         '*.tsv': the final network will be saved in .tsv format
