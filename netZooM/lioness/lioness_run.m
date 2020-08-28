@@ -58,7 +58,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     fprintf('ASCII output: %d\n', ascii_out);
     addpath(lib_path);
     if nargin<14
-        ncores=0;
+        ncores=1;
     end
     if nargin <13
        verbose=0; 
@@ -135,7 +135,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
             saveGPU(PredNet,ascii_out,save_dir,i);
         end
     else
-        if ncores==0
+        if ncores==1
             for i = indexes
                 fprintf('Running LIONESS for sample %d:\n', i);
                 idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
