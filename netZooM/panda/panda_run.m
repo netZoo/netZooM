@@ -1,4 +1,4 @@
-function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess,...
+function [AgNet,TFNames,GeneNames]=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, save_temp, alpha, save_pairs, modeProcess,...
                respWeight, absCoex, similarityMetric, computing, precision, verbose, saveGPUmemory)
 % Description:
 %             Using PANDA to infer gene regulatory network. 
@@ -71,6 +71,8 @@ function AgNet=panda_run(lib_path, exp_file, motif_file, ppi_file, panda_out, sa
 %                            1 saves memory on the GPU (slower)           
 % Outputs:
 %             AgNet     : Predicted TF-gene complete regulatory network using PANDA as a matrix of size (t,g).
+%             TFNames   : Row names of AgNet 
+%             GeneNames : Column names of AgNet
 % Author(s):
 %             cychen, marieke, kglass
 % Notes:

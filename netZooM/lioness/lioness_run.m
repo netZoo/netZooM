@@ -12,9 +12,12 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %             2. Set up LIONESS run-time parameters by editing `lioness_config.m`.
 %             3. Run LIONESS main program via `lioness_run.sh`.
 % Inputs:
-%             exp_file  : path to file containing gene expression as a matrix of size (g,g)
+%             exp_file  : path to file containing gene expression as a
+%                         matrix of size (g,g) from the save_temp folder as obtained from panda_run() 
 %             motif_file: path to file containing the prior TF-gene regulatory network based on TF motifs as a matrix of size (t,g)
+%                         from the save_temp folder as obtained from panda_run() 
 %             ppi_file  : path to file containing TF-TF interaction graph as a matrix of size (t,t)
+%                         from the save_temp folder as obtained from panda_run() 
 %             panda_file: path to the PANDA generated gene regulatory network
 %             save_dir  : path to save directory. If it does not exist, it will be created.
 %             START     : index of first sample to generate predicted gene regulatory network.
@@ -122,10 +125,11 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 
             disp('Computing coexpression network:');
             tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
-            GeneCoReg = gather(GeneCoReg);
 
             disp('Normalizing Networks:');
             tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+            GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
+                                           % in which case, gather should after coexpression
 
             disp('Running PANDA algorithm:');
             LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
