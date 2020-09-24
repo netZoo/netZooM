@@ -1,5 +1,6 @@
 function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
-    START, END, alpha, ascii_out, lib_path, computing, saveGPUmemory, verbose, ncores)
+    START, END, alpha, ascii_out, lib_path, computing, saveGPUmemory, verbose,...
+    ncores, precision, saveFileMode)
 % Description:
 %             Using LIONESS to infer single-sample gene regulatory networks.
 %             1. Reading in PANDA network and preprocessed middle data
@@ -32,14 +33,26 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %             saveGPUmemory: invoked only when computing='gpu'
 %                            0 uses the standard implementation (default) 
 %                            1 saves memory on the GPU (slower)
-%             verbose  : 1 prints iterations (default)
-%                        0 does not print iterations
+%             verbose   : 1 prints iterations (default)
+%                         0 does not print iterations
 %             ncores    : integer to specify the number of cores used to
 %                         run LIONESS in parallel on ncores CPUs.
+%             precision : GPU computing precision
+%                         double: double precision(default)
+%                         single: single precision
+%             saveFileMode: how to save GPU output network 
+%                           'one': save all output networks as one file
+%                                  with one edge-by-sample matrix. 
+%                                  For a given column, the matrix has
+%                                  TF1-Gene1, TF2-Gene1, ..., TFn-Gene1,
+%                                  TF1-Gene2, ..., Tfn-Genen.
+%                                  The output file is 'lioness<randomNumber>.txt'
+%                           'all': save a network per file in '.mat' format
+%                                  in a TF-by-gene adjacency matrix
 % Outputs:
-%             PredNet  : Predicted single sample network as a matrix of size (t,g)
-%                        This output is directly saved as a file and not
-%                        as worksapce variable
+%             PredNet   : Predicted single sample network as a matrix of size (t,g)
+%                         This output is directly saved as a file and not
+%                         as worksapce variable
 % Author(s):
 %             cychen, marieke, kglass
 % Publications:
@@ -60,6 +73,12 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     fprintf('Alpha: %.2f\n', alpha);
     fprintf('ASCII output: %d\n', ascii_out);
     addpath(lib_path);
+    if nargin<16
+        saveFileMode = 'all';
+    end
+    if nargin<15
+        precision='double';
+    end
     if nargin<14
         ncores=1;
     end
@@ -116,6 +135,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         indexes = START:END;
     end
 
+    if isequal(saveFileMode,'one')
+        finalMat = zeros(size(AgNet,1)*size(AgNet,2),length(indexes));
+    end
     if isequal(computing,'gpu')
         parpool(gpuDeviceCount); 
         parfor i = indexes
@@ -133,11 +155,18 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 
             disp('Running PANDA algorithm:');
             LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
-                'Tfunction','gpu','single',verbose, saveGPUmemory)
+                'Tfunction', 'gpu', precision, verbose, saveGPUmemory)
             PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-            saveGPU(PredNet,ascii_out,save_dir,i);
+            if isequal(saveFileMode,'all')
+                saveGPU(PredNet,ascii_out,save_dir,i);
+            elseif isequal(saveFileMode,'one')
+                gather(PredNet);
+                finalMat(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
+                                           %Column2: T1G2, T2G2, T3G2 ..
+            end
         end
+        writetable(array2table(finalMat),['lioness' num2str(randi(5541)) '.txt'])
     else
         if ncores==1
             for i = indexes
