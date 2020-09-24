@@ -73,6 +73,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     fprintf('Alpha: %.2f\n', alpha);
     fprintf('ASCII output: %d\n', ascii_out);
     addpath(lib_path);
+    if nargin<16
+        saveFileMode = 'all';
+    end
     if nargin<15
         precision='double';
     end
