@@ -22,7 +22,8 @@ function [AgNet,TFNames,GeneNames]=panda_run(lib_path, exp_file, motif_file, ppi
 %                         '*.tsv': the final network will be saved in .tsv format
 %                         '*.*'  : the final network will be saved in .mat v6 format
 %                         ''     : the final network will not be saved
-%             save_temp : path to save updated ppi, co-expression, and gene regulation network
+%             save_temp : path to save normalized ppi, co-expression, and gene regulation network, before calling the PANDA loop.
+%                         Temporary files can be used as input to LIONESS. 
 %                         '': the networks will not be saved
 %             alpha     : learning parameter for the PANDA algorithm
 %             save_pairs: (Optional) boolean parameter
