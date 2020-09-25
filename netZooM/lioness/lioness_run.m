@@ -166,7 +166,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                                            %Column2: T1G2, T2G2, T3G2 ..
             end
         end
-        writetable(array2table(finalMat),['lioness' num2str(randi(5541)) '.txt'])
+        if isequal(saveFileMode,'one')
+            writetable(array2table(finalMat),['lioness' num2str(randi(5541)) '.txt'])
+        end
     else
         if ncores==1
             for i = indexes
