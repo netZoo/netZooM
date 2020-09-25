@@ -136,7 +136,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     end
 
     if isequal(saveFileMode,'one')
-        finalMat = zeros(size(AgNet,1)*size(AgNet,2),length(indexes));
+        sample = zeros(size(AgNet,1)*size(AgNet,2),length(indexes));
     end
     if isequal(computing,'gpu')
         parpool(gpuDeviceCount); 
@@ -162,12 +162,12 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 saveGPU(PredNet,ascii_out,save_dir,i);
             elseif isequal(saveFileMode,'one')
                 gather(PredNet);
-                finalMat(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
+                sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
                                            %Column2: T1G2, T2G2, T3G2 ..
             end
         end
         if isequal(saveFileMode,'one')
-            writetable(array2table(finalMat),fullfile(save_dir,['lioness' num2str(randi(5541)) '.txt']))
+            writetable(array2table(sample),fullfile(save_dir,['lioness' num2str(randi(5541)) '.txt']))
         end
     else
         if ncores==1
