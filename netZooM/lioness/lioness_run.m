@@ -167,7 +167,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
             end
         end
         if isequal(saveFileMode,'one')
-            writetable(array2table(finalMat),['lioness' num2str(randi(5541)) '.txt'])
+            writetable(array2table(finalMat),fullfile(save_dir,['lioness' num2str(randi(5541)) '.txt']))
         end
     else
         if ncores==1
