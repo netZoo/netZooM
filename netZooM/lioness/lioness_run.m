@@ -155,7 +155,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 
             disp('Running PANDA algorithm:');
             LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
-                'Tfunction', 'gpu', precision, verbose, saveGPUmemory)
+                'Tfunction', 'gpu', precision, verbose, saveGPUmemory);
             PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
             if isequal(saveFileMode,'all')
