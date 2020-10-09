@@ -137,8 +137,16 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 
     if isequal(saveFileMode,'one')
         sample = zeros(size(AgNet,1)*size(AgNet,2),length(indexes));
+        if isequal(precision,'single')
+            finalMat=single(finalMat);
+        end
     end
     if isequal(computing,'gpu')
+        if isequal(saveFileMode,'all')
+            lionessFlag = 0;
+        elseif isequal(saveFileMode,'one')
+            lionessFlag = 1;
+        end
         parpool(gpuDeviceCount); 
         parfor i = indexes
             ExpGPU = gpuArray(Exp);
@@ -155,13 +163,13 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 
             disp('Running PANDA algorithm:');
             LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
-                'Tfunction', 'gpu', precision, verbose, saveGPUmemory);
+                'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
             PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
             if isequal(saveFileMode,'all')
                 saveGPU(PredNet,ascii_out,save_dir,i);
             elseif isequal(saveFileMode,'one')
-                gather(PredNet);
+                PredNet=gather(PredNet);
                 sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
                                            %Column2: T1G2, T2G2, T3G2 ..
             end
