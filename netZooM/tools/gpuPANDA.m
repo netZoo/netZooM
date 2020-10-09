@@ -1,5 +1,5 @@
 function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-                computing,precision,verbose,saveMemory,lionessFlag)
+                computing,precision,verbose,saveMemory,gpuSave)
 % Description:
 %             GPU-accelerated PANDA, slightly different implmentation that is 
 %             optimized for memory.
@@ -42,10 +42,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 %                         0 does not print iterations
 %             saveMemory: 1 saves memory on device but slower (Default)
 %                         0 faster computation but more memory required
-%             lionessFlag: GPU flag used when gpuLIONESS is called
-%                          1 keep the final network in GPU memory
-%                          0 send the final network to CPU and reset GPU
-%                             memory
+%             gpuSave   : GPU flag for saving output network
+%                         1 keep the final network in GPU memory
+%                         0 (Default) send the final network to CPU and reset GPU memory
 % Outputs:
 %             RegNet   : inferred gene-TF regulatory network
 % Author(s):
@@ -68,6 +67,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     end
     if nargin<10
         saveMemory=1;
+    end
+    if nargin<11
+        gpuSave=0;
     end
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
@@ -206,7 +208,7 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         step = step + 1;
     end
     runtime = toc;
-    if isequal(computing,'gpu') && lionessFlag==0
+    if isequal(computing,'gpu') && gpuSave==0
         RegNet=gather(RegNet);
         gpuDevice(1);%Clear GPU device memory 
     end
