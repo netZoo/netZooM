@@ -138,7 +138,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     if isequal(saveFileMode,'one')
         sample = zeros(size(AgNet,1)*size(AgNet,2),length(indexes));
         if isequal(precision,'single')
-            finalMat=single(finalMat);
+            sample=single(sample);
         end
     end
     if isequal(computing,'gpu')
