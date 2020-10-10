@@ -139,7 +139,8 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     if isequal(computing,'gpu')
         if isequal(saveFileMode,'all')
             lionessFlag = 0;
-        elseif isequal(saveFileMode,'one')
+        else
+            nFiles = saveFileMode;
             lionessFlag = 1;
         end
         % split indices into files
@@ -151,7 +152,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         for indexes = c'
             part=part+1;
             indexesgpu=indexes{1};
-            if isequal(saveFileMode,'one')
+            if ~isequal(saveFileMode,'all')
                 sample = zeros(size(AgNet,1)*size(AgNet,2),length(indexesgpu));
                 if isequal(precision,'single')
                     sample=single(sample);
@@ -179,13 +180,13 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 
                 if isequal(saveFileMode,'all')
                     saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i));
-                elseif isequal(saveFileMode,'one')
+                else
                     PredNet=gather(PredNet);
                     sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
                                              %Column2: T1G2, T2G2, T3G2 ..
                 end
             end
-            if isequal(saveFileMode,'one')
+            if ~isequal(saveFileMode,'all')
                 writetable(array2table(sample),fullfile(save_dir,...
                     ['lioness' num2str(randi(5541)) '_part' num2str(part) '/' num2str(length(c)) '.txt']))
             end
