@@ -41,12 +41,12 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %                         double: double precision(default)
 %                         single: single precision
 %             saveFileMode: how to save GPU output network 
-%                           'one': save all output networks as one file
-%                                  with one edge-by-sample matrix. 
+%                           n    : (integer) save all output networks as n files
+%                                  each containing one edge-by-sample matrix. 
 %                                  For a given column, the matrix has
 %                                  TF1-Gene1, TF2-Gene1, ..., TFn-Gene1,
 %                                  TF1-Gene2, ..., Tfn-Genen.
-%                                  The output file is 'lioness<randomNumber>.txt'
+%                                  The output files are 'lioness<randomNumber>_parti/n.txt'
 %                           'all': save a network per file in '.mat' format
 %                                  in a TF-by-gene adjacency matrix
 % Outputs:
@@ -75,6 +75,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     addpath(lib_path);
     if nargin<16
         saveFileMode = 'all';
+        nFiles=1;
     end
     if nargin<15
         precision='double';
@@ -135,47 +136,60 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         indexes = START:END;
     end
 
-    if isequal(saveFileMode,'one')
-        sample = zeros(size(AgNet,1)*size(AgNet,2),length(indexes));
-        if isequal(precision,'single')
-            sample=single(sample);
-        end
-    end
     if isequal(computing,'gpu')
         if isequal(saveFileMode,'all')
             lionessFlag = 0;
-        elseif isequal(saveFileMode,'one')
+        else
+            nFiles = saveFileMode;
             lionessFlag = 1;
         end
+        % split indices into files
+        n = numel(indexes);%number of iterations
+        b = floor(n/nFiles);%block size
+        c = mat2cell(indexes',diff([0:b:n-1,n]));%subvectors
+        part=0;%current partition
         parpool(gpuDeviceCount); 
-        parfor i = indexes
-            ExpGPU = gpuArray(Exp);
-            fprintf('Running LIONESS for sample %d:\n', i);
-            idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
-
-            disp('Computing coexpression network:');
-            tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
-
-            disp('Normalizing Networks:');
-            tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
-            GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
-                                           % in which case, gather should after coexpression
-
-            disp('Running PANDA algorithm:');
-            LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
-                'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
-            PredNet = NumConditions * (AgNet - LocNet) + LocNet;
-
-            if isequal(saveFileMode,'all')
-                saveGPU(PredNet,ascii_out,save_dir,i);
-            elseif isequal(saveFileMode,'one')
-                PredNet=gather(PredNet);
-                sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
-                                           %Column2: T1G2, T2G2, T3G2 ..
+        for indexes = c'
+            part=part+1;
+            indexesgpu=indexes{1};
+            if ~isequal(saveFileMode,'all')
+                sample = zeros(size(AgNet,1)*size(AgNet,2),length(indexesgpu));
+                if isequal(precision,'single')
+                    sample=single(sample);
+                end
             end
-        end
-        if isequal(saveFileMode,'one')
-            writetable(array2table(sample),fullfile(save_dir,['lioness' num2str(randi(5541)) '.txt']))
+            arrayInd = 1:length(indexesgpu);
+            parfor i = arrayInd
+
+                ExpGPU = gpuArray(Exp);
+                fprintf('Running LIONESS for sample %d:\n', indexesgpu(i));
+                idx = [1:(indexesgpu(i)-1), (indexesgpu(i)+1):NumConditions];  % all samples except i
+
+                disp('Computing coexpression network:');
+                tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
+
+                disp('Normalizing Networks:');
+                tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+                GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
+                                               % in which case, gather should after coexpression
+
+                disp('Running PANDA algorithm:');
+                LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
+                    'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
+                PredNet = NumConditions * (AgNet - LocNet) + LocNet;
+
+                if isequal(saveFileMode,'all')
+                    saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i));
+                else
+                    PredNet=gather(PredNet);
+                    sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
+                                             %Column2: T1G2, T2G2, T3G2 ..
+                end
+            end
+            if ~isequal(saveFileMode,'all')
+                writetable(array2table(sample),fullfile(save_dir,...
+                    ['lioness' num2str(randi(5541)) '_part' num2str(part) '/' num2str(length(c)) '.txt']))
+            end
         end
     else
         if ncores==1
