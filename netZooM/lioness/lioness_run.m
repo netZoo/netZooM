@@ -138,6 +138,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 
     if isequal(computing,'gpu')
         if isequal(saveFileMode,'all')
+            nFiles = 1;
             lionessFlag = 0;
         else
             nFiles = saveFileMode;
