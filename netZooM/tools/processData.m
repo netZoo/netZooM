@@ -1,4 +1,4 @@
-function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,ppi_file,modeProcess)
+function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,motif_file,ppi_file,modeProcess)
 % Description:
 %             processData process the input data before running PANDA in
 %             three different modes.
@@ -22,6 +22,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
         disp('Reading in expression data!');
         tic
             exp_file_tbl=readtable(exp_file,'FileType','text');
+            SampleNames = exp_file_tbl.Properties.VariableNames;
             Exp = exp_file_tbl{:,2:end};
             GeneNames = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);

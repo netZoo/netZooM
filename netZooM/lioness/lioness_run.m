@@ -97,8 +97,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     %% ============================================================================
     disp('Reading in expression data!');
     tic
-        X = load(exp_file);
-        Exp = X.Exp;
+        X   = load(exp_file);
+        Exp = X.ExpTbl.Variables;
+        SampleNames = X.ExpTbl.Properties.VariableNames;
         [NumConditions, NumGenes] = size(Exp);  % transposed expression
         fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
     toc
@@ -149,6 +150,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         b = floor(n/nFiles);%block size
         c = mat2cell(indexes',diff([0:b:n-1,n]));%subvectors
         part=0;%current partition
+        randInt=randi(1916);%set random number
         parpool(gpuDeviceCount); 
         for indexes = c'
             part=part+1;
@@ -180,7 +182,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
                 if isequal(saveFileMode,'all')
-                    saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i));
+                    saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i),SampleNames);
                 else
                     PredNet=gather(PredNet);
                     sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
@@ -189,7 +191,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
             end
             if ~isequal(saveFileMode,'all')
                 writetable(array2table(sample),fullfile(save_dir,...
-                    ['lioness' num2str(randi(5541)) '_part' num2str(part) '/' num2str(length(c)) '.txt']))
+                    ['lioness' num2str(randInt) '_part' num2str(part) '_' num2str(length(c)) '.txt']))
             end
         end
     else
@@ -208,17 +210,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                disp('Saving LIONESS network:');
-                if ascii_out == 1
-                    f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
-                    tic; save(f, 'PredNet', '-ascii'); toc;
-                else
-                    f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
-                    tic; save(f, 'PredNet', '-v6'); toc;
-                end
-                fprintf('Network saved to %s\n', f);
-
-                clear idx GeneCoReg LocNet PredNet f; % clean up for next run
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
             end
         else
             parpool(ncores);
@@ -236,7 +228,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                saveCPU(PredNet,ascii_out,save_dir,i);
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
             end
         end
     end
@@ -246,7 +238,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     
 end
 
-function saveGPU(PredNet,ascii_out,save_dir,i)
+function saveGPU(PredNet,ascii_out,save_dir,i,SampleNames)
 % Description:
 %             saveGPU circumvents the MATLAB lock on saving files inside a
 %             parfor loop
@@ -261,17 +253,17 @@ function saveGPU(PredNet,ascii_out,save_dir,i)
 
     disp('Saving LIONESS network:');
     if ascii_out == 1
-        f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
+        f = fullfile(save_dir, sprintf([SampleNames{i} '.txt']));
         tic; save(f, 'PredNet', '-ascii'); toc;
     else
-        f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
+        f = fullfile(save_dir, sprintf([SampleNames{i} '.mat']));
         tic; save(f, 'PredNet', '-v6'); toc;
     end
     fprintf('Network saved to %s\n', f);
     
 end
 
-function saveCPU(PredNet,ascii_out,save_dir,i)
+function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames)
 % Description:
 %             saveCPU circumvents the MATLAB lock on saving files inside a
 %             parfor loop
@@ -286,10 +278,10 @@ function saveCPU(PredNet,ascii_out,save_dir,i)
 
     disp('Saving LIONESS network:');
     if ascii_out == 1
-    	f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
+    	f = fullfile(save_dir, sprintf([SampleNames{i} '.txt']));
     	tic; save(f, 'PredNet', '-ascii'); toc;
     else
-    	f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
+    	f = fullfile(save_dir, sprintf([SampleNames{i} '.mat']));
     	tic; save(f, 'PredNet', '-v6'); toc;
     end
     fprintf('Network saved to %s\n', f);

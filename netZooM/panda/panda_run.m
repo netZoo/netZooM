@@ -126,7 +126,7 @@ function [AgNet,TFNames,GeneNames]=panda_run(lib_path, exp_file, motif_file, ppi
     %% ============================================================================
     %% Read in Data
     %% ============================================================================
-    [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,ppi_file,modeProcess);
+    [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,motif_file,ppi_file,modeProcess);
 
     %% ============================================================================
     %% Run PANDA
@@ -150,7 +150,9 @@ function [AgNet,TFNames,GeneNames]=panda_run(lib_path, exp_file, motif_file, ppi
             mkdir(save_temp);
         end
         tic
-            save(fullfile(save_temp, 'expression.transposed.mat'), 'Exp', '-v7.3');  % 2G+
+            % transform Exp to table to save sample names
+            ExpTbl = array2table(Exp,'VariableNames',SampleNames);
+            save(fullfile(save_temp, 'expression.transposed.mat'), 'ExpTbl', '-v7.3');  % 2G+
             save(fullfile(save_temp, 'motif.normalized.mat'), 'RegNet', '-v6');  % fast
             save(fullfile(save_temp, 'ppi.normalized.mat'), 'TFCoop', '-v6');  % fast
         toc
