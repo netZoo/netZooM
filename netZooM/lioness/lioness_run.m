@@ -151,7 +151,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         c = mat2cell(indexes',diff([0:b:n-1,n]));%subvectors
         part=0;%current partition
         randInt=randi(1916);%set random number
-        parpool(gpuDeviceCount); 
+         
         for indexes = c'
             part=part+1;
             indexesgpu=indexes{1};
@@ -162,37 +162,19 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 end
             end
             arrayInd = 1:length(indexesgpu);
-            parfor i = arrayInd
+            
+            sample = GPULionessLoop(gpuDeviceCount,arrayInd,Exp,indexesgpu,NumConditions,Coexpression,...
+                    RegNet,TFCoop,alpha,precision,verbose,saveGPUmemory,lionessFlag,AgNet,saveFileMode,ascii_out,...
+                    save_dir,SampleNames,sample);
 
-                ExpGPU = gpuArray(Exp);
-                fprintf('Running LIONESS for sample %d:\n', indexesgpu(i));
-                idx = [1:(indexesgpu(i)-1), (indexesgpu(i)+1):NumConditions];  % all samples except i
-
-                disp('Computing coexpression network:');
-                tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
-
-                disp('Normalizing Networks:');
-                tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
-                GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
-                                               % in which case, gather should after coexpression
-
-                disp('Running PANDA algorithm:');
-                LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
-                    'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
-                PredNet = NumConditions * (AgNet - LocNet) + LocNet;
-
-                if isequal(saveFileMode,'all')
-                    saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i),SampleNames);
-                else
-                    PredNet=gather(PredNet);
-                    sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
-                                             %Column2: T1G2, T2G2, T3G2 ..
-                end
-            end
             if ~isequal(saveFileMode,'all')
-                writetable(array2table(sample),'VariableNames',SampleNames(indexesgpu),...
-                fullfile(save_dir,['lioness' num2str(randInt) '_part' num2str(part) ...
-                    '_' num2str(length(c)) '.txt']))
+                %writetable(array2table(sample),'VariableNames',SampleNames(indexesgpu),...
+                %fullfile(save_dir,['lioness' num2str(randInt) '_part' num2str(part) ...
+                %    '_' num2str(length(c)) '.txt']))
+                sample=array2table(sample);
+                samplePartName=fullfile(save_dir,['lioness' num2str(randInt) '_part' num2str(part) ...
+                    '_' num2str(length(c)) '.mat']);
+                save(samplePartName,'sample','-v7.3');
             end
         end
     else
@@ -288,4 +270,68 @@ function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames)
     fprintf('Network saved to %s\n', f);
     clear idx GeneCoReg LocNet PredNet f; % clean up for next run
                 
+end
+
+function sample=GPULionessLoop(gpuDeviceCount,arrayInd,Exp,indexesgpu,NumConditions,Coexpression,...
+    RegNet,TFCoop,alpha,precision,verbose,saveGPUmemory,lionessFlag,AgNet,saveFileMode,ascii_out,...
+    save_dir,SampleNames,sample)
+
+    if gpuDeviceCount>1
+        parpool(gpuDeviceCount);
+        parfor i = arrayInd
+
+            ExpGPU = gpuArray(Exp);
+            fprintf('Running LIONESS for sample %d:\n', indexesgpu(i));
+            idx = [1:(indexesgpu(i)-1), (indexesgpu(i)+1):NumConditions];  % all samples except i
+
+            disp('Computing coexpression network:');
+            tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
+
+            disp('Normalizing Networks:');
+            tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+            GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
+                                           % in which case, gather should after coexpression
+
+            disp('Running PANDA algorithm:');
+            LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
+                    'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
+            PredNet = NumConditions * (AgNet - LocNet) + LocNet;
+
+            if isequal(saveFileMode,'all')
+                saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i),SampleNames);
+            else
+                PredNet=gather(PredNet);
+                sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
+                                         %Column2: T1G2, T2G2, T3G2 ..
+            end
+        end
+    elseif gpuDeviceCount==1
+        for i = arrayInd
+
+            ExpGPU = gpuArray(Exp);
+            fprintf('Running LIONESS for sample %d:\n', indexesgpu(i));
+            idx = [1:(indexesgpu(i)-1), (indexesgpu(i)+1):NumConditions];  % all samples except i
+
+            disp('Computing coexpression network:');
+            tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
+
+            disp('Normalizing Networks:');
+            tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+            GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
+                                           % in which case, gather should after coexpression
+
+            disp('Running PANDA algorithm:');
+            LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
+                    'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
+            PredNet = NumConditions * (AgNet - LocNet) + LocNet;
+
+            if isequal(saveFileMode,'all')
+                saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i),SampleNames);
+            else
+                PredNet=gather(PredNet);
+                sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
+                                         %Column2: T1G2, T2G2, T3G2 ..
+            end
+        end
+    end
 end
