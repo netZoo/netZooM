@@ -22,7 +22,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
         disp('Reading in expression data!');
         tic
             exp_file_tbl=readtable(exp_file,'FileType','text');
-            SampleNames = exp_file_tbl.Properties.VariableNames;
+            SampleNames=[];
             Exp = exp_file_tbl{:,2:end};
             GeneNames = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
@@ -134,7 +134,7 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
 end
 
 function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
-            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
+            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,SampleNames]=...
             readData(exp_file,motif_file,ppi_file)
 % Description:
 %             readData reads the input files for PANDA.
@@ -162,6 +162,7 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
     disp('Reading in expression data!');
     tic
         exp_file_tbl=readtable(exp_file,'FileType','text');
+        SampleNames = exp_file_tbl.Properties.VariableNames;
         ExpInit = exp_file_tbl{:,2:end};
         GeneNamesExp = exp_file_tbl{:,1};
         [NumGenes, NumConditions] = size(ExpInit);
