@@ -160,6 +160,8 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 if isequal(precision,'single')
                     sample=single(sample);
                 end
+            else
+               sample=[]; 
             end
             arrayInd = 1:length(indexesgpu);
             
