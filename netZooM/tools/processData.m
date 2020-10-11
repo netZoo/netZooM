@@ -14,8 +14,9 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
 %             Exp       : aligned expression matrix
 %             RegNet    : aligned motif prior matrix
 %             TFCoop    : aligned PPI matrix
-%             TFNames   : transcirption factor names
+%             TFNames   : transcription factor names
 %             GeneNames : gene names
+%             SampleNames: gene expression samples IDs
 % Author(s):    
 %             Marouen Ben Guebila 12/2019
 
@@ -23,7 +24,11 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
         disp('Reading in expression data!');
         tic
             exp_file_tbl= readtable(exp_file,'FileType','text');
-            SampleNames = exp_file_tbl.Properties.VariableNames;
+            if isempty(exp_file_tbl.Properties.VariableDescriptions)
+                SampleNames = exp_file_tbl.Properties.VariableNames;
+            else
+                SampleNames = exp_file_tbl.Properties.VariableDescriptions;
+            end
             Exp         = exp_file_tbl{:,2:end};
             GeneNames   = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
@@ -97,9 +102,9 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
 %             TF1          : list of TF edges in PPI (source)
 %             TF2          : list of TF edges in PPI (target)
 % Ouputs:
-%             Exp   :
-%             RegNet:
-%             TFCoop:
+%             Exp          : aligned expression matrix
+%             RegNet       : aligned motif prior matrix
+%             TFCoop       : aligned PPI matrix
 % Author:     
 %             Marouen Ben Guebila 12/2019
 
@@ -156,15 +161,20 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
 %             weightPPI    : edge weight in the PPI network
 %             TF1          : list of TF edges in PPI (source)
 %             TF2          : list of TF edges in PPI (target)
+%             SampleNames  : gene expression samples IDs
 % Author:     
 %             Marouen Ben Guebila 12/2019
 
     % Read expression
     disp('Reading in expression data!');
     tic
-        exp_file_tbl=readtable(exp_file,'FileType','text');
-        SampleNames = exp_file_tbl.Properties.VariableNames;
-        ExpInit = exp_file_tbl{:,2:end};
+        exp_file_tbl = readtable(exp_file,'FileType','text');
+        if isempty(exp_file_tbl.Properties.VariableDescriptions)
+            SampleNames = exp_file_tbl.Properties.VariableNames;
+        else
+            SampleNames = exp_file_tbl.Properties.VariableDescriptions;
+        end
+        ExpInit      = exp_file_tbl{:,2:end};
         GeneNamesExp = exp_file_tbl{:,1};
         [NumGenes, NumConditions] = size(ExpInit);
         fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
