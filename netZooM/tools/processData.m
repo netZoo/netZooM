@@ -24,11 +24,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
         disp('Reading in expression data!');
         tic
             exp_file_tbl= readtable(exp_file,'FileType','text');
-            if isempty(exp_file_tbl.Properties.VariableDescriptions)
-                SampleNames = exp_file_tbl.Properties.VariableNames;
-            else
-                SampleNames = exp_file_tbl.Properties.VariableDescriptions;
-            end
+            SampleNames = exp_file_tbl.Properties.VariableNames;
             Exp         = exp_file_tbl{:,2:end};
             GeneNames   = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
@@ -169,11 +165,7 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
     disp('Reading in expression data!');
     tic
         exp_file_tbl = readtable(exp_file,'FileType','text');
-        if isempty(exp_file_tbl.Properties.VariableDescriptions)
-            SampleNames = exp_file_tbl.Properties.VariableNames;
-        else
-            SampleNames = exp_file_tbl.Properties.VariableDescriptions;
-        end
+        SampleNames = exp_file_tbl.Properties.VariableNames;
         ExpInit      = exp_file_tbl{:,2:end};
         GeneNamesExp = exp_file_tbl{:,1};
         [NumGenes, NumConditions] = size(ExpInit);
