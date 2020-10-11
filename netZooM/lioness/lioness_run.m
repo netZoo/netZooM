@@ -99,7 +99,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     tic
         X   = load(exp_file);
         Exp = X.ExpTbl.Variables;
-        SampleNames = X.ExpTbl.Properties.VariableNames;
+        SampleNames = X.ExpTbl.Properties.RowNames;
         [NumConditions, NumGenes] = size(Exp);  % transposed expression
         fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
     toc
