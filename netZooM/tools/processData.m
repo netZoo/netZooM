@@ -1,4 +1,5 @@
-function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,motif_file,ppi_file,modeProcess)
+function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,...
+    motif_file,ppi_file,modeProcess)
 % Description:
 %             processData process the input data before running PANDA in
 %             three different modes.
@@ -21,10 +22,10 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
     if isequal(modeProcess,'legacy')
         disp('Reading in expression data!');
         tic
-            exp_file_tbl=readtable(exp_file,'FileType','text');
-            SampleNames=[];
-            Exp = exp_file_tbl{:,2:end};
-            GeneNames = exp_file_tbl{:,1};
+            exp_file_tbl= readtable(exp_file,'FileType','text');
+            SampleNames = [];
+            Exp         = exp_file_tbl{:,2:end};
+            GeneNames   = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
             fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
             Exp = Exp';  % transpose expression matrix from gene-by-sample to sample-by-gene
@@ -38,8 +39,8 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
             TF=C{1,1};gene=C{1,2};weight=C{1,3};
             TFNames = unique(TF);
             NumTFs = length(TFNames);
-            [~,i] = ismember(TF, TFNames);
-            [~,j] = ismember(gene, GeneNames);
+            [~,i]  = ismember(TF, TFNames);
+            [~,j]  = ismember(gene, GeneNames);
             RegNet = zeros(NumTFs, NumGenes);
             RegNet(sub2ind([NumTFs, NumGenes], i, j)) = weight;
             fprintf('%d TFs and %d edges!\n', NumTFs, length(weight));
@@ -62,7 +63,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
         toc
     elseif isequal(modeProcess,'union')
         [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
-            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
+            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,SampleNames]=...
             readData(exp_file,motif_file,ppi_file);
         GeneNames=unique(union(GeneMotif,GeneNamesExp));
         TFNames  =unique(union(TfMotif,TFNamesInit));
@@ -70,7 +71,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
             GeneNamesExp,ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2);
     elseif isequal(modeProcess,'intersection')
         [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
-            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
+            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,SampleNames]=...
             readData(exp_file,motif_file,ppi_file);
         GeneNames=intersect(GeneMotif,GeneNamesExp);
         TFNames  =intersect(TfMotif,TFNamesInit);
