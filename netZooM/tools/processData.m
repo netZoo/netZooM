@@ -23,7 +23,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,
         disp('Reading in expression data!');
         tic
             exp_file_tbl= readtable(exp_file,'FileType','text');
-            SampleNames = [];
+            SampleNames = exp_file_tbl.Properties.VariableNames;
             Exp         = exp_file_tbl{:,2:end};
             GeneNames   = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
