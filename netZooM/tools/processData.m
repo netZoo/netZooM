@@ -1,4 +1,5 @@
-function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,ppi_file,modeProcess)
+function [Exp,RegNet,TFCoop,TFNames,GeneNames,SampleNames]=processData(exp_file,...
+    motif_file,ppi_file,modeProcess)
 % Description:
 %             processData process the input data before running PANDA in
 %             three different modes.
@@ -13,17 +14,19 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
 %             Exp       : aligned expression matrix
 %             RegNet    : aligned motif prior matrix
 %             TFCoop    : aligned PPI matrix
-%             TFNames   : transcirption factor names
+%             TFNames   : transcription factor names
 %             GeneNames : gene names
+%             SampleNames: gene expression samples IDs
 % Author(s):    
 %             Marouen Ben Guebila 12/2019
 
     if isequal(modeProcess,'legacy')
         disp('Reading in expression data!');
         tic
-            exp_file_tbl=readtable(exp_file,'FileType','text');
-            Exp = exp_file_tbl{:,2:end};
-            GeneNames = exp_file_tbl{:,1};
+            exp_file_tbl= readtable(exp_file,'FileType','text');
+            SampleNames = exp_file_tbl.Properties.VariableNames;
+            Exp         = exp_file_tbl{:,2:end};
+            GeneNames   = exp_file_tbl{:,1};
             [NumGenes, NumConditions] = size(Exp);
             fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
             Exp = Exp';  % transpose expression matrix from gene-by-sample to sample-by-gene
@@ -37,8 +40,8 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
             TF=C{1,1};gene=C{1,2};weight=C{1,3};
             TFNames = unique(TF);
             NumTFs = length(TFNames);
-            [~,i] = ismember(TF, TFNames);
-            [~,j] = ismember(gene, GeneNames);
+            [~,i]  = ismember(TF, TFNames);
+            [~,j]  = ismember(gene, GeneNames);
             RegNet = zeros(NumTFs, NumGenes);
             RegNet(sub2ind([NumTFs, NumGenes], i, j)) = weight;
             fprintf('%d TFs and %d edges!\n', NumTFs, length(weight));
@@ -61,7 +64,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
         toc
     elseif isequal(modeProcess,'union')
         [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
-            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
+            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,SampleNames]=...
             readData(exp_file,motif_file,ppi_file);
         GeneNames=unique(union(GeneMotif,GeneNamesExp));
         TFNames  =unique(union(TfMotif,TFNamesInit));
@@ -69,7 +72,7 @@ function [Exp,RegNet,TFCoop,TFNames,GeneNames]=processData(exp_file,motif_file,p
             GeneNamesExp,ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2);
     elseif isequal(modeProcess,'intersection')
         [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
-            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
+            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,SampleNames]=...
             readData(exp_file,motif_file,ppi_file);
         GeneNames=intersect(GeneMotif,GeneNamesExp);
         TFNames  =intersect(TfMotif,TFNamesInit);
@@ -95,9 +98,9 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
 %             TF1          : list of TF edges in PPI (source)
 %             TF2          : list of TF edges in PPI (target)
 % Ouputs:
-%             Exp   :
-%             RegNet:
-%             TFCoop:
+%             Exp          : aligned expression matrix
+%             RegNet       : aligned motif prior matrix
+%             TFCoop       : aligned PPI matrix
 % Author:     
 %             Marouen Ben Guebila 12/2019
 
@@ -133,7 +136,7 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
 end
 
 function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
-            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2]=...
+            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,SampleNames]=...
             readData(exp_file,motif_file,ppi_file)
 % Description:
 %             readData reads the input files for PANDA.
@@ -154,14 +157,16 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
 %             weightPPI    : edge weight in the PPI network
 %             TF1          : list of TF edges in PPI (source)
 %             TF2          : list of TF edges in PPI (target)
+%             SampleNames  : gene expression samples IDs
 % Author:     
 %             Marouen Ben Guebila 12/2019
 
     % Read expression
     disp('Reading in expression data!');
     tic
-        exp_file_tbl=readtable(exp_file,'FileType','text');
-        ExpInit = exp_file_tbl{:,2:end};
+        exp_file_tbl = readtable(exp_file,'FileType','text');
+        SampleNames = exp_file_tbl.Properties.VariableNames;
+        ExpInit      = exp_file_tbl{:,2:end};
         GeneNamesExp = exp_file_tbl{:,1};
         [NumGenes, NumConditions] = size(ExpInit);
         fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);

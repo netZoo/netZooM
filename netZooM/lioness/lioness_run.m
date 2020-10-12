@@ -75,7 +75,6 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     addpath(lib_path);
     if nargin<16
         saveFileMode = 'all';
-        nFiles=1;
     end
     if nargin<15
         precision='double';
@@ -97,8 +96,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     %% ============================================================================
     disp('Reading in expression data!');
     tic
-        X = load(exp_file);
-        Exp = X.Exp;
+        X   = load(exp_file);
+        Exp = X.ExpTbl.Variables;
+        SampleNames = X.ExpTbl.Properties.RowNames;
         [NumConditions, NumGenes] = size(Exp);  % transposed expression
         fprintf('%d genes and %d conditions!\n', NumGenes, NumConditions);
     toc
@@ -145,11 +145,12 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
             lionessFlag = 1;
         end
         % split indices into files
-        n = numel(indexes);%number of iterations
-        b = floor(n/nFiles);%block size
-        c = mat2cell(indexes',diff([0:b:n-1,n]));%subvectors
-        part=0;%current partition
-        parpool(gpuDeviceCount); 
+        n = numel(indexes);% number of iterations
+        b = floor(n/nFiles);% block size
+        c = mat2cell(indexes',diff([0:b:n-1,n]));% subvectors
+        part=0;% current partition
+        randInt=randi(1916);% et random number
+         
         for indexes = c'
             part=part+1;
             indexesgpu=indexes{1};
@@ -158,38 +159,24 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 if isequal(precision,'single')
                     sample=single(sample);
                 end
+            else
+               sample=[]; 
             end
             arrayInd = 1:length(indexesgpu);
-            parfor i = arrayInd
+            
+            sample = GPULionessLoop(gpuDeviceCount,arrayInd,Exp,indexesgpu,NumConditions,...
+                    RegNet,TFCoop,alpha,precision,verbose,saveGPUmemory,lionessFlag,AgNet,saveFileMode,ascii_out,...
+                    save_dir,SampleNames,sample);
 
-                ExpGPU = gpuArray(Exp);
-                fprintf('Running LIONESS for sample %d:\n', indexesgpu(i));
-                idx = [1:(indexesgpu(i)-1), (indexesgpu(i)+1):NumConditions];  % all samples except i
-
-                disp('Computing coexpression network:');
-                tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
-
-                disp('Normalizing Networks:');
-                tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
-                GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
-                                               % in which case, gather should after coexpression
-
-                disp('Running PANDA algorithm:');
-                LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
-                    'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
-                PredNet = NumConditions * (AgNet - LocNet) + LocNet;
-
-                if isequal(saveFileMode,'all')
-                    saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i));
-                else
-                    PredNet=gather(PredNet);
-                    sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
-                                             %Column2: T1G2, T2G2, T3G2 ..
-                end
-            end
             if ~isequal(saveFileMode,'all')
-                writetable(array2table(sample),fullfile(save_dir,...
-                    ['lioness' num2str(randi(5541)) '_part' num2str(part) '/' num2str(length(c)) '.txt']))
+                sample=array2table(sample,'VariableNames',SampleNames(indexesgpu));
+                samplePartName=fullfile(save_dir,['lioness' num2str(randInt) '_part' num2str(part) ...
+                        '_' num2str(length(c))]);
+                if ascii_out==1
+                     writetable(sample,[samplePartName '.txt']);
+                elseif ascii_out==0
+                    save([samplePartName '.mat'],'sample','-v7.3');
+                end
             end
         end
     else
@@ -208,17 +195,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                disp('Saving LIONESS network:');
-                if ascii_out == 1
-                    f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
-                    tic; save(f, 'PredNet', '-ascii'); toc;
-                else
-                    f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
-                    tic; save(f, 'PredNet', '-v6'); toc;
-                end
-                fprintf('Network saved to %s\n', f);
-
-                clear idx GeneCoReg LocNet PredNet f; % clean up for next run
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
             end
         else
             parpool(ncores);
@@ -236,7 +213,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                saveCPU(PredNet,ascii_out,save_dir,i);
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
             end
         end
     end
@@ -246,7 +223,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     
 end
 
-function saveGPU(PredNet,ascii_out,save_dir,i)
+function saveGPU(PredNet,ascii_out,save_dir,i,SampleNames)
 % Description:
 %             saveGPU circumvents the MATLAB lock on saving files inside a
 %             parfor loop
@@ -261,17 +238,17 @@ function saveGPU(PredNet,ascii_out,save_dir,i)
 
     disp('Saving LIONESS network:');
     if ascii_out == 1
-        f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
+        f = fullfile(save_dir, sprintf([SampleNames{i} '.txt']));
         tic; save(f, 'PredNet', '-ascii'); toc;
     else
-        f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
+        f = fullfile(save_dir, sprintf([SampleNames{i} '.mat']));
         tic; save(f, 'PredNet', '-v6'); toc;
     end
     fprintf('Network saved to %s\n', f);
     
 end
 
-function saveCPU(PredNet,ascii_out,save_dir,i)
+function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames)
 % Description:
 %             saveCPU circumvents the MATLAB lock on saving files inside a
 %             parfor loop
@@ -286,13 +263,77 @@ function saveCPU(PredNet,ascii_out,save_dir,i)
 
     disp('Saving LIONESS network:');
     if ascii_out == 1
-    	f = fullfile(save_dir, sprintf('lioness.%d.txt', i));
+    	f = fullfile(save_dir, sprintf([SampleNames{i} '.txt']));
     	tic; save(f, 'PredNet', '-ascii'); toc;
     else
-    	f = fullfile(save_dir, sprintf('lioness.%d.mat', i));
+    	f = fullfile(save_dir, sprintf([SampleNames{i} '.mat']));
     	tic; save(f, 'PredNet', '-v6'); toc;
     end
     fprintf('Network saved to %s\n', f);
     clear idx GeneCoReg LocNet PredNet f; % clean up for next run
                 
+end
+
+function sample=GPULionessLoop(gpuDeviceCount,arrayInd,Exp,indexesgpu,NumConditions,...
+    RegNet,TFCoop,alpha,precision,verbose,saveGPUmemory,lionessFlag,AgNet,saveFileMode,ascii_out,...
+    save_dir,SampleNames,sample)
+
+    if gpuDeviceCount>1
+        parpool(gpuDeviceCount);
+        parfor i = arrayInd
+
+            ExpGPU = gpuArray(Exp);
+            fprintf('Running LIONESS for sample %d:\n', indexesgpu(i));
+            idx = [1:(indexesgpu(i)-1), (indexesgpu(i)+1):NumConditions];  % all samples except i
+
+            disp('Computing coexpression network:');
+            tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
+
+            disp('Normalizing Networks:');
+            tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+            GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
+                                           % in which case, gather should after coexpression
+
+            disp('Running PANDA algorithm:');
+            LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
+                    'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
+            PredNet = NumConditions * (AgNet - LocNet) + LocNet;
+
+            if isequal(saveFileMode,'all')
+                saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i),SampleNames);
+            else
+                PredNet=gather(PredNet);
+                sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
+                                         %Column2: T1G2, T2G2, T3G2 ..
+            end
+        end
+    elseif gpuDeviceCount==1
+        for i = arrayInd
+
+            ExpGPU = gpuArray(Exp);
+            fprintf('Running LIONESS for sample %d:\n', indexesgpu(i));
+            idx = [1:(indexesgpu(i)-1), (indexesgpu(i)+1):NumConditions];  % all samples except i
+
+            disp('Computing coexpression network:');
+            tic; GeneCoReg = Coexpression(ExpGPU(idx,:)); toc;
+
+            disp('Normalizing Networks:');
+            tic; GeneCoReg = NormalizeNetwork(GeneCoReg); toc;
+            GeneCoReg = gather(GeneCoReg); % it is faster to gather here although memory issues could occur with large networks
+                                           % in which case, gather should after coexpression
+
+            disp('Running PANDA algorithm:');
+            LocNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, 0.5,...
+                    'Tfunction', 'gpu', precision, verbose, saveGPUmemory, lionessFlag);
+            PredNet = NumConditions * (AgNet - LocNet) + LocNet;
+
+            if isequal(saveFileMode,'all')
+                saveGPU(PredNet,ascii_out,save_dir,indexesgpu(i),SampleNames);
+            else
+                PredNet=gather(PredNet);
+                sample(:,i) = PredNet(:);%Column1: T1G1,T2G1,T3G1 ..
+                                         %Column2: T1G2, T2G2, T3G2 ..
+            end
+        end
+    end
 end
