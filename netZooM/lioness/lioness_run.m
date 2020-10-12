@@ -75,7 +75,6 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     addpath(lib_path);
     if nargin<16
         saveFileMode = 'all';
-        nFiles=1;
     end
     if nargin<15
         precision='double';
@@ -146,11 +145,11 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
             lionessFlag = 1;
         end
         % split indices into files
-        n = numel(indexes);%number of iterations
-        b = floor(n/nFiles);%block size
-        c = mat2cell(indexes',diff([0:b:n-1,n]));%subvectors
-        part=0;%current partition
-        randInt=randi(1916);%set random number
+        n = numel(indexes);% number of iterations
+        b = floor(n/nFiles);% block size
+        c = mat2cell(indexes',diff([0:b:n-1,n]));% subvectors
+        part=0;% current partition
+        randInt=randi(1916);% et random number
          
         for indexes = c'
             part=part+1;
@@ -174,7 +173,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 samplePartName=fullfile(save_dir,['lioness' num2str(randInt) '_part' num2str(part) ...
                         '_' num2str(length(c))]);
                 if ascii_out==1
-                        writetable(sample,[samplePartName '.txt'])
+                     writetable(sample,[samplePartName '.txt']);
                 elseif ascii_out==0
                     save([samplePartName '.mat'],'sample','-v7.3');
                 end
