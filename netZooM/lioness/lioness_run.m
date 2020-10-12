@@ -170,13 +170,14 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                     save_dir,SampleNames,sample);
 
             if ~isequal(saveFileMode,'all')
-                %writetable(array2table(sample),'VariableNames',SampleNames(indexesgpu),...
-                %fullfile(save_dir,['lioness' num2str(randInt) '_part' num2str(part) ...
-                %    '_' num2str(length(c)) '.txt']))
-                sample=array2table(sample);
+                sample=array2table(sample,'VariableNames',SampleNames(indexesgpu));
                 samplePartName=fullfile(save_dir,['lioness' num2str(randInt) '_part' num2str(part) ...
-                    '_' num2str(length(c)) '.mat']);
-                save(samplePartName,'sample','-v7.3');
+                        '_' num2str(length(c))]);
+                if ascii_out==1
+                        writetable(sample,[samplePartName '.txt'])
+                elseif ascii_out==0
+                    save([samplePartName '.mat'],'sample','-v7.3');
+                end
             end
         end
     else
