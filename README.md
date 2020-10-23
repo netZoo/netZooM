@@ -3,7 +3,7 @@
 [![codecov](https://codecov.io/gh/netZoo/netZooM/branch/devel/graph/badge.svg)](https://codecov.io/gh/netZoo/netZooM)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Documentation Status](https://readthedocs.org/projects/netzoom/badge/?version=latest)](https://netzoom.readthedocs.io/en/latest/?badge=latest)
-[![tutorials](https://img.shields.io/badge/netZoo-tutorials-9cf)(https://github.com/netZoo/netZooM/tree/master/tutorials)
+![tutorials](https://img.shields.io/badge/netZooM-tutorials-9cf)(https://github.com/netZoo/netZooM/tree/master/tutorials)
 
 netZooM is tested on: (OS: Linux + Macos) X (Language: Octave)
 
