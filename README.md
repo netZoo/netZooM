@@ -14,9 +14,17 @@ netZooM is a MATLAB package of network methods.
 (gpu)PANDA, (gpu)LIONESS, PUMA, SPIDER, optPANDA, and OTTER.
 
 ## Quick guide
-`git clone https://github.com/netZoo/netZooM.git` into your local disk. 
+Clone the repository into your local disk:
 
-Then add the netZoo to your MATLAB path `addpath(genpath('path/to/netZooM'))`
+```bash
+git clone https://github.com/netZoo/netZooM.git
+```
+
+Then add netZooM to your MATLAB path 
+
+```matlab
+addpath(genpath('path/to/netZooM'))
+```
 
 ## User guide
 Please refer to the [documentation](https://netzoom.readthedocs.io/en/latest/) website for installation instructions and usage.
