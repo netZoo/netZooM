@@ -20,13 +20,13 @@ function W = otter(W,P,C,lambda,gamma,Imax,eta)
 
     %global parameters
     if nargin<4
-        lambda = 0.0035;
+        lambda = 0.035;
     end
     if nargin<5
         gamma = 0.335;
     end
     if nargin<6
-        Imax = 32;
+        Imax = 60;
     end
     if nargin<7
         eta = 0.00001;
@@ -37,9 +37,7 @@ function W = otter(W,P,C,lambda,gamma,Imax,eta)
     eps = 0.00000001;
     %initial transformation
     C = C/trace(C);
-    P = P+2.2;
-    W = P*W;
-    W = W/trace(W*W');
+    W = W/sqrt(trace(W*W'));
     P = P/trace(P);
 
     [t, g] = size(W);
