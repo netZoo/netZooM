@@ -1,4 +1,4 @@
-function RegNet=SPIDER(RegNet, GeneCoReg, TFCoop, alpha);
+function RegNet=SPIDER(RegNet, GeneCoReg, TFCoop, alpha, computing)
 % Description:
 %             Using SPIDER to infer epigenetically-informed gene regulatory network. This function uses PANDA at the back end of the computation 
 %             1. Normalizing networks
@@ -8,17 +8,22 @@ function RegNet=SPIDER(RegNet, GeneCoReg, TFCoop, alpha);
 %             alpha        : parameter that determines the level of message-passing
 %		      RegNet       : motif prior of gene-TF regulatory network
 %             GeneCoReg    : Optional input for SPIDER: Identify matrix of size GeneNames by GeneNames is used as input by default where gene expression information is absent
-%             TFCoop       : Optional input for SPIDER: Identify matrix of size TFNames by TFNames is used as input by default if PPI network is not used as input
-%             TFCoop       : PPI binding between transcription factors
+%             TFCoop       : PPI binding between transcription factors. 
+%                            Optional input for SPIDER: Identify matrix of size TFNames by TFNames is used as input by default if PPI network is not used as input
+%             computing    : 'cpu'(default)
+%                            'gpu' uses GPU to compute distances
 % Outputs:
-%             SpiderNet     : Predicted TF-gene gene complete regulatory network for cell line using SPIDER and message-passing from PANDA as a matrix of size (t,g).
+%             RegNet       : Predicted TF-gene gene complete regulatory network for cell line using SPIDER and message-passing from PANDA as a matrix of size (t,g).
 % Author(s): 
 %             Abhijeet Sonawane, Kimberly Glass
 
     [NumTFs,NumGenes]=size(RegNet);
 
     %% Run PANDA %%
-
+    if nargin <5
+        computing = 'cpu';
+    end
+    
     disp('Adjusting the degree of prior network!');
     RegNet=DegreeAdjust(RegNet);
     disp('Normalizing Networks!');
@@ -26,6 +31,13 @@ function RegNet=SPIDER(RegNet, GeneCoReg, TFCoop, alpha);
     GeneCoReg=NormalizeNetwork(GeneCoReg);
     TFCoop=NormalizeNetwork(TFCoop);
 
+    if isequal(computing,'gpu')
+        respWeight = 0.5;
+        similarityMetric='Tfunction';
+        RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
+        similarityMetric,computing);
+        return
+    end
     tic;
     disp('Learning Network!')
     step=0;

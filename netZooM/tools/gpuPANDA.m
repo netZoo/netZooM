@@ -1,5 +1,6 @@
 function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarityMetric,...
-                computing,precision,verbose,saveMemory,gpuSave)
+                computing, precision, verbose, saveMemory, gpuSave, isPUMA,...
+                s1, s2, t1, t2)
 % Description:
 %             GPU-accelerated PANDA, slightly different implmentation that is 
 %             optimized for memory.
@@ -45,8 +46,12 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
 %             gpuSave   : GPU flag for saving output network
 %                         1 keep the final network in GPU memory
 %                         0 (Default) send the final network to CPU and reset GPU memory
+%             isPUMA    : boolean, if gpuPANDA is called through PUMA then add
+%                          additional steps to keep the miRNA interactions.
+%             s1,s2,t1,t2: when isPUMA==1, these are the indices of miR 
+%                          interactions in TFCoop, the TF-TF PPI network.
 % Outputs:
-%             RegNet   : inferred gene-TF regulatory network
+%             RegNet    : inferred gene-TF regulatory network
 % Author(s):
 %             Marouen Ben Guebila
 
@@ -70,6 +75,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
     end
     if nargin<11
         gpuSave=0;
+    end
+    if nargin<12
+       isPUMA=0; 
     end
     if iscategorical(similarityMetric)
         similarityMetric=char(similarityMetric(1));
@@ -114,6 +122,9 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
         RegNet   = gpuArray(RegNet);
         GeneCoReg= gpuArray(GeneCoReg);
     end
+    if isPUMA==1
+        TFCoopInit=TFCoop;
+    end
     while hamming > 0.001
         if isequal(similarityMetric,'Tfunction')
             R = Tfunction(TFCoop, RegNet);
@@ -154,7 +165,15 @@ function RegNet = gpuPANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similar
             
             A = UpdateDiagonal(A, NumTFs, alpha, step);
             TFCoop = (1 - alpha) * TFCoop + alpha * A;%clear A;
-
+ 
+            if isPUMA==1
+                TFCoopDiag=diag(TFCoop);
+                TFCoop(sub2ind([NumTFs, NumTFs],s1,s2))=...
+                    TFCoopInit(sub2ind([NumTFs, NumTFs],s1,s2));
+                TFCoop(sub2ind([NumTFs, NumTFs],t1,t2))=...
+                    TFCoopInit(sub2ind([NumTFs, NumTFs],t1,t2)); 
+                    TFCoop(1:(size(TFCoop,1)+1):end) =TFCoopDiag; 
+            end
             if isequal(similarityMetric,'Tfunction')
                 A = Tfunction(RegNet');
             else

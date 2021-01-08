@@ -1,4 +1,6 @@
-function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile, chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF )
+function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,...  
+                              annofile, chrinfo, ranges, regfile, outtag, motifdir,... 
+                              epifile, save_temp, save_pairs, spider_out, nTF, computing)
 % Description:
 % 		Using SPIDER to infer epigenetically-informed gene regulatory network. 
 %		Optional steps that do not need to run everytime. The codes can be run once and parameters values can be saved
@@ -29,6 +31,8 @@ function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  anno
 %             save_pairs: (Optional) boolean parameter
 %                         1:  the final network will be saved .pairs format where each line has a TF-gene edge (Cytoscape compatible)
 %                         0:  the final network will not be saved in .pairs format
+%             computing    : 'cpu'(default)
+%                            'gpu' uses GPU to compute distances
 % Outputs:
 %             SpiderNet     : Predicted TF-gene gene complete regulatory network using SPIDER as a matrix of size (t,g).
 % Author(s):
@@ -37,7 +41,9 @@ function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  anno
     %% ============================================================================
     %% Set Program Parameters and Path
     %% ============================================================================
-
+    if nargin < 16
+       computing='cpu';
+    end
     % Run configuration to set parameter first (e.g., run('panda_config.m');)
 
     fprintf('Input epigenetically informed motif file: %s\n', motifhitfile);
@@ -82,7 +88,7 @@ function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  anno
 
 
     % Run message-passing
-    SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
+    SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha, computing);
 
     %% ============================================================================
     %% Saving SPIDER network output
