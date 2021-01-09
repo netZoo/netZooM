@@ -1,4 +1,5 @@
-function RegNet=RunPUMA(outtag,alpha,motif_file,exp_file,ppi_file,mir_file)
+function RegNet=RunPUMA(outtag,alpha,motif_file,exp_file,ppi_file,mir_file,...
+                        computing)
 % Description:
 %             PUMA can reconstruct gene regulatory networks using both transcription factors and microRNAs as regulators of mRNA expression levels.
 %             The script must be run with a regulatory prior (variable `motif_file` in the RunPUMA script) and expression data (variable `exp_file`). 
@@ -23,14 +24,21 @@ function RegNet=RunPUMA(outtag,alpha,motif_file,exp_file,ppi_file,mir_file)
 %             outtag    : path to save output PUMA network in .pairs format.
 %             mir_file  : path to file containing microRNA file
 %             alpha     : learning parameter for the PUMA algorithm
+%             computing : 'cpu'(default)
+%                         'gpu' uses GPU to compute distances
 % Outputs:
-%             RegNet     : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
+%             RegNet    : Predicted TF-gene gene complete regulatory network using PANDA as a matrix of size (t,g).
 % Author(s):
 %             Marieke Kuijjer
 % Publications:
+%             https://doi.org/10.1093/bioinformatics/btaa571
 %             https://www.ncbi.nlm.nih.gov/pubmed/28506242
 
     %% Read in Data %%
+    if nargin<7
+        computing='cpu';
+    end
+
     disp('Reading in data!')
 
     % Expression Data
@@ -96,11 +104,15 @@ function RegNet=RunPUMA(outtag,alpha,motif_file,exp_file,ppi_file,mir_file)
     GeneCoReg(isnan(GeneCoReg))=0; % change NaNs to 0
 
     if(isempty(mir_file)) % run PANDA
-        AgNet=PANDA(RegNet, GeneCoReg, TFCoop, alpha);
+        respWeight=0.5;
+        similarityMetric='Tfunction';
+        AgNet=PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight,...
+                    similarityMetric, computing);
         AgNet=AgNet(:);
     end
     if(~isempty(mir_file)) % run PUMA
-        AgNet=PUMA(RegNet, GeneCoReg, TFCoop, alpha, s1, s2, t1, t2); % s1, s2, t1, t2 are indices of miR interactions in TFCoop
+        AgNet=PUMA(RegNet, GeneCoReg, TFCoop, alpha, s1, s2, t1, t2,...
+            computing); % s1, s2, t1, t2 are indices of miR interactions in TFCoop
         AgNet=AgNet(:);
     end
 
