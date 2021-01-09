@@ -11,7 +11,7 @@ netZooM is tested on: (OS: Linux + Macos) X (Language: Octave)
 netZooM is a MATLAB package of network methods.
 
 ## Zoo animals
-(gpu)PANDA, (gpu)LIONESS, PUMA, SPIDER, optPANDA, and OTTER.
+(gpu)PANDA, (gpu)LIONESS, (gpu)PUMA, (gpu)SPIDER, optPANDA, and OTTER.
 
 ## Quick guide
 Clone the repository into your local disk:

@@ -37,7 +37,7 @@ function testSpiderSimple()
         % Add path
         addpath(genpath(fullfile(pwd,'tests')));
         
-        % Create save folder
+        % Call SPIDER
         SpiderNet = spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile,...
             chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF )
         % Call Panda
