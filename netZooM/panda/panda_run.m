@@ -153,7 +153,9 @@ function [AgNet,TFNames,GeneNames]=panda_run(lib_path, exp_file, motif_file, ppi
             % transform Exp to table to save sample names
             ExpTbl = array2table(Exp,'RowNames',SampleNames(2:end));
             save(fullfile(save_temp, 'expression.transposed.mat'), 'ExpTbl', '-v7.3');  % 2G+
-            save(fullfile(save_temp, 'motif.normalized.mat'), 'RegNet', '-v6');  % fast
+            % transform RegNet to table to save gene and tf names
+            RegNetTbl = array2table(RegNet,'RowNames',TFNames,'VariableNames',GeneNames);
+            save(fullfile(save_temp, 'motif.normalized.mat'), 'RegNetTbl', '-v6');  % fast
             save(fullfile(save_temp, 'ppi.normalized.mat'), 'TFCoop', '-v6');  % fast
         toc
     end

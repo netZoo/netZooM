@@ -27,6 +27,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %             alpha     : learning parameter for the PANDA algorithm
 %             ascii_out : 1 : save LIONESS networks in .txt format
 %                         0 : save LIONESS networks in .mat -v6 format
+%                         2 : save LIONESS networks in '.csv' format
 %             lib_path  : path to library
 %             computing: 'cpu'(default)
 %                        'gpu' uses GPU to compute distances
@@ -106,7 +107,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     disp('Reading in motif data!');
     tic
         X = load(motif_file);
-        RegNet = X.RegNet;
+        RegNet    = X.RegNetTbl.Variables;
+        TFNames   = X.RegNetTbl.Properties.RowNames;
+        GeneNames = X.RegNetTbl.Properties.VariableNames;
     toc
 
     disp('Reading in ppi data!');
@@ -195,7 +198,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames,GeneNames,TFNames);
             end
         else
             parpool(ncores);
@@ -213,7 +216,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames,GeneNames,TFNames);
             end
         end
     end
@@ -248,7 +251,7 @@ function saveGPU(PredNet,ascii_out,save_dir,i,SampleNames)
     
 end
 
-function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames)
+function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames,GeneNames,TFNames)
 % Description:
 %             saveCPU circumvents the MATLAB lock on saving files inside a
 %             parfor loop
@@ -265,9 +268,14 @@ function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames)
     if ascii_out == 1
     	f = fullfile(save_dir, sprintf([SampleNames{i} '.txt']));
     	tic; save(f, 'PredNet', '-ascii'); toc;
-    else
+    elseif ascii_out == 0
     	f = fullfile(save_dir, sprintf([SampleNames{i} '.mat']));
     	tic; save(f, 'PredNet', '-v6'); toc;
+    elseif ascii_out == 2
+        f = fullfile(save_dir, sprintf([SampleNames{i} '.csv']));
+        netTab = array2table(PredNet,...
+                  'VariableNames',GeneNames,'RowNames',TFNames);
+        writetable(netTab,f,'WriteRowNames',true,'WriteVariableNames',true);
     end
     fprintf('Network saved to %s\n', f);
     clear idx GeneCoReg LocNet PredNet f; % clean up for next run
