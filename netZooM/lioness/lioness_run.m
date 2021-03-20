@@ -1,6 +1,6 @@
-function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
+function [geneTarMat,tfTarMat] = lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     START, END, alpha, ascii_out, lib_path, computing, saveGPUmemory, verbose,...
-    ncores, precision, saveFileMode)
+    ncores, precision, saveFileMode, targ)
 % Description:
 %             Using LIONESS to infer single-sample gene regulatory networks.
 %             1. Reading in PANDA network and preprocessed middle data
@@ -54,6 +54,8 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %             PredNet   : Predicted single sample network as a matrix of size (t,g)
 %                         This output is directly saved as a file and not
 %                         as worksapce variable
+%              geneTarMat: compute gene targeting matrix (Gene by sample)
+%              tfTarMat  : compute TF targeting matrix (TF by sample)
 % Author(s):
 %             cychen, marieke, kglass
 % Publications:
@@ -74,6 +76,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     fprintf('Alpha: %.2f\n', alpha);
     fprintf('ASCII output: %d\n', ascii_out);
     addpath(lib_path);
+    if nargin<17
+        targ = 0;
+    end
     if nargin<16
         saveFileMode = 'all';
     end
@@ -138,6 +143,14 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     else
         indexes = START:END;
     end
+    %compute targteing
+    if targ==1
+        geneTarMat= zeros(size(AgNet,2),length(indexes));
+        tfTarMat  = zeros(size(AgNet,1),length(indexes));
+    elseif targ==0
+        geneTarMat= [];
+        tfTarMat  = [];        
+    end
 
     if isequal(computing,'gpu')
         if isequal(saveFileMode,'all')
@@ -184,7 +197,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         end
     else
         if ncores==1
+            k=0;
             for i = indexes
+                k=k+1;
                 fprintf('Running LIONESS for sample %d:\n', i);
                 idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
 
@@ -199,6 +214,10 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
                 saveCPU(PredNet,ascii_out,save_dir,i,SampleNames,GeneNames,TFNames);
+                
+                %save targeting
+                geneTarMat(:,k) = sum(PredNet,1);
+                tfTarMat(:,k)   = sum(PredNet,2);
             end
         else
             parpool(ncores);
@@ -221,6 +240,10 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         end
     end
 
+    if targ==1
+       geneTarTbl=array2table(geneTarMat,'RowNames',GeneNames,'VariableNames',SampleNames(indexes));
+       tfTarTbl=array2table(tfTarMat,'RowNames',TFNames,'VariableNames',SampleNames(indexes));
+    end
     disp('All done!');
     disp(datestr(now));
     
