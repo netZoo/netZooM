@@ -1,6 +1,6 @@
-function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
+function [geneTarMat,tfTarMat] = lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     START, END, alpha, ascii_out, lib_path, computing, saveGPUmemory, verbose,...
-    ncores, precision, saveFileMode)
+    ncores, precision, saveFileMode, targ)
 % Description:
 %             Using LIONESS to infer single-sample gene regulatory networks.
 %             1. Reading in PANDA network and preprocessed middle data
@@ -27,6 +27,7 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %             alpha     : learning parameter for the PANDA algorithm
 %             ascii_out : 1 : save LIONESS networks in .txt format
 %                         0 : save LIONESS networks in .mat -v6 format
+%                         2 : save LIONESS networks in '.csv' format
 %             lib_path  : path to library
 %             computing: 'cpu'(default)
 %                        'gpu' uses GPU to compute distances
@@ -53,6 +54,8 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
 %             PredNet   : Predicted single sample network as a matrix of size (t,g)
 %                         This output is directly saved as a file and not
 %                         as worksapce variable
+%              geneTarMat: compute gene targeting matrix (Gene by sample)
+%              tfTarMat  : compute TF targeting matrix (TF by sample)
 % Author(s):
 %             cychen, marieke, kglass
 % Publications:
@@ -73,6 +76,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     fprintf('Alpha: %.2f\n', alpha);
     fprintf('ASCII output: %d\n', ascii_out);
     addpath(lib_path);
+    if nargin<17
+        targ = 0;
+    end
     if nargin<16
         saveFileMode = 'all';
     end
@@ -106,7 +112,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
     disp('Reading in motif data!');
     tic
         X = load(motif_file);
-        RegNet = X.RegNet;
+        RegNet    = X.RegNetTbl.Variables;
+        TFNames   = X.RegNetTbl.Properties.RowNames;
+        GeneNames = X.RegNetTbl.Properties.VariableNames;
     toc
 
     disp('Reading in ppi data!');
@@ -134,6 +142,14 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         indexes = START:NumConditions;
     else
         indexes = START:END;
+    end
+    %compute targteing
+    if targ==1
+        geneTarMat= zeros(size(AgNet,2),length(indexes));
+        tfTarMat  = zeros(size(AgNet,1),length(indexes));
+    elseif targ==0
+        geneTarMat= [];
+        tfTarMat  = [];        
     end
 
     if isequal(computing,'gpu')
@@ -181,7 +197,9 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
         end
     else
         if ncores==1
+            k=0;
             for i = indexes
+                k=k+1;
                 fprintf('Running LIONESS for sample %d:\n', i);
                 idx = [1:(i-1), (i+1):NumConditions];  % all samples except i
 
@@ -195,7 +213,11 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames,GeneNames,TFNames);
+                
+                %save targeting
+                geneTarMat(:,k) = sum(PredNet,1);
+                tfTarMat(:,k)   = sum(PredNet,2);
             end
         else
             parpool(ncores);
@@ -213,11 +235,15 @@ function lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir,...
                 LocNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha);
                 PredNet = NumConditions * (AgNet - LocNet) + LocNet;
 
-                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames);
+                saveCPU(PredNet,ascii_out,save_dir,i,SampleNames,GeneNames,TFNames);
             end
         end
     end
 
+    if targ==1
+       geneTarTbl=array2table(geneTarMat,'RowNames',GeneNames,'VariableNames',SampleNames(indexes));
+       tfTarTbl=array2table(tfTarMat,'RowNames',TFNames,'VariableNames',SampleNames(indexes));
+    end
     disp('All done!');
     disp(datestr(now));
     
@@ -248,7 +274,7 @@ function saveGPU(PredNet,ascii_out,save_dir,i,SampleNames)
     
 end
 
-function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames)
+function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames,GeneNames,TFNames)
 % Description:
 %             saveCPU circumvents the MATLAB lock on saving files inside a
 %             parfor loop
@@ -265,9 +291,14 @@ function saveCPU(PredNet,ascii_out,save_dir,i,SampleNames)
     if ascii_out == 1
     	f = fullfile(save_dir, sprintf([SampleNames{i} '.txt']));
     	tic; save(f, 'PredNet', '-ascii'); toc;
-    else
+    elseif ascii_out == 0
     	f = fullfile(save_dir, sprintf([SampleNames{i} '.mat']));
     	tic; save(f, 'PredNet', '-v6'); toc;
+    elseif ascii_out == 2
+        f = fullfile(save_dir, sprintf([SampleNames{i} '.csv']));
+        netTab = array2table(PredNet,...
+                  'VariableNames',GeneNames,'RowNames',TFNames);
+        writetable(netTab,f,'WriteRowNames',true,'WriteVariableNames',true);
     end
     fprintf('Network saved to %s\n', f);
     clear idx GeneCoReg LocNet PredNet f; % clean up for next run
