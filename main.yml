@@ -48,3 +48,4 @@ jobs:
             - rm -rf MOcov;
             - git clone https://github.com/MOcov/MOcov.git;
             - make -C MOcov install; #Install Octave coverage report
+        shell: bash
