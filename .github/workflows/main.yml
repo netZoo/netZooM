@@ -44,8 +44,10 @@ jobs:
             cd ..
             rm -rf MOxUnit; #Install Octave unit test package
             git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
-            make -C MOxUnit install
+            cd MOxUnit
+            make install
             rm -rf MOcov;
             git clone https://github.com/MOcov/MOcov.git;
-            make -C MOcov install; #Install Octave coverage report
+            cd MOcov
+            make install; #Install Octave coverage report
         shell: bash
