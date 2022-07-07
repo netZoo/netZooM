@@ -38,6 +38,15 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
 
+      - name: install bedtools
+        run: |
+         wget https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz
+         tar -zxvf bedtools-2.28.0.tar.gz
+         cd bedtools2
+         make
+         cd ..
+         shell: bash
+
       - name: Run tests and generate artifacts
         run: |
             ls && pwd
