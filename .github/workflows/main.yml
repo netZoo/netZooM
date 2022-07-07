@@ -44,10 +44,10 @@ jobs:
             cd ..
             rm -rf MOxUnit; #Install Octave unit test package
             git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
-            cd MOxUnit
-            make install
             rm -rf MOcov;
             git clone https://github.com/MOcov/MOcov.git;
-            cd MOcov
-            make install; #Install Octave coverage report
         shell: bash
+
+      - name: 
+        run: |
+             matlab -batch 'back=cd("./MOxUnit/MOxUnit/"); moxunit_set_path(); cd(back); moxunit_runtests tests -verbose; exit(double(~ans))'
