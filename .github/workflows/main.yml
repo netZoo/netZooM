@@ -1,0 +1,50 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+#
+# See https://github.com/r-lib/actions/tree/master/examples#readme for
+# additional example workflows available for the R community.
+
+name: netZooM
+
+env:
+    ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        
+on:
+  push:
+    branches: 
+        - master
+        - devel
+  pull_request:
+    branches: 
+        - master
+        - devel
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest]
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v1
+
+      - name: Run tests and generate artifacts
+        run: |
+            - ls && pwd
+            - cd ..
+            - rm -rf MOxUnit; #Install Octave unit test package
+            - git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
+            - make -C MOxUnit install
+            - rm -rf MOcov;
+            - git clone https://github.com/MOcov/MOcov.git;
+            - make -C MOcov install; #Install Octave coverage report
