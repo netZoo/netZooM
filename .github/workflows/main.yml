@@ -45,7 +45,6 @@ jobs:
          cd bedtools2
          make
          cd ..
-         shell: bash
 
       - name: Run tests and generate artifacts
         run: |
