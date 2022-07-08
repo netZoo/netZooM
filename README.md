@@ -1,10 +1,10 @@
-[![TRAVIS](https://img.shields.io/travis/netZoo/netZooM/master?label=master)](https://travis-ci.org/netZoo/netZooM/)
-[![TRAVIS](https://img.shields.io/travis/netZoo/netZooM/devel?label=devel)](https://travis-ci.org/netZoo/netZooM/)
+[![netZooM](https://github.com/netZoo/netZooM/actions/workflows/main.yml/badge.svg?branch=master)](https://github.com/netZoo/netZooM/actions/workflows/main.yml)
+[![netZooM](https://github.com/netZoo/netZooM/actions/workflows/main.yml/badge.svg?branch=devel)](https://github.com/netZoo/netZooM/actions/workflows/main.yml)
 [![codecov](https://codecov.io/gh/netZoo/netZooM/branch/devel/graph/badge.svg)](https://codecov.io/gh/netZoo/netZooM)
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 [![Documentation Status](https://readthedocs.org/projects/netzoom/badge/?version=latest)](https://netzoom.readthedocs.io/en/latest/?badge=latest)
 
-netZooM is tested on: (OS: Linux + Macos) X (Language: Octave)
+netZooM is tested on: (OS: Linux + Macos) X (Language: MATLAB)
 
 ## Description
 netZooM is a MATLAB package of network methods.

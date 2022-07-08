@@ -16,6 +16,8 @@ function testPandaSimple()
             %pkg load statistics
             pkg load nan;
             return % readtable is not available in octave
+        else
+            return
         end
 
         % Set Program Parameters

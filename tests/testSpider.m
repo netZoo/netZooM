@@ -27,7 +27,7 @@ function testSpiderSimple()
         
         motifdir     = 'tests/spider/motifs/'; % where the original motif scan files are stored (one bed file per motif)
         epifile      = 'tests/spider/A549_DnasePeaks.bed'; % file with open chromatin regions
-        bedtoolspath = '/home/travis/build/netZoo/bedtools2/bin/'  %to be specified by Marouen
+        %bedtoolspath = '/home/travis/build/netZoo/bedtools2/bin/'  %to be specified by Marouen
         bedtoolspath = './../bedtools2/bin/'  %to be specified by Marouen
         outtag = 'tests/output/';
         
@@ -44,22 +44,24 @@ function testSpiderSimple()
         % Call SPIDER
         SpiderNet = spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile,...
             chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF )
-        % Call Panda
-        %CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
-        
-        %%%% Run SPIDER %%%%
-        
-        % Build SPIDER prior
-        
-        %[PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
-        % Run message-passing
-        %SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
 
         % Load the expected result
         ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');%different behavior with Octave and Matlab
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
         ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,2), size(SpiderNet,1)])';
+        
+        % Compare the outputs
+        tolMat=1e-6;
+        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)));
+	    assertTrue(deltaMat < tolMat);
 
+        % Now try the step-by-step approach
+        CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
+        % Build SPIDER prior
+        [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
+        % Run message-passing
+        SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
+        
         % Compare the outputs
         tolMat=1e-6;
         deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)));
