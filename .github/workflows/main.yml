@@ -45,8 +45,6 @@ jobs:
          cd bedtools2
          make
          cd ..
-        with:
-          cache-version: 1
 
       - name: Run tests and generate artifacts
         run: |
