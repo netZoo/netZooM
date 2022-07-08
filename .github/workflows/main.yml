@@ -45,6 +45,8 @@ jobs:
          cd bedtools2
          make
          cd ..
+        with:
+          cache-version: 1
 
       - name: Run tests and generate artifacts
         run: |
@@ -58,5 +60,4 @@ jobs:
 
       - name: 
         run: |
-             -batch 'addpath('/home/runner/work/netZooM/');ls;pwd;back=cd('../MOxUnit/MOxUnit/'); moxunit_set_path(); cd(back); pwd; ls; moxunit_runtests tests -verbose; exit(double(~ans))'
-        shell: matlab
+             matlab -batch 'addpath('/home/runner/work/netZooM/');ls;pwd;back=cd('../MOxUnit/MOxUnit/'); moxunit_set_path(); cd(back); pwd; ls; moxunit_runtests tests; exit(double(~ans))'
