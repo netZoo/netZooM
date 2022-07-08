@@ -38,9 +38,19 @@ jobs:
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
 
-      - name: install bedtools
+      - name: install bedtools ubuntu
+        if: matrix.os == 'ubuntu-latest'
         run: |
          wget https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz
+         tar -zxvf bedtools-2.28.0.tar.gz
+         cd bedtools2
+         make
+         cd ..
+
+      - name: install bedtools macos
+        if: matrix.os == 'macos-latest'
+        run: |
+         curl -OL https://github.com/arq5x/bedtools2/releases/download/v2.28.0/bedtools-2.28.0.tar.gz
          tar -zxvf bedtools-2.28.0.tar.gz
          cd bedtools2
          make
