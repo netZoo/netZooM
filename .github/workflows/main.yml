@@ -58,4 +58,4 @@ jobs:
 
       - name: 
         run: |
-             matlab -batch 'addpath(genpath('/home/runner/work/netZooM/'));'
+             matlab -batch 'addpath(genpath("/home/runner/work/netZooM/"));'
