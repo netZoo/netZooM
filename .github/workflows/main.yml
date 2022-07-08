@@ -50,11 +50,9 @@ jobs:
       - name: install bedtools macos
         if: matrix.os == 'macos-latest'
         run: |
-         wget https://github.com/arq5x/bedtools2/releases/download/v2.29.0/bedtools-2.29.0.tar.gz
-         tar -zxvf bedtools-2.29.0.tar.gz
-         cd bedtools2
-         make install CFLAGS="-ferror-limit=0"
-         cd ..
+         wget https://github.com/arq5x/bedtools2/releases/download/v2.30.0/bedtools.static.binary
+         mv bedtools.static.binary bedtools
+         chmod a+x bedtools
 
       - name: Run tests and generate artifacts
         run: |
