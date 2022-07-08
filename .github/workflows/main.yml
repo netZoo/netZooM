@@ -58,4 +58,4 @@ jobs:
 
       - name: 
         run: |
-             matlab -batch 'addpath('/home/runner/work/netZooM/');ls;pwd;back=cd('../MOxUnit/MOxUnit/'); moxunit_set_path(); cd(back); pwd; ls; moxunit_runtests tests; exit(double(~ans))'
+             matlab -batch 'addpath('/home/runner/work/netZooM/');back=cd('../MOxUnit/MOxUnit/');'
