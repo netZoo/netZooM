@@ -72,13 +72,13 @@ function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,...
         DefineRegulatoryRegions(annofile, ranges, regfile, chrinfo);
     end
 
-    CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath,nTF);
+    CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath, nTF);
 
     %%%% Run SPIDER %%%%
 
     % Build SPIDER prior
-
     [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
+
 
     % Run message-passing
     SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha, computing);

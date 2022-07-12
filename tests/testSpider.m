@@ -52,7 +52,7 @@ function testSpiderSimple()
         end
         
         % Now try the step-by-step approach
-        CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
+        CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath, nTF);
         % Build SPIDER prior
         [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
         %temporary reduction in number of genes for Actions
