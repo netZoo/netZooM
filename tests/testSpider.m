@@ -27,10 +27,11 @@ function testSpiderSimple()
         
         motifdir     = 'tests/spider/motifs/'; % where the original motif scan files are stored (one bed file per motif)
         epifile      = 'tests/spider/A549_DnasePeaks.bed'; % file with open chromatin regions
-        if isunix
-            bedtoolspath = './bedtools2/bin/'; 
-        elseif ismac
+
+        if ismac
             bedtoolspath = './';
+        elseif isunix
+            bedtoolspath = './bedtools2/bin/'; 
         end
         outtag = 'tests/output/';
         
