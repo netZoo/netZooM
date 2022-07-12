@@ -46,7 +46,7 @@ function testSpiderSimple()
         
         % Call SPIDER
         SpiderNet = spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile,...
-            chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF )
+            chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF );
 
         % Load the expected result
         ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');%different behavior with Octave and Matlab
@@ -55,7 +55,7 @@ function testSpiderSimple()
         
         % Compare the outputs
         tolMat=1e-6;
-        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)));
+        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)))
 	    assertTrue(deltaMat < tolMat);
 
         % Now try the step-by-step approach
@@ -67,6 +67,6 @@ function testSpiderSimple()
         
         % Compare the outputs
         tolMat=1e-6;
-        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)));
+        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)))
 	    assertTrue(deltaMat < tolMat);
 end
