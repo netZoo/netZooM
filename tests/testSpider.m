@@ -50,17 +50,7 @@ function testSpiderSimple()
             SpiderNet = spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile,...
                 chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF );
         end
-
-        % Load the expected result
-        ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');%different behavior with Octave and Matlab
-        % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,1), size(SpiderNet,2)]);
         
-        % Compare the outputs
-        tolMat=1e-6;
-        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)))
-	    assertTrue(deltaMat < tolMat);
-
         % Now try the step-by-step approach
         CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
         % Build SPIDER prior
@@ -70,6 +60,11 @@ function testSpiderSimple()
         GeneNames= GeneNames(1:numGenes);
         PriorNet = PriorNet(:,1:numGenes);
         SpiderNet= SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
+        
+        % Load the expected result
+        ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');%different behavior with Octave and Matlab
+        % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
+        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,1), size(SpiderNet,2)]);
         
         % Compare the outputs
         tolMat=1e-6;
