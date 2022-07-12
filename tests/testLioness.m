@@ -40,7 +40,7 @@ function testLionessSimple()
         lib_path   = '../netZooM';
 
         % Create save folder
-        %mkdir tmp;
+        mkdir test_data;
 
         % Call Lioness
         lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha, ascii_out, lib_path);
