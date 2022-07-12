@@ -66,6 +66,8 @@ jobs:
             git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
             rm -rf MOcov;
             git clone https://github.com/MOcov/MOcov.git;
+            cd MOcov
+            make install
         shell: bash
 
       - name: run actual tests 
