@@ -61,9 +61,9 @@ function testSpiderSimple()
 
         % Now try the step-by-step approach
         CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
+        % Build SPIDER prior
+        [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
         if 0
-            % Build SPIDER prior
-            [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
             % Run message-passing
             SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
         end
