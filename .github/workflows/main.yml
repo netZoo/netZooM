@@ -70,7 +70,7 @@ jobs:
 
       - name: run actual tests 
         run: |
-             matlab -batch 'cd MOcov;addpath(pwd);savepath;cd ..;addpath(genpath("/home/runner/work/netZooM/"));back=cd("../MOxUnit/MOxUnit/"); moxunit_set_path(); cd(back); pwd; ls; moxunit_runtests tests -recursive -verbose -junit_xml_file testresults.xml -with_coverage -cover netZooM -cover_exclude tests -cover_xml_file coverage.xml -cover_json_file coveralls.json);  exit(double(~ans))'
+             matlab -batch 'cd ../MOcov;addpath(pwd);savepath;cd ..;addpath(genpath("/home/runner/work/netZooM/"));back=cd("../MOxUnit/MOxUnit/"); moxunit_set_path(); cd(back); pwd; ls; moxunit_runtests tests -recursive -verbose -junit_xml_file testresults.xml -with_coverage -cover netZooM -cover_exclude tests -cover_xml_file coverage.xml -cover_json_file coveralls.json);  exit(double(~ans))'
 
       - name: report coverage
         run: |
