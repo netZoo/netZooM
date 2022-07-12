@@ -62,10 +62,8 @@ jobs:
         run: |
             ls && pwd
             cd ..
-            rm -rf MOxUnit; #Install Octave unit test package
             git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
-            rm -rf MOcov;
-            git clone https://github.com/MOcov/MOcov.git;
+            git clone https://github.com/MOcov/MOcov.git
         shell: bash
 
       - name: run actual tests 
