@@ -59,17 +59,16 @@ function testSpiderSimple()
         deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)))
 	    assertTrue(deltaMat < tolMat);
 
+        % Now try the step-by-step approach
+        CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
         if 0
-            % Now try the step-by-step approach
-            CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
             % Build SPIDER prior
             [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
             % Run message-passing
             SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
-
-            % Compare the outputs
-            tolMat=1e-6;
-            deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)))
-            assertTrue(deltaMat < tolMat);
         end
+        % Compare the outputs
+        tolMat=1e-6;
+        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)))
+        assertTrue(deltaMat < tolMat);
 end
