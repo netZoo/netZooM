@@ -57,10 +57,6 @@ jobs:
          chmod a+x bedtools
          pwd
          ls
-         cd bedtools
-         ls   
-         pwd
-         cd ..
 
       - name: Run tests and generate artifacts
         run: |
