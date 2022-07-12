@@ -23,7 +23,7 @@ function testSpiderSimple()
         
         annofile     = 'tests/spider/refseq_hg19_05292018'; % file with gene annotations
         chrinfo      = 'tests/spider/GenomeWideRanges.bed'; % file with chromosome information
-        ranges       = ''%{[-1000,+1000]};
+        ranges       = '';%{[-1000,+1000]};
         
         motifdir     = 'tests/spider/motifs/'; % where the original motif scan files are stored (one bed file per motif)
         epifile      = 'tests/spider/A549_DnasePeaks.bed'; % file with open chromatin regions
@@ -51,7 +51,7 @@ function testSpiderSimple()
         % Load the expected result
         ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');%different behavior with Octave and Matlab
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,2), size(SpiderNet,1)])';
+        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,1), size(SpiderNet,2)]);
         
         % Compare the outputs
         tolMat=1e-6;
