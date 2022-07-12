@@ -27,8 +27,8 @@ function testSpiderSimple()
         
         motifdir     = 'tests/spider/motifs/'; % where the original motif scan files are stored (one bed file per motif)
         epifile      = 'tests/spider/A549_DnasePeaks.bed'; % file with open chromatin regions
-        %bedtoolspath = '/home/travis/build/netZoo/bedtools2/bin/'  %to be specified by Marouen
-        bedtoolspath = './../bedtools2/bin/'  %to be specified by Marouen
+        %bedtoolspath = '/home/travis/build/netZoo/bedtools2/bin/' 
+        bedtoolspath = './../bedtools2/bin/' 
         outtag = 'tests/output/';
         
         spider_out  = 'tests/spider/output/A549_5TF_100Genes_casenet.txt';  % optional, leave empty if file output is not required

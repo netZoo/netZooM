@@ -131,8 +131,7 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     j      = j(indCommPPI);
     weightPPI = weightPPI(indCommPPI);
     TFCoop(sub2ind([NumTFs, NumTFs], i, j)) = weightPPI;
-    TFCoop(sub2ind([NumTFs, NumTFs], j, i)) = weightPPI; 
-    
+    TFCoop(sub2ind([NumTFs, NumTFs], j, i)) = weightPPI;  
 end
 
 function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
