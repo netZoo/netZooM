@@ -23,10 +23,11 @@ function testLionessSimple()
         
         % Set Program Parameters
         % exp, motif, and ppi are produced by panda_run with save_temp
-        % parameter set != ''
+        % parameter set != '' and mode='intersection'
         exp_file   = 'test_data/expression.transposed.mat';
-        motif_file = 'test_data/motif.normalized.mat';
+        motif_file = 'test_data/motif.normalized.mat';   
         ppi_file   = 'test_data/ppi.normalized.mat';
+        
         panda_file = 'panda2.test.mat'; % This test network has been transposed
         % to test savePairs, so we need to tranpose it back
         load('test_data/panda.test.mat');
