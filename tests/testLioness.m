@@ -7,7 +7,7 @@ function test_suite=testLioness()
 end
 
 function testLionessSimple()
-	% Tell if this is Octave (Unit tests) or Matlab
+	    % Tell if this is Octave (Unit tests) or Matlab
         isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
 
         % Load statistics package from Octave
@@ -27,7 +27,6 @@ function testLionessSimple()
         exp_file   = 'test_data/expression.transposed.mat';
         motif_file = 'test_data/motif.normalized.mat';   
         ppi_file   = 'test_data/ppi.normalized.mat';
-        
         panda_file = 'panda2.test.mat'; % This test network has been transposed
         % to test savePairs, so we need to tranpose it back
         load('test_data/panda.test.mat');
@@ -47,7 +46,7 @@ function testLionessSimple()
         lioness_run(exp_file, motif_file, ppi_file, panda_file, save_dir, START, END, alpha, ascii_out, lib_path);
 
         % Load the computed results
-        result = load('test_data/lioness.1.mat');
+        result = load('test_data/Var2.mat');
         
         % Load the expected result
         load('test_data/lioness.test.mat');
