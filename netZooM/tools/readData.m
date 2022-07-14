@@ -1,6 +1,4 @@
-function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
-            ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,...
-            SampleNames]=readData(exp_file,motif_file,ppi_file)
+function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,ExpInit,TF,gene,weightMotif,weightPPI,TF1,TF2,SampleNames]=readData(exp_file,motif_file,ppi_file)
 % Description:
 %             readData reads the input files for PANDA.
 % Inputs:
@@ -57,5 +55,4 @@ function [GeneMotif,GeneNamesExp,TfMotif,TFNamesInit,NumConditions,...
     if ~isequal(TFNamesInit,unique(TF2))
         error('PPI data has missing information.')
     end
-    
 end
