@@ -1,0 +1,81 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+#
+# See https://github.com/r-lib/actions/tree/master/examples#readme for
+# additional example workflows available for the R community.
+
+name: netZooM
+
+env:
+    ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
+    GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        
+on:
+  push:
+    branches: 
+        - master
+        - devel
+  pull_request:
+    branches: 
+        - master
+        - devel
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Set up MATLAB
+        uses: matlab-actions/setup-matlab@v1
+
+      - name: install bedtools ubuntu
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+         wget https://github.com/arq5x/bedtools2/releases/download/v2.29.0/bedtools-2.29.0.tar.gz
+         tar -zxvf bedtools-2.29.0.tar.gz
+         cd bedtools2
+         make
+         ls
+         pwd
+         cd ..
+
+      - name: install bedtools macos
+        if: matrix.os == 'macos-latest'
+        run: |
+         wget https://github.com/marouenbg/bedtools2/archive/refs/heads/master.zip
+         unzip master.zip
+         mv bedtools2-master bedtools2
+         cd bedtools2
+         make
+         ls
+         pwd
+         cd ..
+
+      - name: Run tests and generate artifacts
+        run: |
+            ls && pwd
+            cd ..
+            git clone https://github.com/MOxUnit/MOxUnit.git # Install MOxUnit, which adds itself to the startup path
+            git clone https://github.com/MOcov/MOcov.git
+            pwd
+            ls
+        shell: bash
+
+      - name: run actual tests 
+        run: |
+             matlab -batch 'cd ../MOcov;addpath(genpath(pwd));cd ../netZooM;addpath(genpath("/home/runner/work/netZooM/"));back=cd("../MOxUnit/MOxUnit/"); moxunit_set_path(); cd(back); pwd; ls; moxunit_runtests tests -recursive -verbose -junit_xml_file testresults.xml -with_coverage -cover netZooM -cover_exclude tests -cover_xml_file coverage.xml -cover_json_file coveralls.json);  exit(double(~ans))'
+
+      - name: report coverage
+        run: |
+             bash <(curl -s https://codecov.io/bash)
+       
