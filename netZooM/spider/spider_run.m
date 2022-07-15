@@ -72,19 +72,12 @@ function SpiderNet=spider_run(lib_path, bedtoolspath, alpha, motifhitfile,...
         DefineRegulatoryRegions(annofile, ranges, regfile, chrinfo);
     end
 
-    CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath,nTF);
+    CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath, nTF);
 
     %%%% Run SPIDER %%%%
 
     % Build SPIDER prior
-
     [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
-
-    %temporary reduction in number of genes for TRAVIS
-    numGenes = 100 
-    GeneNames = GeneNames(1:numGenes);
-    PriorNet = PriorNet(:,1:numGenes);
-    % Remove this section for including all genes.
 
 
     % Run message-passing

@@ -1,5 +1,9 @@
 function test_suite=testSpider()
-	initTestSuite;
+    try % assignment of 'localfunctions' is necessary in Matlab >= 2016
+        test_functions=localfunctions();
+    catch % no problem; early Matlab versions can use initTestSuite fine
+    end
+    initTestSuite;
 end
 
 function testSpiderSimple()
@@ -19,12 +23,11 @@ function testSpiderSimple()
         
         annofile     = 'tests/spider/refseq_hg19_05292018'; % file with gene annotations
         chrinfo      = 'tests/spider/GenomeWideRanges.bed'; % file with chromosome information
-        ranges       = ''%{[-1000,+1000]};
+        ranges       = '';%{[-1000,+1000]};
         
         motifdir     = 'tests/spider/motifs/'; % where the original motif scan files are stored (one bed file per motif)
         epifile      = 'tests/spider/A549_DnasePeaks.bed'; % file with open chromatin regions
-        bedtoolspath = '/home/travis/build/netZoo/bedtools2/bin/'  %to be specified by Marouen
-        bedtoolspath = './../bedtools2/bin/'  %to be specified by Marouen
+        bedtoolspath = './bedtools2/bin/'; 
         outtag = 'tests/output/';
         
         spider_out  = 'tests/spider/output/A549_5TF_100Genes_casenet.txt';  % optional, leave empty if file output is not required
@@ -37,27 +40,29 @@ function testSpiderSimple()
         % Add path
         addpath(genpath(fullfile(pwd,'tests')));
         
-        % Call SPIDER
-        SpiderNet = spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile,...
-            chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF )
-        % Call Panda
-        %CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath);
+        if 0
+            % Call SPIDER
+            SpiderNet = spider_run(lib_path, bedtoolspath, alpha, motifhitfile,  annofile,...
+                chrinfo, ranges, regfile, outtag,motifdir, epifile,save_temp,save_pairs,spider_out,nTF );
+        end
         
-        %%%% Run SPIDER %%%%
-        
+        % Now try the step-by-step approach
+        CreateEpigeneticMotif(epifile, motifdir, motifhitfile, bedtoolspath, nTF);
         % Build SPIDER prior
+        [PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
+        %temporary reduction in number of genes for Actions
+        numGenes = 100; 
+        GeneNames= GeneNames(1:numGenes);
+        PriorNet = PriorNet(:,1:numGenes);
+        SpiderNet= SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
         
-        %[PriorNet, TFNames, GeneNames]=BuildSPIDERprior(motifhitfile, regfile, bedtoolspath);
-        % Run message-passing
-        %SpiderNet=SPIDER(PriorNet, eye(length(GeneNames)), eye(length(TFNames)), alpha);
-
         % Load the expected result
         ExpSpiderNet = textread('tests/spider/output/A549_5TF_100Genes_testnet.txt');%different behavior with Octave and Matlab
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,2), size(SpiderNet,1)])';
-
+        ExpSpiderNet = reshape(ExpSpiderNet,[size(SpiderNet,1), size(SpiderNet,2)]);
+        
         % Compare the outputs
         tolMat=1e-6;
-        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)));
-	    assertTrue(deltaMat < tolMat);
+        deltaMat=max(max(abs(SpiderNet-ExpSpiderNet)))
+        assertTrue(deltaMat < tolMat);
 end

@@ -1,5 +1,9 @@
 function test_suite=testProcessData()
-	initTestSuite;
+    try % assignment of 'localfunctions' is necessary in Matlab >= 2016
+        test_functions=localfunctions();
+    catch % no problem; early Matlab versions can use initTestSuite fine
+    end
+    initTestSuite;
 end
 
 function testProcessDataSimple()
@@ -32,6 +36,5 @@ function testProcessDataSimple()
         modeProcess= 'union';
         [Exp,~,~,~,GeneNames]=processData(exp_file,motif_file,ppi_file,modeProcess);
         assert(Exp(2,4)==1)
-        assert(isequal(GeneNames{2},'gene2'))
-     
+        assert(isequal(GeneNames{2},'gene2'))  
 end
