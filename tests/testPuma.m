@@ -174,10 +174,10 @@ function testPumaLionessRs()
         % Load the expected result
         ExpAgNet = load('PUMA_rs_test.mat');
         % /!\ ExpAgNet is a row-major matrix, while reshape transforms in column-major format, thus the transpose
-        %ExpAgNet = reshape(ExpAgNet,[size(AgNet,2), size(AgNet,1)])';
+        %ExpAgNet.PredNet = reshape(ExpAgNet.PredNet,[size(PredNet,2), size(PredNet,1)])';
 
         % Compare the outputs
         tolMat=1e-6;
-        deltaMat=max(max(abs(PredNet-ExpAgNet.PredNet)));
+        deltaMat=max(max(abs(PredNet-ExpAgNet.PredNet)))
 	    assertTrue( deltaMat < tolMat );
 end
