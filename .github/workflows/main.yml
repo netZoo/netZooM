@@ -54,7 +54,8 @@ jobs:
         run: |
          wget https://github.com/marouenbg/bedtools2/archive/refs/heads/master.zip
          unzip master.zip
-         cd master
+         mv bedtools2-master bedtools2
+         cd bedtools2
          make
          ls
          pwd
