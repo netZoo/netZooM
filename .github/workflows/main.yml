@@ -50,7 +50,7 @@ jobs:
          cd ..
 
       - name: install bedtools macos
-        if: matrix.os == 'macos-latest'
+        if: matrix.os == 'macos-12'
         run: |
          wget https://github.com/arq5x/bedtools2/releases/download/v2.29.0/bedtools-2.29.0.tar.gz
          tar -zxvf bedtools-2.29.0.tar.gz
