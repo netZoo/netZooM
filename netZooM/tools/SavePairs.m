@@ -10,21 +10,25 @@ function SavePairs(TFNames, GeneNames, AgNet, RegNet, outtag)
 %             RegNet   : prior gene regulation network obtained using TF motif scan of size (t,g)
 %             outtag   : name of saved file 
 % Author(s):
-%             Kimberley Glass, Marouen Ben Guebila
+%             Kimberly Glass, Marouen Ben Guebila
 
+    % Check input dimensions (Results in misannotated files otherwise)
+    if size(GeneNames,1)==1
+        GeneNames=GeneNames';
+    end
     % Reshape network information into vectors and print to file
-        TF    = repmat(TFNames, 1, length(GeneNames));
-        gene  = repmat(GeneNames', length(TFNames), 1);
-        TF    = TF(:);
-        gene  = gene(:);
-        RegNet= RegNet(:);
-        AgNet = AgNet(:);
+    TF    = repmat(TFNames, 1, length(GeneNames));
+    gene  = repmat(GeneNames', length(TFNames), 1);
+    TF    = TF(:);
+    gene  = gene(:);
+    RegNet= RegNet(:);
+    AgNet = AgNet(:);
 
-        fid   = fopen([outtag, '_FinalNetwork.pairs'], 'wt');
-        fprintf(fid, 'TF\tgene\tMotif\tPANDA-prediction\n');
-        for(cnt=1:length(TF))
-            fprintf(fid, '%s\t%s\t%f\t%f\n', TF{cnt}, gene{cnt}, RegNet(cnt), AgNet(cnt));
-        end
-        fclose(fid);
+    fid   = fopen([outtag, '_FinalNetwork.pairs'], 'wt');
+    fprintf(fid, 'TF\tgene\tMotif\tPANDA-prediction\n');
+    for(cnt=1:length(TF))
+        fprintf(fid, '%s\t%s\t%f\t%f\n', TF{cnt}, gene{cnt}, RegNet(cnt), AgNet(cnt));
+    end
+    fclose(fid);
 
 end
