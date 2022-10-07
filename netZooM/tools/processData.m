@@ -108,7 +108,7 @@ function [Exp,RegNet,TFCoop]=populateData(GeneNames,TFNames,NumConditions,...
     %Initialize result
     RegNet   = zeros(NumTFs,NumGenes);
     Exp      = zeros(NumGenes,NumConditions);
-    TFCoop   = zeros(NumTFs,NumTFs);
+    TFCoop   = eye(NumTFs,NumTFs);
     %Populate result
     %Gene expression
     [ig,locg]= ismember(GeneNamesExp,GeneNames);
