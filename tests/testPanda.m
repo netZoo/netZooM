@@ -33,16 +33,17 @@ function testPandaPythonData()
      addpath(genpath(fullfile(pwd,'tests')));
 
      % Call Panda
-     tic;AgNet = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+     tic;[AgNet,TFNames,GeneNames] = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
          save_temp, alpha, save_pairs, modeProcess);toc;
+     ExpTbl = array2table(AgNet,'RowNames',TFNames,'VariableNames',GeneNames');
      
      % Load the expected result
-     filename = 'panda_gt.csv';
-     ExpAgNet = csvread(filename);
+     filename = 'panda_gt_matlab.csv';
+     ExpAgNet = readtable(filename,'ReadVariableNames',1,'ReadRowNames',1,'PreserveVariableNames',1);
      
      % Compare the outputs
      tolMat  =1e-6;
-     deltaMat=max(max(abs(AgNet-ExpAgNet)));
+     deltaMat=max(max(abs(ExpTbl{:,:}-ExpAgNet{:,:})));
 	 assertTrue( deltaMat < tolMat );
 
 end
