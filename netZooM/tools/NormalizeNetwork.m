@@ -6,7 +6,7 @@ function normMat = NormalizeNetwork(X)
 % Outputs:
 %             normMat: normalized adjacency matrix
 % Author(s):
-%             Kimberley Glass
+%             Kimberly Glass
 
     %compute means and stds
     mu2 = mean(X,2);
