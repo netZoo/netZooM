@@ -6,6 +6,48 @@ function test_suite=testPanda()
     initTestSuite;
 end
 
+function testPandaPantest()
+	% Tell if this is Octave (Unit tests) or Matlab
+    isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
+
+    % Load statistics package from Octave
+    if isOctave
+        %we need the nan package because it has a fast implementation of corrcoeff
+        %pkg load statistics
+        pkg load nan;
+        return % readtable is not available in octave
+     end
+
+     % Set Program Parameters
+     exp_file   = 'tests/test_data/pantests/expression.txt';
+     motif_file = 'tests/test_data/pantests/motif.txt';
+     ppi_file   = 'tests/test_data/pantests/ppi.txt';
+     panda_out  = '';  % optional, leave empty if file output is not required
+     save_temp  = '';  % optional, leave empty if temp data files will not be needed afterward
+     lib_path   = '../netZooM';  % path to the folder of PANDA source code
+     alpha      = 0.1;
+     save_pairs = 0;%saving in .pairs format
+     modeProcess= 'legacy';
+
+     % Add path
+     addpath(genpath(fullfile(pwd,'tests')));
+
+     % Call Panda
+     tic;[AgNet,TFNames,GeneNames] = panda_run(lib_path,exp_file, motif_file, ppi_file, panda_out,...
+         save_temp, alpha, save_pairs, modeProcess);toc;
+     ExpTbl = array2table(AgNet,'RowNames',TFNames,'VariableNames',GeneNames');
+     
+     % Load the expected result
+     filename = 'panda_pantests_gt_matlab.csv';
+     ExpAgNet = readtable(filename,'ReadVariableNames',1,'ReadRowNames',1,'PreserveVariableNames',1);
+     
+     % Compare the outputs
+     tolMat  =1e-6;
+     deltaMat=max(max(abs(ExpTbl{:,:}-ExpAgNet{:,:})));
+	 assertTrue( deltaMat < tolMat );
+
+end
+
 function testPandaPythonData()
 	% Tell if this is Octave (Unit tests) or Matlab
     isOctave = exist('OCTAVE_VERSION', 'builtin') ~= 0;
