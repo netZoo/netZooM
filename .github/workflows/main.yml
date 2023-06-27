@@ -41,7 +41,7 @@ jobs:
           release: R2020a
 
       - name: install bedtools ubuntu
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
          wget https://github.com/arq5x/bedtools2/releases/download/v2.29.0/bedtools-2.29.0.tar.gz
          tar -zxvf bedtools-2.29.0.tar.gz
