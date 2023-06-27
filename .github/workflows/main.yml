@@ -28,7 +28,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-20.04]
 
     steps:
 
@@ -37,9 +37,11 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Set up MATLAB
         uses: matlab-actions/setup-matlab@v1
+        with:
+          release: R2020a
 
       - name: install bedtools ubuntu
-        if: matrix.os == 'ubuntu-latest'
+        if: matrix.os == 'ubuntu-20.04'
         run: |
          wget https://github.com/arq5x/bedtools2/releases/download/v2.29.0/bedtools-2.29.0.tar.gz
          tar -zxvf bedtools-2.29.0.tar.gz
