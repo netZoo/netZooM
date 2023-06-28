@@ -47,7 +47,7 @@ function RegNet = PANDA(RegNet, GeneCoReg, TFCoop, alpha, respWeight, similarity
 % Outputs:
 %             RegNet   : inferred gene-TF regulatory network
 % Author(s):
-%             Kimberley Glass
+%             Kimberly Glass
 % Publications:
 %               https://doi.org/10.1371/journal.pone.0064832 
 

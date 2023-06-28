@@ -5,13 +5,13 @@
 [![Documentation Status](https://readthedocs.org/projects/netzoom/badge/?version=latest)](https://netzoom.readthedocs.io/en/latest/?badge=latest)
 [![tutorials](https://img.shields.io/badge/netZooM-tutorials-9cf)](https://github.com/netZoo/netZooM/tree/master/tutorials)
 
-netZooM is tested on: (OS: Ubuntu) X (Language: MATLAB)
+netZooM is tested on: (OS: Ubuntu 20.04) X (Language: MATLAB R2020a)
 
 ## Description
 netZooM is a MATLAB package of network methods.
 
 ## Zoo animals
-(gpu)PANDA, (gpu)LIONESS, (gpu)PUMA, (gpu)SPIDER, optPANDA, and OTTER.
+(gpu)PANDA, (gpu)LIONESS, (gpu)PUMA, (gpu)SPIDER, BOA, and OTTER.
 
 ## Quick guide
 Clone the repository into your local disk:
