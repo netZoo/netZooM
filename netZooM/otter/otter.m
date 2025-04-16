@@ -38,7 +38,11 @@ function W = otter(W,P,C,lambda,gamma,Imax,eta)
     %initial transformation
     C = C/trace(C);
     W = W/sqrt(trace(W*W'));
-    P = P/trace(P);
+    diagP = trace(P);
+    if diagP > 0
+        P = P/trace(P);
+    end
+    
 
     [t, g] = size(W);
     m = zeros(t, g);
